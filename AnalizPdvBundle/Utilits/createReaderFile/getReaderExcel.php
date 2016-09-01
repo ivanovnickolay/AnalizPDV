@@ -13,15 +13,54 @@ use AnalizPdvBundle\Utilits\createReaderFile\chunkReadFilter;
 
 class getReaderExcel
 {
+	/**
+	 * @var класс вида class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPExcel_Reader_IReader
+	 */
 	private $phpExcel;
+
+	/**
+	 * @var загруженный файл Excel с параметрами указанными $ChunkFilter
+	 */
 	private $objReader;
+	/**
+	 * @var string наименование файла с путем к нему
+	 */
 	private $fileName;
+	/**
+	 * @var \AnalizPdvBundle\Utilits\createReaderFile\chunkReadFilter
+	 */
 	private $ChunkFilter;
+
+	/**
+	 * номер строки с которой надо начинать считывать файл
+	 * @var int
+	 */
 	private $filterStartRow=2;
+	/**
+	 * массив столбцов фильтра
+	 * строится при помощи процедуры createColumnsArray
+	 * @var array
+	 */
 	private $filterColumn;
+	/**
+	 * Количество строк, которые считываются з один раз с файла
+	 * @var int
+	 */
 	private $filterChunkSize=2000;
+	/**
+	 * Название листа в книге
+	 * @var string
+	 */
 	private $filterWorksheetName;
+	/**
+	 * первый столбец массива $filterColumn
+	 * @var string
+	 */
 	private $columnFirst = "A";
+	/**
+	 * Последний столбец массива $filterColumn
+	 * @var string
+	 */
 	private $columnLast="Z";
 
 	/**
@@ -31,17 +70,15 @@ class getReaderExcel
 	 */
 	public function __construct(string $fileName)
 	{
-		$this->filterStartRow=2;
-		$this->filterColumn=range($this->columnFirst,$this->columnLast);
-		$this->filterChunkSize=2000;
-		$this->filterWorksheetName='';
-		$this->ChunkFilter= new chunkReadFilter();
+		// Заполняем первоначальными значениями
 		$this->fileName=$fileName;
+
 
 	}
 
 	/**
-	* @return bool
+	* Проверяем наименование файла
+	 * @return bool
 	 */
 	public function validFileName()
 	{
@@ -56,45 +93,6 @@ class getReaderExcel
 		}else{
 			return false;
 		}
-	}
-	/**
-	 * @link http://stackoverflow.com/questions/14278603/php-range-from-a-to-zz
-	 * @link http://php.net/manual/ru/function.range.php#107440
-	 * @param $end_column
-	 * @param string $first_letters
-	 * @return array
-	 */
-	public function createColumnsArray($end_column, $first_letters = '')
-	{
-		$columns = array();
-		$length = strlen($end_column);
-		$letters = range('A', 'Z');
-
-		// Iterate over 26 letters.
-		foreach ($letters as $letter) {
-			// Paste the $first_letters before the next.
-			$column = $first_letters . $letter;
-
-			// Add the column to the final array.
-			$columns[] = $column;
-
-			// If it was the end column that was added, return the columns.
-			if ($column == $end_column)
-				return $columns;
-		}
-
-		// Add the column children.
-		foreach ($columns as $column) {
-			// Don't itterate if the $end_column was already set in a previous itteration.
-			// Stop iterating if you've reached the maximum character length.
-			if (!in_array($end_column, $columns) && strlen($column) < $length) {
-				$new_columns =$this->createColumnsArray($end_column, $column);
-				// Merge the new columns which were created with the final columns array.
-				$columns = array_merge($columns, $new_columns);
-			}
-		}
-
-		return $columns;
 	}
 	/**
 	 * Определение типа файла исходя из названия (расширения) файла
@@ -147,19 +145,6 @@ class getReaderExcel
 
 	}
 
-	public function setChunkFilter(\PHPExcel_Reader_IReadFilter $fil=null)
-	{
-		// ели нам переданный класс фильтра
-		if(!null==$fil)
-		{
-			// анулируем установленный по умолчанию
-			unset($this->ChunkFilter);
-			// и инициализируем переданный
-			$this->ChunkFilter= $fil;
-		}
-
-	}
-
 	/**
 	 * Установка параметров для фильтра по файлу
 	 * @param int $startRow - стартовая строка
@@ -168,15 +153,11 @@ class getReaderExcel
 	 * @param int $chunkSize количество строк читаемое заодин раз
 	 * @param string $worksheetName наименовение рабочего листа книги
 	 */
-	public function setParamFilter(int $startRow=2,string $columnFirst="A",string  $columnLast="Z",int $chunkSize=2000,
-	                               string $worksheetName='')
+	public function createFilter(string  $columnLast="Z",int $chunkSize=2000,string $worksheetName='')
 	{
-		$this->filterStartRow=$startRow;
-			$this->columnFirst=$columnFirst;
-				$this->columnLast=$columnLast;
-					$this->filterColumn=$this->createColumnsArray($this->columnLast);
-						$this->filterChunkSize=$chunkSize;
-							$this->filterWorksheetName=$worksheetName;
+		$this->filterChunkSize=$chunkSize;
+			$this->filterWorksheetName=$worksheetName;
+				$this->ChunkFilter=new chunkReadFilter($columnLast);
 	}
 
 	/**
@@ -198,15 +179,16 @@ class getReaderExcel
 							// Указываем что нам нужны только данные из файла - без форматирования
 							$this->phpExcel->setReadDataOnly (true);
 								// указываем диапазон для считывания
-								$this->ChunkFilter->setRows($this->filterStartRow,$this->filterColumn,$this->filterChunkSize);
+								//$this->ChunkFilter->setRows($this->filterStartRow,$this->filterColumn,$this->filterChunkSize);
 					// получаем объект книги
-					$this->objReader=$this->phpExcel->load($this->fileName);
+					//$this->objReader=$this->phpExcel->load($this->fileName);
 
 				} catch (Exception $e) {
 					echo 'Ошибка подключения к файлу' . $this->fileName . ': ' , $e->getMessage () , "\n";
 				}
 		}
 	}
+
 
 	/**
 	 * получить класс ридера
@@ -215,7 +197,13 @@ class getReaderExcel
 	public function getReader()
 	{
 		$this->createReader();
-		return $this->objReader;
+		return $this->phpExcel;
+	}
+
+	public function getLoadFile(int $rowStart)
+	{
+		$this->ChunkFilter->setRows($rowStart,$this->filterColumn,$this->filterChunkSize);
+
 	}
 
 	public function getRowDataArray($numRow)
