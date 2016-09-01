@@ -1,0 +1,634 @@
+<?php
+
+namespace AnalizPdvBundle\Entity;
+
+/**
+ * ErpnOut
+ */
+class ErpnOut
+{
+    /**
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $numInvoice;
+
+    /**
+     * @var \DateTime
+     */
+    private $dateCreateInvoice;
+
+    /**
+     * @var \DateTime
+     */
+    private $dateRegInvoice;
+
+    /**
+     * @var string
+     */
+    private $typeInvoiceFull;
+
+    /**
+     * @var string
+     */
+    private $edrpouClient;
+
+    /**
+     * @var string
+     */
+    private $innClient;
+
+    /**
+     * @var string
+     */
+    private $numBranchClient;
+
+    /**
+     * @var string
+     */
+    private $nameClient;
+
+    /**
+     * @var float
+     */
+    private $sumaInvoice;
+
+    /**
+     * @var float
+     */
+    private $pdvinvoice;
+
+    /**
+     * @var float
+     */
+    private $bazaInvoice;
+
+    /**
+     * @var string
+     */
+    private $nameVendor;
+
+    /**
+     * @var string
+     */
+    private $numBranchVendor;
+
+    /**
+     * @var string
+     */
+    private $numRegInvoice;
+
+    /**
+     * @var string
+     */
+    private $typeInvoice;
+
+    /**
+     * @var string
+     */
+    private $numContract;
+
+    /**
+     * @var \DateTime
+     */
+    private $dateContract;
+
+    /**
+     * @var string
+     */
+    private $typeContract;
+
+    /**
+     * @var string
+     */
+    private $personCreateInvoice;
+
+    /**
+     * @var string
+     */
+    private $keyField;
+
+    /**
+     * @var string
+     */
+    private $rkeInfo;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set numInvoice
+     *
+     * @param string $numInvoice
+     *
+     * @return ErpnOut
+     */
+    public function setNumInvoice($numInvoice)
+    {
+        $this->numInvoice = $numInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get numInvoice
+     *
+     * @return string
+     */
+    public function getNumInvoice()
+    {
+        return $this->numInvoice;
+    }
+
+    /**
+     * Set dateCreateInvoice
+     *
+     * @param \DateTime $dateCreateInvoice
+     *
+     * @return ErpnOut
+     */
+    public function setDateCreateInvoice($dateCreateInvoice)
+    {
+        $this->dateCreateInvoice = $dateCreateInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get dateCreateInvoice
+     *
+     * @return \DateTime
+     */
+    public function getDateCreateInvoice()
+    {
+        return $this->dateCreateInvoice;
+    }
+
+    /**
+     * Set dateRegInvoice
+     *
+     * @param \DateTime $dateRegInvoice
+     *
+     * @return ErpnOut
+     */
+    public function setDateRegInvoice($dateRegInvoice)
+    {
+        $this->dateRegInvoice = $dateRegInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get dateRegInvoice
+     *
+     * @return \DateTime
+     */
+    public function getDateRegInvoice()
+    {
+        return $this->dateRegInvoice;
+    }
+
+    /**
+     * Set typeInvoiceFull
+     *
+     * @param string $typeInvoiceFull
+     *
+     * @return ErpnOut
+     */
+    public function setTypeInvoiceFull($typeInvoiceFull)
+    {
+        $this->typeInvoiceFull = $typeInvoiceFull;
+
+        return $this;
+    }
+
+    /**
+     * Get typeInvoiceFull
+     *
+     * @return string
+     */
+    public function getTypeInvoiceFull()
+    {
+        return $this->typeInvoiceFull;
+    }
+
+    /**
+     * Set edrpouClient
+     *
+     * @param string $edrpouClient
+     *
+     * @return ErpnOut
+     */
+    public function setEdrpouClient($edrpouClient)
+    {
+        $this->edrpouClient = $edrpouClient;
+
+        return $this;
+    }
+
+    /**
+     * Get edrpouClient
+     *
+     * @return string
+     */
+    public function getEdrpouClient()
+    {
+        return $this->edrpouClient;
+    }
+
+    /**
+     * Set innClient
+     *
+     * @param string $innClient
+     *
+     * @return ErpnOut
+     */
+    public function setInnClient($innClient)
+    {
+        $this->innClient = $innClient;
+
+        return $this;
+    }
+
+    /**
+     * Get innClient
+     *
+     * @return string
+     */
+    public function getInnClient()
+    {
+        return $this->innClient;
+    }
+
+    /**
+     * Set numBranchClient
+     *
+     * @param string $numBranchClient
+     *
+     * @return ErpnOut
+     */
+    public function setNumBranchClient($numBranchClient)
+    {
+        $this->numBranchClient = $numBranchClient;
+
+        return $this;
+    }
+
+    /**
+     * Get numBranchClient
+     *
+     * @return string
+     */
+    public function getNumBranchClient()
+    {
+        return $this->numBranchClient;
+    }
+
+    /**
+     * Set nameClient
+     *
+     * @param string $nameClient
+     *
+     * @return ErpnOut
+     */
+    public function setNameClient($nameClient)
+    {
+        $this->nameClient = $nameClient;
+
+        return $this;
+    }
+
+    /**
+     * Get nameClient
+     *
+     * @return string
+     */
+    public function getNameClient()
+    {
+        return $this->nameClient;
+    }
+
+    /**
+     * Set sumaInvoice
+     *
+     * @param float $sumaInvoice
+     *
+     * @return ErpnOut
+     */
+    public function setSumaInvoice($sumaInvoice)
+    {
+        $this->sumaInvoice = $sumaInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get sumaInvoice
+     *
+     * @return float
+     */
+    public function getSumaInvoice()
+    {
+        return $this->sumaInvoice;
+    }
+
+    /**
+     * Set pdvinvoice
+     *
+     * @param float $pdvinvoice
+     *
+     * @return ErpnOut
+     */
+    public function setPdvinvoice($pdvinvoice)
+    {
+        $this->pdvinvoice = $pdvinvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get pdvinvoice
+     *
+     * @return float
+     */
+    public function getPdvinvoice()
+    {
+        return $this->pdvinvoice;
+    }
+
+    /**
+     * Set bazaInvoice
+     *
+     * @param float $bazaInvoice
+     *
+     * @return ErpnOut
+     */
+    public function setBazaInvoice($bazaInvoice)
+    {
+        $this->bazaInvoice = $bazaInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get bazaInvoice
+     *
+     * @return float
+     */
+    public function getBazaInvoice()
+    {
+        return $this->bazaInvoice;
+    }
+
+    /**
+     * Set nameVendor
+     *
+     * @param string $nameVendor
+     *
+     * @return ErpnOut
+     */
+    public function setNameVendor($nameVendor)
+    {
+        $this->nameVendor = $nameVendor;
+
+        return $this;
+    }
+
+    /**
+     * Get nameVendor
+     *
+     * @return string
+     */
+    public function getNameVendor()
+    {
+        return $this->nameVendor;
+    }
+
+    /**
+     * Set numBranchVendor
+     *
+     * @param string $numBranchVendor
+     *
+     * @return ErpnOut
+     */
+    public function setNumBranchVendor($numBranchVendor)
+    {
+        $this->numBranchVendor = $numBranchVendor;
+
+        return $this;
+    }
+
+    /**
+     * Get numBranchVendor
+     *
+     * @return string
+     */
+    public function getNumBranchVendor()
+    {
+        return $this->numBranchVendor;
+    }
+
+    /**
+     * Set numRegInvoice
+     *
+     * @param string $numRegInvoice
+     *
+     * @return ErpnOut
+     */
+    public function setNumRegInvoice($numRegInvoice)
+    {
+        $this->numRegInvoice = $numRegInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get numRegInvoice
+     *
+     * @return string
+     */
+    public function getNumRegInvoice()
+    {
+        return $this->numRegInvoice;
+    }
+
+    /**
+     * Set typeInvoice
+     *
+     * @param string $typeInvoice
+     *
+     * @return ErpnOut
+     */
+    public function setTypeInvoice($typeInvoice)
+    {
+        $this->typeInvoice = $typeInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get typeInvoice
+     *
+     * @return string
+     */
+    public function getTypeInvoice()
+    {
+        return $this->typeInvoice;
+    }
+
+    /**
+     * Set numContract
+     *
+     * @param string $numContract
+     *
+     * @return ErpnOut
+     */
+    public function setNumContract($numContract)
+    {
+        $this->numContract = $numContract;
+
+        return $this;
+    }
+
+    /**
+     * Get numContract
+     *
+     * @return string
+     */
+    public function getNumContract()
+    {
+        return $this->numContract;
+    }
+
+    /**
+     * Set dateContract
+     *
+     * @param \DateTime $dateContract
+     *
+     * @return ErpnOut
+     */
+    public function setDateContract($dateContract)
+    {
+        $this->dateContract = $dateContract;
+
+        return $this;
+    }
+
+    /**
+     * Get dateContract
+     *
+     * @return \DateTime
+     */
+    public function getDateContract()
+    {
+        return $this->dateContract;
+    }
+
+    /**
+     * Set typeContract
+     *
+     * @param string $typeContract
+     *
+     * @return ErpnOut
+     */
+    public function setTypeContract($typeContract)
+    {
+        $this->typeContract = $typeContract;
+
+        return $this;
+    }
+
+    /**
+     * Get typeContract
+     *
+     * @return string
+     */
+    public function getTypeContract()
+    {
+        return $this->typeContract;
+    }
+
+    /**
+     * Set personCreateInvoice
+     *
+     * @param string $personCreateInvoice
+     *
+     * @return ErpnOut
+     */
+    public function setPersonCreateInvoice($personCreateInvoice)
+    {
+        $this->personCreateInvoice = $personCreateInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get personCreateInvoice
+     *
+     * @return string
+     */
+    public function getPersonCreateInvoice()
+    {
+        return $this->personCreateInvoice;
+    }
+
+    /**
+     * Set keyField
+     *
+     * @param string $keyField
+     *
+     * @return ErpnOut
+     */
+    public function setKeyField($keyField)
+    {
+        $this->keyField = $keyField;
+
+        return $this;
+    }
+
+    /**
+     * Get keyField
+     *
+     * @return string
+     */
+    public function getKeyField()
+    {
+        return $this->keyField;
+    }
+
+    /**
+     * Set rkeInfo
+     *
+     * @param string $rkeInfo
+     *
+     * @return ErpnOut
+     */
+    public function setRkeInfo($rkeInfo)
+    {
+        $this->rkeInfo = $rkeInfo;
+
+        return $this;
+    }
+
+    /**
+     * Get rkeInfo
+     *
+     * @return string
+     */
+    public function getRkeInfo()
+    {
+        return $this->rkeInfo;
+    }
+}

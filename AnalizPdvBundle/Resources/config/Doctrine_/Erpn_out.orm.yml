@@ -1,0 +1,86 @@
+LoadFileBundle\Entity\Erpn_out:
+ type: entity
+ table: Erpn_out
+ repositoryClass: AnalizPdvBundle\Entity\Repository\Erpn_out
+ id:
+    id:
+      type: integer
+      generator: { strategy: AUTO }
+ fields:
+  NumInvoice:
+    type: string
+    length: 20
+  DateCreateInvoice:
+    type: date
+  DateRegInvoice:
+      type: date
+  TypeInvoiceFull:
+    type: string
+    lenght: 20
+  EdrpouClient:
+    type: string
+    lenght: 12
+    nullable: true
+  InnClient:
+    type: string
+    lenght: 12
+  NumBranchClient:
+    type: string
+    lenght: 5
+    nullable: true
+  NameClient:
+    type: string
+    lenght: 500
+  SumaInvoice:
+    type: decimal
+    precision: 10
+    scale: 2
+  PDVInvoice:
+    type: decimal
+    precision: 10
+    scale: 2
+    nullable: true
+  BazaInvoice:
+    type: decimal
+    precision: 10
+    scale: 2
+  NameVendor:
+    type: string
+    lenght: 500
+  NumBranchVendor:
+     type: string
+     lenght: 5
+     nullable: true
+  NumRegInvoice:
+    type: string
+    length: 12
+  TypeInvoice:
+    type: string
+    length: 2
+    nullable: true
+  NumContract:
+    type: string
+    length: 15
+    nullable: true
+  DateContract:
+    type: date
+    nullable: true
+  TypeContract:
+    type: string
+    length: 100
+    nullable: true
+  PersonCreateInvoice:
+    type: string
+    length: 40
+    nullable: true
+  TypeInvoice:
+      type: string
+      lenght: 3
+      nullable: true
+  KeyField:
+    type: string
+    length: 50
+    nullable: true
+    uniqueConstraints:
+        valid_data:
+          columns: [NumInvoice,  DateCreateInvoice, TypeInvoiceFull, InnClient]

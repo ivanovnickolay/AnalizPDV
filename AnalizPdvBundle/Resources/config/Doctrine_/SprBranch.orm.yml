@@ -1,0 +1,24 @@
+LoadFileBundle\Entity\SprBranch:
+ type: entity
+ table: SprBranch
+ repositoryClass: LoadFileBundle\Entity\Repository\SprBranch
+ id:
+    id:
+      type: integer
+      generator: { strategy: AUTO }
+ fields:
+  NumBranch:
+    type: string
+    length: 3
+  NameBranch:
+    type: string
+    length: 150
+  BranchAdr:
+    type: string
+    length: 150
+  NameMainBranch:
+    type: string
+    length: 100
+  NumMainBranch:
+    type: string
+    length: 3

@@ -1,0 +1,28 @@
+LoadFileBundle\Entity\LoadFile:
+ type: entity
+ table: LoadFile
+ repositoryClass: AnalizPdvBundle\Entity\Repository\LoadFile
+ id:
+    id:
+      type: integer
+      generator: { strategy: AUTO }
+ fields:
+  originalName:
+    type: string
+    length: 50
+  uploadName:
+    type: string
+    length: 50
+  typeFile:
+    type: string
+    length: 3
+  descriptionFile:
+    type: string
+    length: 50
+  typeDoc:
+    type: string
+    length: 50
+  uploadDate:
+    type: datetime
+  processingDate:
+    type: datetime

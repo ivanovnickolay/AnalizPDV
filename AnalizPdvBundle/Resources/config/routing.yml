@@ -1,0 +1,21 @@
+load_file_homepage:
+    path:     /
+    defaults: { _controller: AnalizPdvBundle:Default:index }
+
+load_file_new:
+    path: /new
+    defaults: {_controller: AnalizPdvBundle:Default:new}
+    methods:  [GET,POST]
+
+view_all_load:
+    path: /view
+    defaults: {_controller: AnalizPdvBundle:Default:view}
+
+load_file_newLoad:
+    path: /new1
+    defaults: {_controller: AnalizPdvBundle:Default:newLoad}
+    methods:  [GET,POST]
+
+LoadBranch:
+    path: /LoadBranch
+    defaults: {_controller: AnalizPdvBundle:LoadBranch:Load}

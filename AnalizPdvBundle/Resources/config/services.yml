@@ -1,0 +1,10 @@
+parameters:
+  file_dir: "%file_directory%"
+services:
+#    load_file.example:
+#        class: AnalizPdvBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+
+  handler_load_file:
+    class: AnalizPdvBundle\Form\HandlerFormLoadFile
+    arguments: ["@doctrine.orm.entity_manager","%file_dir%"]

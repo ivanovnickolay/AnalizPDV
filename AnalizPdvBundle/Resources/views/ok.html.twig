@@ -1,0 +1,18 @@
+<h1>Добавлено успешно </h1>
+ <a href="{{ path('load_file_new') }}">New load</a>
+<table border="1">
+    <tr>
+        <th> originalName </th>
+        <th> typeFile </th>
+        <th> descriptionFile </th>
+        <th> typeDoc </th>
+    </tr>
+{% for file in files %}
+        <tr>
+            <td> {{ file.originalName }}</td>
+            <td> {{ file.typeFile }}</td>
+            <td> {{ file.descriptionFile }}</td>
+            <td> {{ file.typeDoc }}</td>
+        </tr>
+{% endfor %}
+</table>
