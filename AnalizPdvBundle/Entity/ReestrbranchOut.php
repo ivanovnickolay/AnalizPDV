@@ -596,14 +596,21 @@ class ReestrbranchOut
 
     /**
      * Set rkeDateCreateInvoice
-     *
+     * значение \DateTime("0000-00-00") присваивается при разборе строк в реестре если дата установлена пустой
+     * если получено значение даты равное \DateTime("0000-00-00")  rkeDateCreateInvoice = null
+     * иначе - присваиваем полученную дату
      * @param \DateTime $rkeDateCreateInvoice
      *
      * @return ReestrbranchOut
      */
     public function setRkeDateCreateInvoice($rkeDateCreateInvoice)
     {
-        $this->rkeDateCreateInvoice = $rkeDateCreateInvoice;
+        if (new \DateTime("0000-00-00")==$rkeDateCreateInvoice)
+        {
+            $this->rkeDateCreateInvoice = null;
+        } else {
+            $this->rkeDateCreateInvoice = $rkeDateCreateInvoice;
+        }
 
         return $this;
     }

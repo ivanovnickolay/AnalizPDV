@@ -26,7 +26,7 @@ class createReestrOut extends createEntitys\interfaceReestr\createReestr
 					$this->reestrOut->setNumBranch($arr[0][66]);
 						$this->reestrOut->setDateCreateInvoice($this->getDataType($arr[0][99]));
 								$this->reestrOut->setNumInvoice($arr[0][100]);
-		$this->reestrOut->setTypeInvoiceFull($arr[0][122]);
+		$this->reestrOut->setTypeInvoiceFull($arr[0][121]);
 			$this->reestrOut->setNameClient($arr[0][103]);
 				$this->reestrOut->setInnClient($arr[0][104]);
 					$this->reestrOut->setZagSumm($arr[0][106]);
@@ -37,8 +37,7 @@ class createReestrOut extends createEntitys\interfaceReestr\createReestr
 				$this->reestrOut->setBaza0($arr[0][111]);
 					$this->reestrOut->setBazaZvil($arr[0][94]);
 						$this->reestrOut->setBazaNeObj($arr[0][97]);
-								$this->reestrOut->setPdvNeGos($arr[0][101]);
-		$this->reestrOut->setBazaZaMezhiTovar($arr[0][95]);
+							$this->reestrOut->setBazaZaMezhiTovar($arr[0][95]);
 			$this->reestrOut->setBazaZaMezhiPoslug($arr[0][96]);
 				$this->reestrOut->setRkeDateCreateInvoice($this->getDataType($arr[0][112]));
 					$this->reestrOut->setRkeNumInvoice($arr[0][114]);

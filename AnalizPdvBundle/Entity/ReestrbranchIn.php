@@ -234,8 +234,12 @@ class ReestrbranchIn
      */
     public function setDateGetInvoice($dateGetInvoice)
     {
-        $this->dateGetInvoice = $dateGetInvoice;
-
+        if (new \DateTime("0000-00-00")==$dateGetInvoice)
+        {
+            $this->dateGetInvoice = null;
+        } else {
+            $this->dateGetInvoice = $dateGetInvoice;
+        }
         return $this;
     }
 
@@ -258,8 +262,12 @@ class ReestrbranchIn
      */
     public function setDateCreateInvoice($dateCreateInvoice)
     {
-        $this->dateCreateInvoice = $dateCreateInvoice;
-
+       if (new \DateTime("0000-00-00")==$dateCreateInvoice)
+        {
+            $this->dateCreateInvoice = null;
+        } else {
+            $this->dateCreateInvoice = $dateCreateInvoice;
+        }
         return $this;
     }
 
@@ -735,14 +743,21 @@ class ReestrbranchIn
 
     /**
      * Set rkeDateCreateInvoice
-     *
+     * значение \DateTime("0000-00-00") присваивается при разборе строк в реестре если дата установлена пустой
+     * если получено значение даты равное \DateTime("0000-00-00")  rkeDateCreateInvoice = null
+     * иначе - присваиваем полученную дату
      * @param \DateTime $rkeDateCreateInvoice
      *
      * @return ReestrbranchIn
      */
     public function setRkeDateCreateInvoice($rkeDateCreateInvoice)
     {
-        $this->rkeDateCreateInvoice = $rkeDateCreateInvoice;
+       if (new \DateTime("0000-00-00")==$rkeDateCreateInvoice)
+       {
+           $this->rkeDateCreateInvoice = null;
+       } else {
+           $this->rkeDateCreateInvoice = $rkeDateCreateInvoice;
+       }
 
         return $this;
     }
@@ -814,8 +829,11 @@ class ReestrbranchIn
      */
     public function setKeyField()
     {
-        $this->keyField = $this->numInvoice.'/'.$this->typeInvoiceFull.'/'.date_format($this->dateCreateInvoice,
-                "d-m-Y").'/'.$this->innClient;
+        if ($this->dateCreateInvoice==null) {
+            $this->keyField = $this->numInvoice . '/' . $this->typeInvoiceFull . '/null/' . $this->innClient;
+        } else{
+            $this->keyField = $this->numInvoice . '/' . $this->typeInvoiceFull . '/' . date_format ($this->dateCreateInvoice , "d-m-Y") . '/' . $this->innClient;
+        }
 
         return $this;
     }

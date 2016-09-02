@@ -1,7 +1,6 @@
 AnalizPdvBundle\Entity\ReestrbranchIn:
     type: entity
     table: ReestrBranch_in
-    repositoryClass: AnalizPdvBundle\Entity\Repository\ReestrBranch_in
     id:
         id:
             type: integer

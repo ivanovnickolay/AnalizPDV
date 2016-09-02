@@ -1,7 +1,6 @@
 AnalizPdvBundle\Entity\ErpnOutSvodInn:
     type: entity
     table: Erpn_out_svod_inn
-    repositoryClass: AnalizPdvBundle\Entity\Repository\Erpn_out_svod_inn
     id:
         id:
             type: integer

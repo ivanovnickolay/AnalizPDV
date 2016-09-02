@@ -171,9 +171,7 @@ class getReaderExcel
 	private function createReader ()
 	{
 		// если файл существует и класс фильтра подключен
-		if ($this->validFileName())
-		{
-				try {
+		try {
 					// получаем класс вида class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPExcel_Reader_IReader
 					$this->Reader = \PHPExcel_IOFactory::createReader ($this->getFileType ());
 						/* Подключаем фильтр **/
@@ -188,9 +186,7 @@ class getReaderExcel
 				} catch (Exception $e) {
 					echo 'Ошибка подключения к файлу' . $this->fileName . ': ' , $e->getMessage () , "\n";
 				}
-		}
 	}
-
 
 	/**
 	 * получить класс ридера

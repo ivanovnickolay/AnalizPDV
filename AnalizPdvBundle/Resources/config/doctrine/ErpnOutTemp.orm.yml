@@ -1,17 +1,6 @@
-AnalizPdvBundle\Entity\ErpnIn:
+AnalizPdvBundle\Entity\ErpnOutTemp:
     type: entity
-    table: Erpn_in
-    indexes:
-        inn:
-            columns:
-                - inn_client
-    uniqueConstraints:
-        Key_fields:
-            columns:
-                - num_invoice
-                - date_create_invoice
-                - type_invoice_full
-                - inn_client
+    table: Erpn_out_temp
     id:
         id:
             type: integer
@@ -68,31 +57,31 @@ AnalizPdvBundle\Entity\ErpnIn:
         nameClient:
             type: string
             nullable: false
-            length: 500
+            length: 255
             options:
                 fixed: false
             column: name_client
         sumaInvoice:
-            type: float
+            type: decimal
             nullable: false
-            precision: 15
+            precision: 10
             scale: 2
             column: suma_invoice
         pdvinvoice:
-            type: float
+            type: decimal
             nullable: true
-            precision: 15
+            precision: 10
             scale: 2
         bazaInvoice:
-            type: float
+            type: decimal
             nullable: false
-            precision: 15
+            precision: 10
             scale: 2
             column: baza_invoice
         nameVendor:
             type: string
             nullable: false
-            length: 500
+            length: 255
             options:
                 fixed: false
             column: name_vendor
@@ -120,7 +109,7 @@ AnalizPdvBundle\Entity\ErpnIn:
         numContract:
             type: string
             nullable: true
-            length: 100
+            length: 15
             options:
                 fixed: false
             column: num_contract
@@ -144,16 +133,9 @@ AnalizPdvBundle\Entity\ErpnIn:
             column: person_create_invoice
         keyField:
             type: string
-            nullable: false
+            nullable: true
             length: 50
             options:
                 fixed: false
             column: key_field
-        rkeInfo:
-            type: string
-            nullable: true
-            length: 200
-            options:
-                fixed: false
-            column: rke_info
     lifecycleCallbacks: {  }

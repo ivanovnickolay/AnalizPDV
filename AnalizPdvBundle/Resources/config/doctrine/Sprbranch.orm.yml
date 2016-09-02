@@ -1,7 +1,6 @@
 AnalizPdvBundle\Entity\Sprbranch:
     type: entity
     table: SprBranch
-    repositoryClass: AnalizPdvBundle\Entity\Repository\SprBranch
     id:
         id:
             type: integer

@@ -11,6 +11,7 @@ namespace AnalizPdvBundle\Utilits\loadData;
 
 use AnalizPdvBundle\Utilits\createEntitys;
 use AnalizPdvBundle\Utilits\createReaderFile\getReaderExcel;
+use AnalizPdvBundle\Utilits\ValidEntity\interfaceValidEntity;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -41,13 +42,10 @@ class loadData
 		return $this;
 	}
 
-	public function setValidator($validData)
+	public function setValidator(interfaceValidEntity $validData)
 	{
-		if (is_object($validData)){
-			$this->validator=$validData;
-		} else {
-			$this->validator=null;
-		}
+		$this->validator=$validData;
+
 		return $this;
 	}
 
@@ -70,23 +68,31 @@ class loadData
 
 	public function loadData()
 	{
-		if (!($this->validParametrClass())) {
+		if (($this->validParametrClass())) {
 
-			for($startRow=2;$startRow<=$this->readerFile->getMaxRow();
-			    $startRow+=$this->readerFile->getFilterChunkSize())
+			$maxR=$this->readerFile->getMaxRow();
+			for($startRow=2;$startRow<=$maxR;$startRow+=$this->readerFile->getFilterChunkSize())
 			{
 				$this->readerFile->loadFileWithFilter($startRow);
 					$maxRow=$this->readerFile->getFilterChunkSize()+$startRow;
-						if($maxRow>$this->readerFile->getMaxRow())
+						if($maxRow>$maxR)
 							{
-								$maxRow=$this->readerFile->getMaxRow();
+								$maxRow=$maxR+1;
 							}
-						for($d=$startRow;$d<=$maxRow;$d++)
+						for($d=$startRow;$d<$maxRow;$d++)
 						{
 							$arr=$this->readerFile->getRowDataArray($d);
 								$e=$this->entity->createReestr($arr);
-									$this->em->persist($e);
+									if($this->validator->validEntity($e))
+									{
+										$this->em->persist($e);
 										$this->entity->unsetReestr();
+									} else {
+										$this->em->persist ($e);
+										$errorEntity=$this->validator->getErrorEntity();
+										$this->em->persist ($errorEntity);
+										$this->entity->unsetReestr ();
+									}
 						}
 				$this->em->flush ();
 				$this->em->clear ();

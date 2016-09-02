@@ -1,7 +1,6 @@
 AnalizPdvBundle\Entity\ErpnOut:
     type: entity
     table: Erpn_out
-    repositoryClass: AnalizPdvBundle\Entity\Repository\ErpnOut
     indexes:
         inn:
             columns:

@@ -43,14 +43,13 @@ abstract class createReestr
 	 */
 	public function getDataType($n)
 	{
-		/**if (is_numeric($n)) {
+		if (is_numeric($n)) {
 			return \PHPExcel_Shared_Date::ExcelToPHPObject ($n);
 		} else
 		{
 			//todo найти как в DateTime показать нулевую строку и после этого обновить тест !
 			return new \DateTime('0000-00-00');
 		}
-		 * */
-		return \PHPExcel_Shared_Date::ExcelToPHPObject ($n);
+
 	}
 }
