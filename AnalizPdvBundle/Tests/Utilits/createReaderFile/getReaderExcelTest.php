@@ -24,15 +24,19 @@ class getReaderExcelTest extends \PHPUnit_Framework_TestCase
  public function testCreateReader()
  {
 	 $reader=new getReaderExcel('d:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Tests\testData\test.xlsx');
+	 $reader->createFilter('F');
 	 $obj=$reader->getReader();
-	 $this->assertInstanceOf("PHPExcel",$obj);
+	 $this->assertInstanceOf("PHPExcel_Reader_IReader",$obj);
  }
 	public function test_getRowDataArray()
 	{
 		$reader=new getReaderExcel('d:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Tests\testData\test.xlsx');
-		$reader->setParamFilter(2,"A","F");
-		$obj=$reader->getReader();
+		$reader->createFilter('F');
+		// создаем класс Ридера PHPExcel_Reader_Excel2007
+		$reader->getReader();
 		// ПОЛУЧАЕМЫЙ МАССИВ ДВУХ МЕРНЫЙ !!!!
+		// получаем загруженный файд согластно установленным фильтрам
+		$reader->loadFileWithFilter(2);
 		$arr=$reader->getRowDataArray(2);
 
 		var_dump($arr);
@@ -47,8 +51,8 @@ class getReaderExcelTest extends \PHPUnit_Framework_TestCase
 	public function test_getMaxRow()
 	{
 		$reader=new getReaderExcel('d:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Tests\testData\test.xlsx');
-		$reader->setParamFilter(2,"A","F");
-		$obj=$reader->getReader();
+		$reader->createFilter('F');
+		$reader->getReader();
 		$this->assertEquals(2,$reader->getMaxRow());
 	}
 }

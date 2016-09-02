@@ -673,9 +673,10 @@ class ReestrbranchOut
      *
      * @return ReestrbranchOut
      */
-    public function setKeyField($keyField)
+    public function setKeyField()
     {
-        $this->keyField = $keyField;
+        $this->keyField = $this->numInvoice.'/'.$this->typeInvoiceFull.'/'.date_format($this->dateCreateInvoice,
+                "d-m-Y").'/'.$this->innClient;
 
         return $this;
     }

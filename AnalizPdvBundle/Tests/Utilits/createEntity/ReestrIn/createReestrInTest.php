@@ -16,10 +16,11 @@ class createReestrInTest extends \PHPUnit_Framework_TestCase
 		public function test_createReestrIn()
 		{
 			$reader= new getReaderExcel('d:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Tests\testData\19082016095050_40075815_J1201508_TAB1.xls');
-			$reader->setParamFilter(2,"A","EE",100);
-			$obj=$reader->getReader();
-			$this->assertInstanceOf("PHPExcel",$obj);
+			$reader->createFilter('EE',20);
+			$reader->getReader();
+			$this->assertInstanceOf("PHPExcel_Reader_IReader",$reader->getReader());
 			$en=new createReestrIn();
+			$reader->loadFileWithFilter(2);
 			$arr=$reader->getRowDataArray(2);
 			var_dump($arr);
 			$entity=$en->createReestr($arr);

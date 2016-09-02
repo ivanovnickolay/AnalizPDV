@@ -9,6 +9,7 @@
 namespace AnalizPdvBundle\Utilits\loadData;
 
 
+use AnalizPdvBundle\Utilits\createEntitys;
 use AnalizPdvBundle\Utilits\createReaderFile\getReaderExcel;
 use Doctrine\ORM\EntityManager;
 
@@ -31,10 +32,12 @@ class loadData
 	 * @param getReaderExcel $reader
 	 * @param $entity сущность которая будет заполнятся в процессе загрузки данных
 	 */
-	public function __construct (EntityManager $em)
+	public function __construct (EntityManager $em,$fileName,string $columnLast, int $chunkSize=200)
 	{
 		$this->em=$em;
-
+		$this->readerFile=new getReaderExcel($fileName);
+		$this->readerFile->createFilter($columnLast,$chunkSize);
+		$this->readerFile->getReader();
 		return $this;
 	}
 
@@ -50,22 +53,11 @@ class loadData
 
 	public function setEntity($entity)
 	{
-		if (is_object($entity)){
-			$this->entity=$entity;
-		} else{
-			$this->entity=null;
-		}
+		$this->entity=$entity;
+
 		return $this;
 	}
-	public function setReader(getReaderExcel $reader)
-	{
-		if ((is_object($reader))) {
-			$this->readerFile=$reader;
-		} else{
-			$this->readerFile=null;
-		}
-		return $this;
-	}
+
 
 	private function validParametrClass()
 	{
@@ -78,8 +70,28 @@ class loadData
 
 	public function loadData()
 	{
-		if (($this->validParametrClass())) {
+		if (!($this->validParametrClass())) {
 
+			for($startRow=2;$startRow<=$this->readerFile->getMaxRow();
+			    $startRow+=$this->readerFile->getFilterChunkSize())
+			{
+				$this->readerFile->loadFileWithFilter($startRow);
+					$maxRow=$this->readerFile->getFilterChunkSize()+$startRow;
+						if($maxRow>$this->readerFile->getMaxRow())
+							{
+								$maxRow=$this->readerFile->getMaxRow();
+							}
+						for($d=$startRow;$d<=$maxRow;$d++)
+						{
+							$arr=$this->readerFile->getRowDataArray($d);
+								$e=$this->entity->createReestr($arr);
+									$this->em->persist($e);
+										$this->entity->unsetReestr();
+						}
+				$this->em->flush ();
+				$this->em->clear ();
+				$this->readerFile->unset_loadFileWithFilter();
+			}
 		}
 	}
 }

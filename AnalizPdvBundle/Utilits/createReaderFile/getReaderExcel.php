@@ -16,12 +16,12 @@ class getReaderExcel
 	/**
 	 * @var класс вида class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPExcel_Reader_IReader
 	 */
-	private $phpExcel;
+	private $Reader;
 
 	/**
 	 * @var загруженный файл Excel с параметрами указанными $ChunkFilter
 	 */
-	private $objReader;
+	private $Excel;
 	/**
 	 * @var string наименование файла с путем к нему
 	 */
@@ -158,6 +158,7 @@ class getReaderExcel
 		$this->filterChunkSize=$chunkSize;
 			$this->filterWorksheetName=$worksheetName;
 				$this->ChunkFilter=new chunkReadFilter($columnLast);
+					$this->columnLast=$columnLast;
 	}
 
 	/**
@@ -169,15 +170,16 @@ class getReaderExcel
 	 */
 	private function createReader ()
 	{
+		// если файл существует и класс фильтра подключен
 		if ($this->validFileName())
 		{
 				try {
 					// получаем класс вида class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPExcel_Reader_IReader
-					$this->phpExcel = \PHPExcel_IOFactory::createReader ($this->getFileType ());
-						/* Tell the Reader that we want to use the Read Filter **/
-						$this->phpExcel->setReadFilter ($this->ChunkFilter);
+					$this->Reader = \PHPExcel_IOFactory::createReader ($this->getFileType ());
+						/* Подключаем фильтр **/
+						$this->Reader->setReadFilter ($this->ChunkFilter);
 							// Указываем что нам нужны только данные из файла - без форматирования
-							$this->phpExcel->setReadDataOnly (true);
+							$this->Reader->setReadDataOnly (true);
 								// указываем диапазон для считывания
 								//$this->ChunkFilter->setRows($this->filterStartRow,$this->filterColumn,$this->filterChunkSize);
 					// получаем объект книги
@@ -197,23 +199,18 @@ class getReaderExcel
 	public function getReader()
 	{
 		$this->createReader();
-		return $this->phpExcel;
+		return $this->Reader;
 	}
 
-	public function getLoadFile(int $rowStart)
-	{
-		$this->ChunkFilter->setRows($rowStart,$this->filterColumn,$this->filterChunkSize);
-
-	}
 
 	public function getRowDataArray($numRow)
 	{
 		$range="$this->columnFirst$numRow:$this->columnLast$numRow";
 		if(empty($this->filterWorksheetName)){
-			$d=$this->objReader->getActiveSheet () ->rangeToArray($range,null,true,true,false);
+			$d=$this->Excel->getActiveSheet () ->rangeToArray($range,null,true,true,false);
 			return $d;
 		} else{
-			$f=$this->objReader->getSheetByName($this->filterWorksheetName)->rangeToArray($range,null,true,true,false);
+			$f=$this->Excel->getSheetByName($this->filterWorksheetName)->rangeToArray($range,null,true,true,false);
 			return $f;
 		}
 
@@ -221,12 +218,31 @@ class getReaderExcel
 
 	public function getMaxRow()
 	{
-		if(empty($this->filterWorksheetName)){
-			return $this->objReader->getActiveSheet () -> getHighestRow();
-		} else{
-			return $this->objReader->getSheetByName($this->filterWorksheetName)->getHighestRow();
-		}
+		$spreadsheetInfo=$this->Reader->listWorksheetInfo($this->fileName);
+		$maxRows = $spreadsheetInfo[0]['totalRows'];
+		return $maxRows;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function getFilterChunkSize ()
+	{
+		return $this->filterChunkSize;
+	}
+
+	public function loadFileWithFilter($startRow)
+	{
+		$this->ChunkFilter->setRows($startRow,$this->filterChunkSize);
+			$this->Excel=$this->Reader->load($this->fileName);
+		return $this->Excel;
+	}
+
+	public function unset_loadFileWithFilter()
+	{
+		unset($this->Excel);
+	}
+
 
 
 }

@@ -6,7 +6,8 @@
  * Time: 22:08
  */
 
-namespace AnalizPdvBundle\Utilits\createEntity\interfaceReestr;
+namespace AnalizPdvBundle\Utilits\createEntitys\interfaceReestr;
+//namespace AnalizPdvBundle\Entity;
 
 
 abstract class createReestr
@@ -17,6 +18,7 @@ abstract class createReestr
 	}
 
 	abstract public function createReestr(array $arr);
+	abstract public function unsetReestr();
 
 	/**
 	 * преобразовывает число вида "111.11" в "111,11"
@@ -41,13 +43,14 @@ abstract class createReestr
 	 */
 	public function getDataType($n)
 	{
-		if (is_numeric($n)) {
+		/**if (is_numeric($n)) {
 			return \PHPExcel_Shared_Date::ExcelToPHPObject ($n);
 		} else
 		{
 			//todo найти как в DateTime показать нулевую строку и после этого обновить тест !
 			return new \DateTime('0000-00-00');
-
 		}
+		 * */
+		return \PHPExcel_Shared_Date::ExcelToPHPObject ($n);
 	}
 }
