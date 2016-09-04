@@ -109,5 +109,33 @@ class Errorloadreestr
     {
         return $this->error;
     }
-}
+    /**
+     * @var string
+     */
+    private $numbranch;
 
+
+    /**
+     * Set numbranch
+     *
+     * @param string $numbranch
+     *
+     * @return Errorloadreestr
+     */
+    public function setNumbranch($numbranch)
+    {
+        $this->numbranch = $numbranch;
+
+        return $this;
+    }
+
+    /**
+     * Get numbranch
+     *
+     * @return string
+     */
+    public function getNumbranch()
+    {
+        return $this->numbranch;
+    }
+}

@@ -11,24 +11,15 @@ namespace AnalizPdvBundle\Utilits\ValidEntity;
 use AnalizPdvBundle\Entity\ReestrbranchIn;
 use AnalizPdvBundle\Utilits\ValidEntity\interfaceValidEntity;
 
-class validReestrIn extends interfaceValidEntity
+class validReestrOut extends interfaceValidEntity
 {
 
 
-	/**
-	 * валидация сущности которая передаан в параметре $entity
-	 * если
-	 * @param $entity
-	 * @return bool
-	 * true ошибок нет
-	 * false есть ошибки
-	 */
 	public function validEntity ($entity)
 	{
 		// TODO: Implement validEntity() method.
 		$this->error='';
 		$this->entity=$entity;
-		// вызов правил валидации
 		$this->validTypeInvoiceFull($type=$this->entity->getTypeInvoiceFull());
 		$this->validInn($this->entity->getInnClient());
 		$this->validNumInvoice($this->entity->getNumInvoice());
@@ -42,7 +33,7 @@ class validReestrIn extends interfaceValidEntity
 		{
 			// значит есть ошибки
 			$this->key_field=$this->entity->getKeyField();
-			$this->numBranch=$this->entity->getNumBranch();
+			$this->numBranch=$this->entity-getNumBranch();
 			return false;
 		}
 
@@ -56,8 +47,8 @@ class validReestrIn extends interfaceValidEntity
 	 */
 	public function validTypeInvoiceFull($type)
 	{
-		$validType= array('ПНП','ПНЕ','РКП','РКЕ','МДП','МДЕ','ЧК','ТК','ГР','ПЗ','ПО','ЗП','НП','БО');
-		$elType=array('ПНЕ','РКЕ','МДЕ','ЧК','ТК','ГР','ПЗ','ПО','ЗП','НП','БО');
+		$validType= array('ПНП','ПНЕ','РКП','РКЕ','МДП','МДЕ');
+		$elType=array('ПНЕ','РКЕ','МДЕ');
 		//$type=$this->entity->getTypeInvoiceFull();
 		if (!in_array($type,$validType))
 		{

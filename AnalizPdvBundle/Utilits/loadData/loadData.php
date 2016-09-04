@@ -77,6 +77,7 @@ class loadData
 					$maxRow=$this->readerFile->getFilterChunkSize()+$startRow;
 						if($maxRow>$maxR)
 							{
+								// специально что бы была прочитана последняя строка с данными
 								$maxRow=$maxR+1;
 							}
 						for($d=$startRow;$d<$maxRow;$d++)

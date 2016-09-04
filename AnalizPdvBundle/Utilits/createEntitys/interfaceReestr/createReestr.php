@@ -43,7 +43,9 @@ abstract class createReestr
 	 */
 	public function getDataType($n)
 	{
-		if (is_numeric($n)) {
+		// иногда в реестре выданных НН вместо даты стоит "ноль" и вместо null
+		// присваивается дата "2000-01-01" что етс ошибка
+		if (is_numeric($n) and $n!=0) {
 			return \PHPExcel_Shared_Date::ExcelToPHPObject ($n);
 		} else
 		{

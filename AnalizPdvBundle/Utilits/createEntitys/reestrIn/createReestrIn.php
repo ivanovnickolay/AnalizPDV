@@ -13,9 +13,21 @@ namespace AnalizPdvBundle\Utilits\createEntitys\reestrIn;
 use AnalizPdvBundle\Entity\ReestrbranchIn;
 use AnalizPdvBundle\Utilits\createEntitys;
 
+/**
+ * Класс предназначенный для создания сущности ReestrbranchIn() на основании данных полученных
+ * из входящего массива
+ * Class createReestrIn
+ * @package AnalizPdvBundle\Utilits\createEntitys\reestrIn
+ */
 class createReestrIn extends createEntitys\interfaceReestr\createReestr
 {
 	private $reestrIn;
+
+	/**
+	 * создание сущности ReestrbranchIn() на основании данных полученных из входящего массива
+	 * @param array $arr
+	 * @return ReestrbranchIn
+	 */
 	public function createReestr (array $arr)
 	{
 		// TODO: Implement createReestr() method.
@@ -48,6 +60,9 @@ class createReestrIn extends createEntitys\interfaceReestr\createReestr
 							$this->reestrIn->setKeyField();
 		return $this->reestrIn;
 	}
+	/**
+	 * обнуляем сущность что бы можно было еще раз ее создать не создавая заново класс
+	 */
 	public function unsetReestr()
 	{
 		unset($this->reestrIn);

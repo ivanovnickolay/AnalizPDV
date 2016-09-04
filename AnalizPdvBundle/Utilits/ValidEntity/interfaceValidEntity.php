@@ -17,6 +17,7 @@ abstract class interfaceValidEntity
 	public $error;
 	protected $typeReestr;
 	protected $entity;
+	protected $numBranch;
 
 	/**
 	 * interfaceValidEntity constructor.
@@ -38,6 +39,7 @@ abstract class interfaceValidEntity
 			$error=new Errorloadreestr();
 			$error->setKeyField($this->key_field);
 			$error->setError($this->error);
+			$error->setNumbranch($this->numBranch);
 			$error->setTypereestr($this->typeReestr);
 			return $error;
 		}

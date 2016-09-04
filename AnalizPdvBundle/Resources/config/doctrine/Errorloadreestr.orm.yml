@@ -36,4 +36,12 @@ AnalizPdvBundle\Entity\Errorloadreestr:
                 fixed: false
                 comment: 'Описание ошибки валидации '
             column: Error
+        numbranch:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+                comment: 'Номер филиала '
+            column: numBranch
     lifecycleCallbacks: {  }

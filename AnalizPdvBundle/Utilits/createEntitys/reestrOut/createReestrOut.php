@@ -14,9 +14,21 @@ use AnalizPdvBundle\Entity\ReestrbranchIn;
 use AnalizPdvBundle\Entity\ReestrbranchOut;
 use AnalizPdvBundle\Utilits\createEntitys;
 
+/**
+ * Класс предназначенный для создания сущности ReestrbranchOut() на основании данных полученных
+ * из входящего массива
+ * Class createReestrOut
+ * @package AnalizPdvBundle\Utilits\createEntitys\reestrOut
+ */
 class createReestrOut extends createEntitys\interfaceReestr\createReestr
 {
 	private $reestrOut;
+
+	/**
+	 * создание сущности ReestrbranchOut() на основании данных полученных из входящего массива
+	 * @param array $arr
+	 * @return ReestrbranchOut
+	 */
 	public function createReestr (array $arr)
 	{
 		// TODO: Implement createReestr() method.
@@ -27,6 +39,7 @@ class createReestrOut extends createEntitys\interfaceReestr\createReestr
 						$this->reestrOut->setDateCreateInvoice($this->getDataType($arr[0][99]));
 								$this->reestrOut->setNumInvoice($arr[0][100]);
 		$this->reestrOut->setTypeInvoiceFull($arr[0][121]);
+			$this->reestrOut->setTypeInvoice($arr[0][119]);
 			$this->reestrOut->setNameClient($arr[0][103]);
 				$this->reestrOut->setInnClient($arr[0][104]);
 					$this->reestrOut->setZagSumm($arr[0][106]);
@@ -45,6 +58,10 @@ class createReestrOut extends createEntitys\interfaceReestr\createReestr
 							$this->reestrOut->setKeyField();
 		return $this->reestrOut;
 	}
+
+	/**
+	 * обнуляем сущность что бы можно было еще раз ее создать не создавая заново класс
+	 */
 	public function unsetReestr()
 	{
 		unset($this->reestrOut);
