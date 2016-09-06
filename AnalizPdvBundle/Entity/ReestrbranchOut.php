@@ -219,9 +219,14 @@ class ReestrbranchOut
      */
     public function setDateCreateInvoice($dateCreateInvoice)
     {
-        $this->dateCreateInvoice = $dateCreateInvoice;
-
+        if (new \DateTime("0000-00-00")==$dateCreateInvoice)
+        {
+            $this->dateCreateInvoice = null;
+        } else {
+            $this->dateCreateInvoice = $dateCreateInvoice;
+        }
         return $this;
+
     }
 
     /**
@@ -387,8 +392,11 @@ class ReestrbranchOut
      */
     public function setBaza20($baza20)
     {
-        $this->baza20 = $baza20;
-
+        if(empty($baza20)) {
+            $this->baza20 = 0;
+        } else{
+            $this->baza20 = $baza20;
+        }
         return $this;
     }
 
@@ -411,7 +419,11 @@ class ReestrbranchOut
      */
     public function setPdv20($pdv20)
     {
-        $this->pdv20 = $pdv20;
+        if (empty($pdv20)){
+            $this->pdv20 =0;
+        } else {
+            $this->pdv20 = $pdv20;
+        }
 
         return $this;
     }
@@ -435,7 +447,11 @@ class ReestrbranchOut
      */
     public function setBaza7($baza7)
     {
-        $this->baza7 = $baza7;
+        if(empty($baza7)) {
+            $this->baza7 = 0;
+        } else{
+            $this->baza7 = $baza7;
+        }
 
         return $this;
     }
@@ -459,7 +475,11 @@ class ReestrbranchOut
      */
     public function setPdv7($pdv7)
     {
-        $this->pdv7 = $pdv7;
+        if (empty($pdv7)){
+            $this->pdv7 =0;
+        } else {
+            $this->pdv7 = $pdv7;
+        }
 
         return $this;
     }
@@ -483,7 +503,11 @@ class ReestrbranchOut
      */
     public function setBaza0($baza0)
     {
-        $this->baza0 = $baza0;
+        if(empty($baza0)) {
+            $this->baza0 = 0;
+        } else{
+            $this->baza0 = $baza0;
+        }
 
         return $this;
     }
@@ -507,7 +531,11 @@ class ReestrbranchOut
      */
     public function setBazaZvil($bazaZvil)
     {
-        $this->bazaZvil = $bazaZvil;
+        if(empty($bazaZvil)) {
+            $this->bazaZvil = 0;
+        } else{
+            $this->bazaZvil = $bazaZvil;
+        }
 
         return $this;
     }
@@ -531,9 +559,13 @@ class ReestrbranchOut
      */
     public function setBazaNeObj($bazaNeObj)
     {
-        $this->bazaNeObj = $bazaNeObj;
+        if(empty($bazaNeObj)) {
+            $this->bazaNeObj = 0;
+        } else{
+            $this->bazaNeObj = $bazaNeObj;
+        }
 
-        return $this;
+         return $this;
     }
 
     /**
@@ -555,7 +587,11 @@ class ReestrbranchOut
      */
     public function setBazaZaMezhiTovar($bazaZaMezhiTovar)
     {
-        $this->bazaZaMezhiTovar = $bazaZaMezhiTovar;
+        if(empty($bazaZaMezhiTovar)) {
+            $this->bazaZaMezhiTovar = 0;
+        } else{
+            $this->bazaZaMezhiTovar = $bazaZaMezhiTovar;
+        }
 
         return $this;
     }
@@ -579,9 +615,12 @@ class ReestrbranchOut
      */
     public function setBazaZaMezhiPoslug($bazaZaMezhiPoslug)
     {
-        $this->bazaZaMezhiPoslug = $bazaZaMezhiPoslug;
-
-        return $this;
+        if(empty($bazaZaMezhiPoslug)) {
+            $this->bazaZaMezhiPoslug = 0;
+        } else{
+            $this->bazaZaMezhiPoslug = $bazaZaMezhiPoslug;
+        }
+      return $this;
     }
 
     /**
@@ -682,8 +721,11 @@ class ReestrbranchOut
      */
     public function setKeyField()
     {
-        $this->keyField = $this->numInvoice.'/'.$this->typeInvoiceFull.'/'.date_format($this->dateCreateInvoice,
-                "d-m-Y").'/'.$this->innClient;
+        if ($this->dateCreateInvoice==null) {
+            $this->keyField = $this->numInvoice . '/' . $this->typeInvoiceFull . '/null/' . $this->innClient;
+        } else{
+            $this->keyField = $this->numInvoice . '/' . $this->typeInvoiceFull . '/' . date_format ($this->dateCreateInvoice , "d-m-Y") . '/' . $this->innClient;
+        }
 
         return $this;
     }

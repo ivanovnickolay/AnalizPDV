@@ -30,7 +30,7 @@ abstract class interfaceValidEntity
 	}
 
 	/**
-	 * получение Errorloadreestr() с сформированными ошибками по записи реестра
+	 * получение записи в сущности Errorloadreestr с сформированными ошибками по записи реестра
 	 * @return Errorloadreestr|null
 	 */
 	public function getErrorEntity()

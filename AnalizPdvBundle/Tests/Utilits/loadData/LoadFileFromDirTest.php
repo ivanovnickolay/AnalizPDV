@@ -9,9 +9,9 @@
 namespace AnalizPdvBundle\Tests\Utilits\loadData;
 
 
-use AnalizPdvBundle\Utilits\loadData\getFileFromDir;
+use AnalizPdvBundle\Utilits\loadData\workWithFiles;
 
-class LoadFileFromDirTest extends \PHPUnit_Framework_TestCase
+class workWithFilesTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function datavalidFile()
@@ -33,7 +33,7 @@ class LoadFileFromDirTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test_isValidFile($file,$res)
 	{
-		$l=new getFileFromDir($file);
+		$l=new workWithFiles($file);
 		$mes="Equals file name " .$file." res ".$res;
 			$this->assertEquals($res,$l->isValidFile($file),$mes);
 		unset($l);
@@ -42,8 +42,15 @@ class LoadFileFromDirTest extends \PHPUnit_Framework_TestCase
 
 	public function test_getFiles()
 	{
-		$l=new getFileFromDir("d:\\OpenServer525\\domains\\AnalizPDV\\web\\Doc\\reestrBranch\\");
+		$l=new workWithFiles("d:\\OpenServer525\\domains\\AnalizPDV\\web\\Doc\\reestrBranch\\");
 			$arr=$l->getFiles();
 		var_dump($arr);
+	}
+	public function test_moveFiles()
+	{
+		$fileFrom="d:\\OpenServer525\\domains\\AnalizPDV\\web\\Doc\\reestrBranch\\19082016095008_40075815_J1201508_TAB1.xls";
+		$fileTo="d:\\OpenServer525\\domains\\AnalizPDV\\web\\Doc\\reestrBranch\\Arch";
+		workWithFiles::moveFiles($fileFrom,$fileTo);
+		$this->assertTrue(file_exists("d:\\OpenServer525\\domains\\AnalizPDV\\web\\Doc\\reestrBranch\\Arch\\19082016095008_40075815_J1201508_TAB1.xls"));
 	}
 }

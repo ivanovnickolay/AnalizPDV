@@ -189,6 +189,33 @@ class getReaderExcel
 	}
 
 	/**
+	 * Создание экземпляра класса Ридера файла и настроек чтения
+	 * включая фильтр
+	 * @param $FileName
+	 * @return array
+	 * @throws \PHPExcel_Reader_Exception
+	 */
+	private function createReaderMinusFilter ()
+	{
+		// если файл существует и класс фильтра подключен
+		try {
+			// получаем класс вида class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPExcel_Reader_IReader
+			$this->Reader = \PHPExcel_IOFactory::createReader ($this->getFileType ());
+			// Указываем что нам нужны только данные из файла - без форматирования
+			$this->Reader->setReadDataOnly (true);
+			// указываем диапазон для считывания
+			//$this->ChunkFilter->setRows($this->filterStartRow,$this->filterColumn,$this->filterChunkSize);
+			// получаем объект книги
+			//$this->objReader=$this->phpExcel->load($this->fileName);
+
+		} catch (Exception $e) {
+			echo 'Ошибка подключения к файлу' . $this->fileName . ': ' , $e->getMessage () , "\n";
+		}
+	}
+
+
+
+	/**
 	 * получить класс ридера
 	 * @return mixed
 	 */
@@ -198,6 +225,15 @@ class getReaderExcel
 		return $this->Reader;
 	}
 
+	/**
+	 * получить класс ридера
+	 * @return mixed
+	 */
+	public function getReaderMinusFilter()
+	{
+		$this->createReaderMinusFilter();
+		return $this->Reader;
+	}
 
 	public function getRowDataArray($numRow)
 	{
@@ -231,6 +267,11 @@ class getReaderExcel
 	{
 		$this->ChunkFilter->setRows($startRow,$this->filterChunkSize);
 			$this->Excel=$this->Reader->load($this->fileName);
+		return $this->Excel;
+	}
+	public function loadFileMinusFilter()
+	{
+		$this->Excel=$this->Reader->load($this->fileName);
 		return $this->Excel;
 	}
 

@@ -3,7 +3,8 @@
 namespace AnalizPdvBundle\Command;
 
 use AnalizPdvBundle\Utilits\loadData\factoryLoadData;
-use AnalizPdvBundle\Utilits\loadData\getFileFromDir;
+use AnalizPdvBundle\Utilits\loadData\workWithFiles;
+use AnalizPdvBundle\Utilits\loadReestrBranch\loadReestrBranch;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,16 +26,19 @@ class loadReestBranchCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+       // Количество файлов, загружаемых за раз
+        $cntFilesLoad=20;
         $dt=$this->getContainer()->get('doctrine');
             $em=$dt->getManager();
                $pathToReestr=$this->getContainer()->getParameter('file_dir_reestr');
-                      $a=new getFileFromDir($pathToReestr);
-                        $arrayFiles=$a->getFiles();
-        $factoryLoad=new factoryLoadData($em);
-        foreach ($arrayFiles as $fileName => $type) {
-            $pathToFileReestr=$fileName;
-                $factoryLoad->loadDataFromFile($pathToFileReestr,$type);
+                $pathToReestrArch=$this->getContainer()->getParameter('file_dir_reestr_arch');
+        $arr = workWithFiles::getFilesArray ($pathToReestr);
+        $arr_slice = array_slice ($arr , 0 , $cntFilesLoad);
+        foreach ($arr_slice as $fileName => $type) {
+            $output->writeln("load file ". $fileName);
+            loadReestrBranch::load ($em,$fileName,$type);
+            workWithFiles::moveFiles ($fileName , $pathToReestrArch);
+            $output->writeln("move File ". $fileName);
         }
-
     }
 }

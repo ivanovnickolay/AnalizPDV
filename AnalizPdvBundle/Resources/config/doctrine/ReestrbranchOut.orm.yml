@@ -1,6 +1,10 @@
 AnalizPdvBundle\Entity\ReestrbranchOut:
     type: entity
     table: ReestrBranch_out
+    indexes:
+        key:
+            columns:
+                - key_field
     id:
         id:
             type: integer

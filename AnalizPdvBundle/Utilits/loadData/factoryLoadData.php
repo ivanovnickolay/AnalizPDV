@@ -34,6 +34,7 @@ class factoryLoadData
 		$this->type=$type;
 		$this->loaderClass=$this->getLoaderClass();
 		$this->loaderClass->loadData();
+		unset($this->loaderClass);
 	}
 
 	/**
@@ -53,7 +54,7 @@ class factoryLoadData
 			case "RestrOut": $loaderClass=new loadData($this->em,$this->file,'DR',1000);
 				$db=new createReestrOut();
 				$loaderClass->setEntity($db);
-				$loaderClass->setValidator(new validReestrIn('In'));
+				$loaderClass->setValidator(new validReestrIn('Out'));
 				return $loaderClass;
 		}
 	}

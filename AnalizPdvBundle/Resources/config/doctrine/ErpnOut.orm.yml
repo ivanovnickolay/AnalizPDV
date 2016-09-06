@@ -5,6 +5,9 @@ AnalizPdvBundle\Entity\ErpnOut:
         inn:
             columns:
                 - inn_client
+        key:
+            columns:
+                - key_field
     uniqueConstraints:
         Key_fields:
             columns:

@@ -11,12 +11,11 @@ use Doctrine\ORM\EntityManager;
 
 
 /**
- * Назначение класса - вернуть при помощи getFiles()
- * массив [название файла с путем к нему]=>[обрабочик файла]
+ * Назначение класса - работа с файловой системой
  * Class LoadDataFromDir
  * @package AnalizPdvBundle\Utilits\loadData
  */
-class getFileFromDir
+class workWithFiles
 {
 	/**
 	 * указание пути к директории файлы из которой надо загрузить
@@ -102,5 +101,35 @@ class getFileFromDir
 			}
 		}
 		return $this->fileToDir;
+	}
+
+	/**
+	 * возвращает массив с файлами для дальнейшей обратоки
+	 * @param $dir
+	 * @return array массив [название файла с путем к нему]=>[обрабочик файла]
+	 */
+	public static function getFilesArray($dir)
+	{
+		$f=new workWithFiles($dir);
+		return $f->getFiles();
+	}
+
+	/**
+	 * переносит файл между диекториями
+	 * @param $fromFile string откуда скопировать файл с указанием пути к истокнику вплоть до файла
+	 * @param $toFile string директория куда копировать файл
+	 */
+
+	public static function moveFiles($fromFile, $toFile)
+	{
+		// если пути не пустые и  реально существует
+		if ((!empty($fromFile)) and (!empty($toFile)) and (file_exists($fromFile)) and (is_dir($toFile)))
+		{
+			$pathinf = pathinfo($fromFile);
+			$f=$pathinf['basename'];
+			$toFileNew=$toFile."/".$f;
+				copy($fromFile,$toFileNew);
+				unlink($fromFile);
+		}
 	}
 }

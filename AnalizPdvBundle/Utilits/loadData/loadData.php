@@ -68,37 +68,81 @@ class loadData
 
 	public function loadData()
 	{
-		if (($this->validParametrClass())) {
+		if (($this->validParametrClass ())) {
 
-			$maxR=$this->readerFile->getMaxRow();
-			for($startRow=2;$startRow<=$maxR;$startRow+=$this->readerFile->getFilterChunkSize())
+			$maxR = $this->readerFile->getMaxRow ();
+			for ($startRow = 2; $startRow <= $maxR; $startRow += $this->readerFile->getFilterChunkSize ())
 			{
-				$this->readerFile->loadFileWithFilter($startRow);
-					$maxRow=$this->readerFile->getFilterChunkSize()+$startRow;
-						if($maxRow>$maxR)
-							{
-								// специально что бы была прочитана последняя строка с данными
-								$maxRow=$maxR+1;
-							}
-						for($d=$startRow;$d<$maxRow;$d++)
-						{
-							$arr=$this->readerFile->getRowDataArray($d);
-								$e=$this->entity->createReestr($arr);
-									if($this->validator->validEntity($e))
-									{
-										$this->em->persist($e);
-										$this->entity->unsetReestr();
-									} else {
-										$this->em->persist ($e);
-										$errorEntity=$this->validator->getErrorEntity();
-										$this->em->persist ($errorEntity);
-										$this->entity->unsetReestr ();
-									}
-						}
+				$this->readerFile->loadFileWithFilter ($startRow);
+				$maxRow = $this->readerFile->getFilterChunkSize () + $startRow;
+				if ($maxRow > $maxR) {
+					// специально что бы была прочитана последняя строка с данными
+					$maxRow = $maxR + 1;
+				}
+				for ($d = $startRow; $d < $maxRow; $d ++) {
+					// решенние проблемы PDO::beginTransaction(): MySQL server has gone away
+					$this->reconnect();
+					$arr = $this->readerFile->getRowDataArray ($d);
+					$e = $this->entity->createReestr ($arr);
+					if ($this->validator->validEntity ($e)) {
+						$this->em->persist ($e);
+						$this->entity->unsetReestr ();
+					} else {
+						$this->em->persist ($e);
+						$errorEntity = $this->validator->getErrorEntity ();
+						$this->em->persist ($errorEntity);
+						$this->entity->unsetReestr ();
+					}
+				}
 				$this->em->flush ();
 				$this->em->clear ();
-				$this->readerFile->unset_loadFileWithFilter();
+				$this->readerFile->unset_loadFileWithFilter ();
 			}
+		}
+	}
+		// http://seyferseed.ru/ru/php/reshenie-problemy-doctrine-2-i-mysql-server-has-gone-away.html#sthash.vh49fkii.dpbs
+
+		public function disconnect()
+	{
+		$this->em->getConnection()->close();
+	}
+
+		public function connect()
+	{
+		$this->em->getConnection()->connect();
+	}
+
+		/**
+		 * MySQL Server has gone away
+		 */
+		public function reconnect()
+	{
+		$connection = $this->em->getConnection();
+		if (!$connection->ping()) {
+
+			$this->disconnect();
+			$this->connect();
+
+			$this->checkEMConnection($connection);
+		}
+	}
+
+		/**
+		 * method checks connection and reconnect if needed
+		 * MySQL Server has gone away
+		 *
+		 * @param $connection
+		 * @throws \Doctrine\ORM\ORMException
+		 */
+		protected function checkEMConnection($connection)
+	{
+
+		if (!$this->em->isOpen()) {
+			$config = $this->em->getConfiguration();
+
+			$this->em = $this->em->create(
+				$connection, $config
+			);
 		}
 	}
 }

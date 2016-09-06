@@ -1,6 +1,10 @@
 AnalizPdvBundle\Entity\ReestrbranchIn:
     type: entity
     table: ReestrBranch_in
+    indexes:
+        key:
+            columns:
+                - key_field
     id:
         id:
             type: integer
