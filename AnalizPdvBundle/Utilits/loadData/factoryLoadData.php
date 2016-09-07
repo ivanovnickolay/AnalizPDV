@@ -28,6 +28,12 @@ class factoryLoadData
  {
 	 $this->em=$em;
  }
+	public function __destruct ()
+	{
+		// TODO: Implement __destruct() method.
+		unset($this->loaderClass);
+	}
+
 	public function loadDataFromFile($file,$type)
 	{
 		$this->file=$file;

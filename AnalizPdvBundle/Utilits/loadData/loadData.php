@@ -42,6 +42,16 @@ class loadData
 		return $this;
 	}
 
+	public function __destruct ()
+	{
+		// TODO: Implement __destruct() method.
+		unset($this->readerFile);
+		unset($this->validator);
+		unset($this->entity);
+
+
+	}
+
 	public function setValidator(interfaceValidEntity $validData)
 	{
 		$this->validator=$validData;
@@ -97,6 +107,9 @@ class loadData
 				$this->em->flush ();
 				$this->em->clear ();
 				$this->readerFile->unset_loadFileWithFilter ();
+				//http://ru.php.net/manual/ru/features.gc.collecting-cycles.php
+				gc_enable();
+				gc_collect_cycles();
 			}
 		}
 	}

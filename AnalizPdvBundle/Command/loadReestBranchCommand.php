@@ -39,6 +39,9 @@ class loadReestBranchCommand extends ContainerAwareCommand
             loadReestrBranch::load ($em,$fileName,$type);
             workWithFiles::moveFiles ($fileName , $pathToReestrArch);
             $output->writeln("move File ". $fileName);
+            //http://ru.php.net/manual/ru/features.gc.collecting-cycles.php
+            gc_enable();
+            gc_collect_cycles();
         }
     }
 }
