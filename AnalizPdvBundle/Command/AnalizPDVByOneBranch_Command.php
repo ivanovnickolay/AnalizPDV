@@ -2,14 +2,14 @@
 
 namespace AnalizPdvBundle\Command;
 
-use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrs;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsByOne;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsAll;
 use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AnalizPDV_In_Command extends ContainerAwareCommand
+class AnalizPDVByOneBranch_Command extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class AnalizPDV_In_Command extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:analyze_reestr_ONE_BRANCH')
-            ->setDescription('analyze reestr in');
+            ->setName('analiz_pdv:AnalizPDVByOneBranch')
+            ->setDescription('analyze reestr by one branch');
     }
 
     /**
@@ -29,7 +29,7 @@ class AnalizPDV_In_Command extends ContainerAwareCommand
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
         $file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV.xlsx";
-        $data=new getDataFromReestrs($em);
+        $data=new getDataFromReestrsByOne($em);
         $write=new getWriteExcel($file);
         $write->setParamFile(6,2016,'578');
         $f=$write->getNewFileName();

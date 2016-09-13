@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManager;
  * Class getReestrEqualErpn
  * @package AnalizPdvBundle\Model\getDataFromSQL
  */
-class getDataFromReestrs
+class getDataFromReestrsByOne
 {
 	private $em;
 	public function __construct (EntityManager $em)
@@ -129,6 +129,19 @@ class getDataFromReestrs
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);
 		$smtp->bindValue("nb",$numBranch);
+		$smtp->execute();
+		$arrayResult=$smtp->fetchAll();
+		return $arrayResult;
+	}
+
+	public function getAllBranchToPeriod($month, $year)
+	{
+		//$smtp=$this->em->getConnection();
+		$sql="SELECT DISTINCT rbi.num_branch FROM ReestrBranch_in rbi
+			WHERE rbi.month =:m AND rbi.year=:y";
+		$smtp=$this->em->getConnection()->prepare($sql);
+		$smtp->bindValue("m",$month);
+		$smtp->bindValue("y",$year);
 		$smtp->execute();
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;
