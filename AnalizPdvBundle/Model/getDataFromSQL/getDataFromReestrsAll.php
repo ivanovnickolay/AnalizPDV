@@ -37,6 +37,7 @@ class getDataFromReestrsAll
 	public function getReestrInEqualErpn($month, $year)
 {
 	//$smtp=$this->em->getConnection();
+	$this->reconnect();
 	$sql="SELECT
         month,
         year,num_branch,
@@ -75,6 +76,7 @@ class getDataFromReestrsAll
 	public function getReestrInNotEqualErpn($month, $year)
 	{
 		//$smtp=$this->em->getConnection();
+		$this->reconnect();
 		$sql="SELECT month,
 		  	year,
 		  	num_branch,
@@ -98,6 +100,7 @@ class getDataFromReestrsAll
 	public function getReestrOutEqualErpn($month, $year)
 	{
 		//$smtp=$this->em->getConnection();
+		$this->reconnect();
 		$sql="SELECT
         month,
         year,num_branch,
@@ -136,6 +139,7 @@ class getDataFromReestrsAll
 	public function getReestrOutNotEqualErpn($month, $year)
 	{
 		//$smtp=$this->em->getConnection();
+		$this->reconnect();
 		$sql="SELECT month,
 		  	year,
 		  	num_branch,
@@ -155,5 +159,48 @@ class getDataFromReestrsAll
 		$smtp->execute();
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;
+	}
+	public function disconnect()
+	{
+		$this->em->getConnection()->close();
+	}
+
+	public function connect()
+	{
+		$this->em->getConnection()->connect();
+	}
+
+	/**
+	 * MySQL Server has gone away
+	 */
+	public function reconnect()
+	{
+		$connection = $this->em->getConnection();
+		if (!$connection->ping()) {
+
+			$this->disconnect();
+			$this->connect();
+
+			$this->checkEMConnection($connection);
+		}
+	}
+
+	/**
+	 * method checks connection and reconnect if needed
+	 * MySQL Server has gone away
+	 *
+	 * @param $connection
+	 * @throws \Doctrine\ORM\ORMException
+	 */
+	protected function checkEMConnection($connection)
+	{
+
+		if (!$this->em->isOpen()) {
+			$config = $this->em->getConfiguration();
+
+			$this->em = $this->em->create(
+				$connection, $config
+			);
+		}
 	}
 }
