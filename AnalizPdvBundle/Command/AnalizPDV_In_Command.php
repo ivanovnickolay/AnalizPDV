@@ -2,6 +2,7 @@
 
 namespace AnalizPdvBundle\Command;
 
+use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrs;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsAll;
 use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -16,7 +17,7 @@ class AnalizPDV_In_Command extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:analyze_reestr_in')
+            ->setName('analiz_pdv:analyze_reestr_ONE_BRANCH')
             ->setDescription('analyze reestr in');
     }
 
@@ -27,17 +28,27 @@ class AnalizPDV_In_Command extends ContainerAwareCommand
     {
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
-        $file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\analiz_In.xlsx";
-        $data=new getDataFromReestrsAll($em);
+        $file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV.xlsx";
+        $data=new getDataFromReestrs($em);
         $write=new getWriteExcel($file);
-        $write->setParamFile(7,2016,'678');
+        $write->setParamFile(6,2016,'578');
         $f=$write->getNewFileName();
-        $arr=$data->getReestrInEqualErpn(7,2016,678);
-        $write->setDataFromWorksheet('reestr=edrpu',$arr,'A4');
+        $arr=$data->getReestrInEqualErpn(6,2016,'578');
+        $write->setDataFromWorksheet('In_reestr=edrpu',$arr,'A4');
         unset($arr);
-        $arr=$data->getReestrInNotEqualErpn(7,2016,678);
-        $write->setDataFromWorksheet('reestr<>edrpou',$arr,'A4');
+        gc_collect_cycles();
+        $arr=$data->getReestrInNotEqualErpn(6,2016,'578');
+        $write->setDataFromWorksheet('In_reestr<>edrpou',$arr,'A4');
         unset($arr);
+        gc_collect_cycles();
+        $arr=$data->getReestrOutEqualErpn(6,2016,'578');
+        $write->setDataFromWorksheet('Out_reestr=edrpu',$arr,'A4');
+        unset($arr);
+        gc_collect_cycles();
+        $arr=$data->getReestrOutNotEqualErpn(6,2016,'578');
+        $write->setDataFromWorksheet('Out_reestr<>edrpou',$arr,'A4');
+        unset($arr);
+        gc_collect_cycles();
         $write->fileWriteAndSave();
 
     }
