@@ -9,6 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Клас загружает файлы реестров из каталога пачками по количеству штук
+ * указаных в переменной $cntFilesLoad
+ * и загруженные файлы переносит в другую папку
+ * Class loadReestBranchCommand
+ * @package AnalizPdvBundle\Command
+ */
 class loadReestBranchCommand extends ContainerAwareCommand
 {
     /**

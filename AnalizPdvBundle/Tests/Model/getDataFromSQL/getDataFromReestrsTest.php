@@ -9,7 +9,7 @@
 namespace AnalizPdvBundle\Tests\Model\getDataFromSQL\getDataFtomSQL;
 
 
-use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrs;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsAll;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class getDataFromReestrsTest extends KernelTestCase
@@ -42,7 +42,7 @@ class getDataFromReestrsTest extends KernelTestCase
 
 public function test_getReestrInEqualErpn()
 {
-	$n=new getDataFromReestrs($this->em);
+	$n=new getDataFromReestrsAll($this->em);
 	$a=$n->getReestrInEqualErpn(7,2016,678);
 	var_dump($a);
 }

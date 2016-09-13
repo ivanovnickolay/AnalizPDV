@@ -2,7 +2,7 @@
 
 namespace AnalizPdvBundle\Command;
 
-use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrs;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsAll;
 use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,7 +28,7 @@ class AnalizPDV_In_Command extends ContainerAwareCommand
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
         $file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\analiz_In.xlsx";
-        $data=new getDataFromReestrs($em);
+        $data=new getDataFromReestrsAll($em);
         $write=new getWriteExcel($file);
         $write->setParamFile(7,2016,'678');
         $f=$write->getNewFileName();

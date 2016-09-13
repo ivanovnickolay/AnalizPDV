@@ -80,16 +80,21 @@ class loadData
 	{
 		if (($this->validParametrClass ())) {
 
-			$maxR = $this->readerFile->getMaxRow ();
-			for ($startRow = 2; $startRow <= $maxR; $startRow += $this->readerFile->getFilterChunkSize ())
+			$maxRowToFile = $this->readerFile->getMaxRow ();
+			for ($startRow = 2; $startRow <= $maxRowToFile; $startRow += $this->readerFile->getFilterChunkSize ())
 			{
 				$this->readerFile->loadFileWithFilter ($startRow);
-				$maxRow = $this->readerFile->getFilterChunkSize () + $startRow;
-				if ($maxRow > $maxR) {
+				$maxRowReader = $this->readerFile->getFilterChunkSize () + $startRow;
+				if ($maxRowReader > $maxRowToFile) {
 					// специально что бы была прочитана последняя строка с данными
-					$maxRow = $maxR + 1;
+					$maxRowReader = $maxRowToFile + 1;
 				}
-				for ($d = $startRow; $d < $maxRow; $d ++) {
+				/** todo надо добавить проверку на файла на уникальность
+				 *  месяца, года, номера филиала  и направления реестра
+				 * для этого надо получить первую строку данных файла
+				 * прочитать значение
+				 **/
+				for ($d = $startRow; $d < $maxRowReader; $d ++) {
 					// решенние проблемы PDO::beginTransaction(): MySQL server has gone away
 					$this->reconnect();
 					$arr = $this->readerFile->getRowDataArray ($d);

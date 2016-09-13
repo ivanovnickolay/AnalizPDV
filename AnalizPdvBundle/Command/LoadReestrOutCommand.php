@@ -9,6 +9,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 use LoadFileBundle\Entity\SprBranch;
 
+/**
+ * Класс проводит загрузку файла с данными о филиалах
+  * Class LoadReestrOutCommand
+ * @package AnalizPdvBundle\Command
+ * todo переделать под загрузку командой  LOAD DATA INFILE
+ */
 class LoadReestrOutCommand extends ContainerAwareCommand
 {
     /**

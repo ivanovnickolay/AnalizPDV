@@ -256,6 +256,10 @@ class getReaderExcel
 
 	}
 
+	/**
+	 * Получаем количество строк с данными в открытом файле
+	 * @return mixed
+	 */
 	public function getMaxRow()
 	{
 		$spreadsheetInfo=$this->Reader->listWorksheetInfo($this->fileName);
