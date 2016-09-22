@@ -34,6 +34,7 @@ class loadReestBranchCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
        // Количество файлов, загружаемых за раз
+        gc_enable();
         $cntFilesLoad=20;
         $dt=$this->getContainer()->get('doctrine');
             $em=$dt->getManager();
@@ -43,7 +44,11 @@ class loadReestBranchCommand extends ContainerAwareCommand
         $arr_slice = array_slice ($arr , 0 , $cntFilesLoad);
         foreach ($arr_slice as $fileName => $type) {
             $output->writeln("load file ". $fileName);
-            loadReestrBranch::load ($em,$fileName,$type);
+            //loadReestrBranch::load ($em,$fileName,$type);
+            $f=new loadReestrBranch($em);
+            $f->loadFile($fileName,$type);
+            unset($f);
+            gc_collect_cycles();
             workWithFiles::moveFiles ($fileName , $pathToReestrArch);
             $output->writeln("move File ". $fileName);
             //http://ru.php.net/manual/ru/features.gc.collecting-cycles.php

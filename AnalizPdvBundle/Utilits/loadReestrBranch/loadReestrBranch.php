@@ -13,7 +13,6 @@ use AnalizPdvBundle\Utilits\createWriteFile\renameWorksheet;
 use AnalizPdvBundle\Utilits\loadData\factoryLoadData;
 use AnalizPdvBundle\Utilits\loadData\workWithFiles;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Validator\Constraints\All;
 
 /**
  * класс загружает даннные из файла реестра
