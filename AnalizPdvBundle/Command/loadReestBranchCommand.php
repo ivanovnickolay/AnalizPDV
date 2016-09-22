@@ -41,19 +41,16 @@ class loadReestBranchCommand extends ContainerAwareCommand
                $pathToReestr=$this->getContainer()->getParameter('file_dir_reestr');
                 $pathToReestrArch=$this->getContainer()->getParameter('file_dir_reestr_arch');
         $arr = workWithFiles::getFilesArray ($pathToReestr);
-        $arr_slice = array_slice ($arr , 0 , $cntFilesLoad);
-        foreach ($arr_slice as $fileName => $type) {
-            $output->writeln("load file ". $fileName);
-            //loadReestrBranch::load ($em,$fileName,$type);
-            $f=new loadReestrBranch($em);
-            $f->loadFile($fileName,$type);
-            unset($f);
-            gc_collect_cycles();
-            workWithFiles::moveFiles ($fileName , $pathToReestrArch);
-            $output->writeln("move File ". $fileName);
-            //http://ru.php.net/manual/ru/features.gc.collecting-cycles.php
-            gc_enable();
-            gc_collect_cycles();
-        }
+         $arr_slice = array_slice ($arr , 0 , $cntFilesLoad);
+             foreach ($arr_slice as $fileName => $type) {
+                $output->writeln("load file ". $fileName);
+                    $f=new loadReestrBranch($em);
+                        $f->loadFile($fileName,$type);
+                            unset($f);
+                 workWithFiles::moveFiles ($fileName , $pathToReestrArch);
+                $output->writeln("move File ". $fileName);
+                //http://ru.php.net/manual/ru/features.gc.collecting-cycles.php
+               gc_collect_cycles();
+             }
     }
 }

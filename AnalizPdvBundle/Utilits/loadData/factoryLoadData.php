@@ -52,14 +52,16 @@ class factoryLoadData
 	{
 		switch ($this->type)
 		{
-			case "RestrIn": $loaderClass=new loadData($this->em,$this->file,'EE',1000);
+			case "RestrIn":
+				$loaderClass=new loadData($this->em,$this->file,'EE',1000);
 				$db=new createReestrIn();
 				$loaderClass->setEntity($db);
 				$loaderClass->setValidator(new validReestrIn('In'));
 				$loaderClass->loadData();
 				unset($db,$loaderClass);
 				break;
-			case "RestrOut": $loaderClass=new loadData($this->em,$this->file,'DR',1000);
+			case "RestrOut":
+				$loaderClass=new loadData($this->em,$this->file,'DR',1000);
 				$db=new createReestrOut();
 				$loaderClass->setEntity($db);
 				$loaderClass->setValidator(new validReestrIn('Out'));
