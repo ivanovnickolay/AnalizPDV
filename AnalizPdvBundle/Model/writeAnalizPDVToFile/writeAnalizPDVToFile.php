@@ -22,13 +22,18 @@ use Doctrine\ORM\EntityManager;
 class writeAnalizPDVToFile
 {
 	private $em;
-public function __construct (EntityManager $entityManager)
+	private $pathToTemplate;
+
+public function __construct (EntityManager $entityManager,string $pathToTemplate='')
 {
 	$this->em=$entityManager;
+	$this->pathToTemplate=$pathToTemplate;
 }
 
 	/**
 	 * формирование файла анализа сводного всему УЗ
+	 * @param int $month номер месяца по которому надо сформировать анализ
+	 * @param int $year номер года по которому надо сформировать анализ
 	 */
 	public function writeAnalizPDVByAllUZ(int $month, int $year)
 {
@@ -36,7 +41,7 @@ public function __construct (EntityManager $entityManager)
 	$data=new getDataFromReestrsAll($this->em);
 	$write=new getWriteExcel($file);
 	$write->setParamFile($month,$year,'ALL');
-	$f=$write->getNewFileName();
+	$write->getNewFileName();
 	$arr=$data->getReestrInEqualErpn($month,$year);
 		$write->setDataFromWorksheet('In_reestr=edrpu',$arr,'A4');
 			unset($arr);
@@ -60,6 +65,9 @@ public function __construct (EntityManager $entityManager)
 
 	/**
 	 *формирование файла анализа по одному конкретному филиалу
+	 * @param int $month номер месяца по которому надо сформировать анализ
+	 * @param int $year номер года по которому надо сформировать анализ
+	 * @param string $numBranch номер филиала по которому надо сформировать анализ
 	 */
 	public function writeAnalizPDVByOneBranch(int $month,int $year,string $numBranch)
 	{
@@ -67,7 +75,7 @@ public function __construct (EntityManager $entityManager)
 		$data=new getDataFromReestrsByOne($this->em);
 		$write=new getWriteExcel($file);
 		$write->setParamFile($month,$year,$numBranch);
-		$f=$write->getNewFileName();
+		$write->getNewFileName();
 		$arr=$data->getReestrInEqualErpn($month,$year,$numBranch);
 		$write->setDataFromWorksheet('In_reestr=edrpu',$arr,'A4');
 		unset($arr);
@@ -92,6 +100,8 @@ public function __construct (EntityManager $entityManager)
 	/**
 	 * формирование файлов анализа по всем филиалам
 	 * каждый филиал в свой файл
+	 * @param int $month номер месяца по которому надо сформировать анализ
+	 * @param int $year номер года по которому надо сформировать анализ
 	 */
 	public function writeAnalizPDVByAllBranch(int $month,int $year)
 	{
