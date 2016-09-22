@@ -22,6 +22,20 @@ use Symfony\Component\Validator\Constraints\All;
  */
 class loadReestrBranch
 {
+	private $em;
+	public function __construct ($em)
+	{
+		$this->em=$em;
+	}
+
+	public function loadFile($fileName, $type)
+	{
+		$factoryLoad=new factoryLoadData($this->em);
+		$factoryLoad->loadDataFromFile($fileName,$type);
+		unset($factoryLoad);
+
+	}
+
 	/**
 	 * на основании данных сформированых getFileFromDir->getFiles() загружает данные их файла
 	 * @param EntityManager $em

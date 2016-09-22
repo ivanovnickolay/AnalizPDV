@@ -24,7 +24,7 @@ class writeAnalizPDVToFile
 	private $em;
 	private $pathToTemplate;
 
-public function __construct (EntityManager $entityManager,string $pathToTemplate='')
+public function __construct ($entityManager,string $pathToTemplate='')
 {
 	$this->em=$entityManager;
 	$this->pathToTemplate=$pathToTemplate;
