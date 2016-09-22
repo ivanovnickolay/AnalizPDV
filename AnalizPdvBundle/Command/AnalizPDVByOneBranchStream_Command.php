@@ -32,28 +32,28 @@ class AnalizPDVByOneBranchStream_Command extends ContainerAwareCommand
         $em=$dt->getManager();
         $file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV.xlsx";
         $data=new getDataFromReestrsByOne($em);
-        $arrAllBranch=$data->getAllBranchToPeriod(6,2016);
+        $arrAllBranch=$data->getAllBranchToPeriod(7,2016);
         if(!empty($arrAllBranch)) {
             foreach ($arrAllBranch as $arrAll)
             {
                 foreach ($arrAll as $key => $numBranch) {
                     $output->writeln ("Start analiz branch " . $numBranch);
                     $write = new getWriteExcel($file);
-                    $write->setParamFile (6 , 2016 , $numBranch);
+                    $write->setParamFile (7 , 2016 , $numBranch);
                     $f = $write->getNewFileName ();
-                    $arr = $data->getReestrInEqualErpn (6 , 2016 , $numBranch);
+                    $arr = $data->getReestrInEqualErpn (7 , 2016 , $numBranch);
                     $write->setDataFromWorksheet ('In_reestr=edrpu' , $arr , 'A4');
                     unset($arr);
                     gc_collect_cycles ();
-                    $arr = $data->getReestrInNotEqualErpn (6 , 2016 , $numBranch);
+                    $arr = $data->getReestrInNotEqualErpn (7 , 2016 , $numBranch);
                     $write->setDataFromWorksheet ('In_reestr<>edrpou' , $arr , 'A4');
                     unset($arr);
                     gc_collect_cycles ();
-                    $arr = $data->getReestrOutEqualErpn (6 , 2016 , $numBranch);
+                    $arr = $data->getReestrOutEqualErpn (7 , 2016 , $numBranch);
                     $write->setDataFromWorksheet ('Out_reestr=edrpu' , $arr , 'A4');
                     unset($arr);
                     gc_collect_cycles ();
-                    $arr = $data->getReestrOutNotEqualErpn (6 , 2016 , $numBranch);
+                    $arr = $data->getReestrOutNotEqualErpn (7 , 2016 , $numBranch);
                     $write->setDataFromWorksheet ('Out_reestr<>edrpou' , $arr , 'A4');
                     unset($arr);
                     gc_collect_cycles ();

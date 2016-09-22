@@ -16,7 +16,12 @@
   <Views ShowAdditionalViews="False" IsLayoutActiveAttribute="True" MainViewAttribute="Code" MainViewScale="50">
     <View Name="Design" Visible="False" />
     <View Name="Code" Visible="True">
-      <Data />
+      <Data>
+        <Parameters>
+          <Parameter Name="m" Direction="Input" DbType="VarChar">6</Parameter>
+          <Parameter Name="y" Direction="Input" DbType="VarChar">2016</Parameter>
+        </Parameters>
+      </Data>
     </View>
     <View Name="Data" Active="True" Visible="True" />
     <View Name="Profiler" Visible="False" />

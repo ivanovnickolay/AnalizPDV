@@ -24,7 +24,7 @@ class loadReestBranchCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:load_reest_branch_command')
+            ->setName('analiz_pdv:load_reest_branch')
             ->setDescription('Load data from files to Dir');
     }
 
