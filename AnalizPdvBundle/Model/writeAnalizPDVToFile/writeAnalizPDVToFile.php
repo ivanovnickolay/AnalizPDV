@@ -7,6 +7,7 @@
  */
 
 namespace AnalizPdvBundle\Model\writeAnalizPDVToFile;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutINN;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsAll;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsByOne;
 use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
@@ -113,6 +114,58 @@ public function __construct ($entityManager,string $pathToTemplate='')
 				foreach ($arrAll as $key => $numBranch)
 				{
 					$this->writeAnalizPDVByOneBranch($month,$year,$numBranch);
+				}
+			}
+		}
+	}
+
+	/**
+	 *формирование файла анализа по одному конкретному филиалу
+	 * @param int $month номер месяца по которому надо сформировать анализ
+	 * @param int $year номер года по которому надо сформировать анализ
+	 * @param string $numBranch номер филиала по которому надо сформировать анализ
+	 */
+	public function writeAnalizPDVOutInnByOneBranch(int $month,int $year,string $numBranch)
+	{
+		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
+		$data=new getDataFromAnalizPDVOutINN($this->em);
+		$write=new getWriteExcel($file);
+		$write->setParamFile($month,$year,$numBranch);
+		$write->getNewFileName();
+		$arr=$data->getReestrEqualErpn($month,$year,$numBranch);
+		$write->setDataFromWorksheet('Out_reestr=erpn',$arr,'A4');
+		unset($arr);
+		gc_collect_cycles();
+		$arr=$data->getErpnNoEqualReestr($month,$year,$numBranch);
+		$write->setDataFromWorksheet('Out_erpn<>reestr',$arr,'A4');
+		unset($arr);
+		gc_collect_cycles();
+		$arr=$data->getReestrNoEqualErpn($month,$year,$numBranch);
+		$write->setDataFromWorksheet('Out_reestr<>erpn',$arr,'A4');
+		unset($arr);
+		gc_collect_cycles();
+
+		$write->fileWriteAndSave();
+		unset($data,$write);
+		gc_collect_cycles();
+	}
+
+	/**
+	 * формирование файлов анализа по всем филиалам
+	 * каждый филиал в свой файл
+	 * @param int $month номер месяца по которому надо сформировать анализ
+	 * @param int $year номер года по которому надо сформировать анализ
+	 */
+	public function writeAnalizPDVOutInnByAllBranch(int $month,int $year)
+	{
+		$data=new getDataFromReestrsByOne($this->em);
+		$arrAllBranch=$data->getAllBranchToPeriod($month,$year);
+		if(!empty($arrAllBranch)) {
+			foreach ($arrAllBranch as $arrAll)
+			{
+				foreach ($arrAll as $key => $numBranch)
+				{
+					$this->writeAnalizPDVOutInnByOneBranch($month,$year,$numBranch);
 				}
 			}
 		}

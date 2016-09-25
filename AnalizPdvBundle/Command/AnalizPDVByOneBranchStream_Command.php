@@ -4,6 +4,7 @@ namespace AnalizPdvBundle\Command;
 
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsByOne;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsAll;
+use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizPDVToFile;
 use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,7 +31,7 @@ class AnalizPDVByOneBranchStream_Command extends ContainerAwareCommand
         gc_enable();
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
-        $file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV.xlsx";
+       /** $file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV.xlsx";
         $data=new getDataFromReestrsByOne($em);
         $arrAllBranch=$data->getAllBranchToPeriod(7,2016);
         if(!empty($arrAllBranch)) {
@@ -63,8 +64,11 @@ class AnalizPDVByOneBranchStream_Command extends ContainerAwareCommand
                     $output->writeln ("End analiz branch " . $numBranch);
                 }
             }
-        }
-
+        }*/
+        $write=new writeAnalizPDVToFile($em);
+        $write->writeAnalizPDVByAllBranch(7,2016);
+        unset($write);
+        gc_collect_cycles();
     }
 
 }
