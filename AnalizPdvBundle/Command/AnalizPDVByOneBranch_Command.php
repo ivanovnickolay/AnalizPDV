@@ -2,10 +2,8 @@
 
 namespace AnalizPdvBundle\Command;
 
-use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsByOne;
-use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsAll;
+
 use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizPDVToFile;
-use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
