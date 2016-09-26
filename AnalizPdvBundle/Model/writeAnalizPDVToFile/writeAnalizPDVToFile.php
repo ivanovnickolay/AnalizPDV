@@ -7,6 +7,7 @@
  */
 
 namespace AnalizPdvBundle\Model\writeAnalizPDVToFile;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutDiff;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutINN;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsAll;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsByOne;
@@ -120,7 +121,7 @@ public function __construct ($entityManager,string $pathToTemplate='')
 	}
 
 	/**
-	 *формирование файла анализа по одному конкретному филиалу
+	 *формирование файла анализа расхождений по ИНН по одному конкретному филиалу
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
 	 * @param string $numBranch номер филиала по которому надо сформировать анализ
@@ -151,7 +152,7 @@ public function __construct ($entityManager,string $pathToTemplate='')
 	}
 
 	/**
-	 * формирование файлов анализа по всем филиалам
+	 * формирование файлов анализа расхождений по ИНН по всем филиалам
 	 * каждый филиал в свой файл
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
@@ -166,6 +167,57 @@ public function __construct ($entityManager,string $pathToTemplate='')
 				foreach ($arrAll as $key => $numBranch)
 				{
 					$this->writeAnalizPDVOutInnByOneBranch($month,$year,$numBranch);
+				}
+			}
+		}
+	}
+	/**
+	 *формирование файла анализа опаздавших НН по одному конкретному филиалу
+	 * @param int $month номер месяца по которому надо сформировать анализ
+	 * @param int $year номер года по которому надо сформировать анализ
+	 * @param string $numBranch номер филиала по которому надо сформировать анализ
+	 */
+	public function writeAnalizPDVOutDiffByOneBranch(int $month,int $year,string $numBranch)
+	{
+		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_DiffDate.xlsx";
+		$data=new getDataFromAnalizPDVOutDiff($this->em);
+		$write=new getWriteExcel($file);
+		$write->setParamFile($month,$year,$numBranch);
+		$write->getNewFileName();
+		$arr=$data->getAllDiff($month,$year,$numBranch);
+		$write->setDataFromWorksheet('AllDiff_out',$arr,'A4');
+		unset($arr);
+		gc_collect_cycles();
+		$arr=$data->getDiffToReestr($month,$year,$numBranch);
+		$write->setDataFromWorksheet('DiffOut_reestr=erpn',$arr,'A4');
+		unset($arr);
+		gc_collect_cycles();
+		$arr=$data->getDiffToNotReestr($month,$year,$numBranch);
+		$write->setDataFromWorksheet('DiffOut_reestr<>erpn',$arr,'A4');
+		unset($arr);
+		gc_collect_cycles();
+
+		$write->fileWriteAndSave();
+		unset($data,$write);
+		gc_collect_cycles();
+	}
+
+	/**
+	 * формирование файлов анализа опаздавших НН по всем филиалам
+	 * каждый филиал в свой файл
+	 * @param int $month номер месяца по которому надо сформировать анализ
+	 * @param int $year номер года по которому надо сформировать анализ
+	 */
+	public function writeAnalizPDVOutDiffByAllBranch(int $month,int $year)
+	{
+		$data=new getDataFromReestrsByOne($this->em);
+		$arrAllBranch=$data->getAllBranchToPeriod($month,$year);
+		if(!empty($arrAllBranch)) {
+			foreach ($arrAllBranch as $arrAll)
+			{
+				foreach ($arrAll as $key => $numBranch)
+				{
+					$this->writeAnalizPDVOutDiffByOneBranch($month,$year,$numBranch);
 				}
 			}
 		}
