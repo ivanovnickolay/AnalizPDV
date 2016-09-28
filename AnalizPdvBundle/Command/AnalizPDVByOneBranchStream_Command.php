@@ -29,7 +29,7 @@ class AnalizPDVByOneBranchStream_Command extends ContainerAwareCommand
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
         $write=new writeAnalizPDVToFile($em);
-        $write->writeAnalizPDVByAllBranch(7,2016);
+        $write->writeAnalizPDVByAllBranch(8,2016);
         unset($write);
         gc_collect_cycles();
     }

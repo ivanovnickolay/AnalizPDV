@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AnalizPDVOutDiffByOneBranchCommand extends ContainerAwareCommand
+class AnalizPDVOutDiffByOneBranch_Command extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -15,7 +15,7 @@ class AnalizPDVOutDiffByOneBranchCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:analiz_pdvout_diff_by_one_branch_command')
+            ->setName('analiz_pdv:AnalizOutDiffByOneBranch')
             ->setDescription('Hello PhpStorm');
     }
 
@@ -28,7 +28,7 @@ class AnalizPDVOutDiffByOneBranchCommand extends ContainerAwareCommand
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
         $write=new writeAnalizPDVToFile($em);
-        $write->writeAnalizPDVOutDiffByOneBranch(7,2016,"667");
+        $write->writeAnalizPDVOutDiffByOneBranch(8,2016,"682");
         unset($write);
         gc_collect_cycles();
     }

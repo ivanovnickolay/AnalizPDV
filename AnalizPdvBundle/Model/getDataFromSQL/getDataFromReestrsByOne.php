@@ -138,6 +138,13 @@ class getDataFromReestrsByOne
 		return $arrayResult;
 	}
 
+	/**
+	 * получить массив всех филиалов которые имели реестры в данном периоде
+	 * @param $month
+	 * @param $year
+	 * @return array
+	 * @throws \Doctrine\DBAL\DBALException
+	 */
 	public function getAllBranchToPeriod($month, $year)
 	{
 		//$smtp=$this->em->getConnection();
@@ -147,6 +154,22 @@ class getDataFromReestrsByOne
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);
+		$smtp->execute();
+		$arrayResult=$smtp->fetchAll();
+		return $arrayResult;
+	}
+
+	/**
+	 * получить список всех главных филиалов ПАТ
+	 * @return array
+	 * @throws \Doctrine\DBAL\DBALException
+	 */
+	public function getAllBranch()
+	{
+		//$smtp=$this->em->getConnection();
+		$this->reconnect();
+		$sql="SELECT DISTINCT num_main_branch FROM `SprBranch`";
+		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->execute();
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;

@@ -166,7 +166,7 @@ public function __construct ($entityManager,string $pathToTemplate='')
 			{
 				foreach ($arrAll as $key => $numBranch)
 				{
-					$this->writeAnalizPDVOutInnByOneBranch($month,$year,$numBranch);
+					$this->writeAnalizPDVOutInnByOneBranch($month,$year,(string) $numBranch);
 				}
 			}
 		}
@@ -182,9 +182,12 @@ public function __construct ($entityManager,string $pathToTemplate='')
 		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_DiffDate.xlsx";
 		$data=new getDataFromAnalizPDVOutDiff($this->em);
 		$write=new getWriteExcel($file);
+		echo "$month $year $numBranch begin   \r\n";
 		$write->setParamFile($month,$year,$numBranch);
 		$write->getNewFileName();
+		echo " getAllDiff begin   \r\n";
 		$arr=$data->getAllDiff($month,$year,$numBranch);
+		echo " getAllDiff end   \r\n";
 		$write->setDataFromWorksheet('AllDiff_out',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
@@ -198,6 +201,7 @@ public function __construct ($entityManager,string $pathToTemplate='')
 		gc_collect_cycles();
 
 		$write->fileWriteAndSave();
+		echo "$month $year $numBranch end   \r\n";
 		unset($data,$write);
 		gc_collect_cycles();
 	}
@@ -211,9 +215,8 @@ public function __construct ($entityManager,string $pathToTemplate='')
 	public function writeAnalizPDVOutDiffByAllBranch(int $month,int $year)
 	{
 		$data=new getDataFromReestrsByOne($this->em);
-		$arrAllBranch=$data->getAllBranchToPeriod($month,$year);
-		if(!empty($arrAllBranch)) {
-			foreach ($arrAllBranch as $arrAll)
+		$arrAllBranch=$data->getAllBranch();
+		foreach ($arrAllBranch as $arrAll)
 			{
 				foreach ($arrAll as $key => $numBranch)
 				{
@@ -221,5 +224,4 @@ public function __construct ($entityManager,string $pathToTemplate='')
 				}
 			}
 		}
-	}
 }

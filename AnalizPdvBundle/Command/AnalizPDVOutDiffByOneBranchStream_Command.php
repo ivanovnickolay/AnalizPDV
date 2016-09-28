@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AnalizPDVByAll_UZ_Command extends ContainerAwareCommand
+class AnalizPDVOutDiffByOneBranchStream_Command extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -15,8 +15,8 @@ class AnalizPDVByAll_UZ_Command extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:AnalizPDVByAll')
-            ->setDescription('analyze reestr by all UZ');
+            ->setName('analiz_pdv:AnalizOutDiffByOneBranchStream')
+            ->setDescription('Hello PhpStorm');
     }
 
     /**
@@ -28,10 +28,8 @@ class AnalizPDVByAll_UZ_Command extends ContainerAwareCommand
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
         $write=new writeAnalizPDVToFile($em);
-        $write->writeAnalizPDVByAllUZ(8,2016);
+        $write->writeAnalizPDVOutDiffByAllBranch(8,2016);
         unset($write);
         gc_collect_cycles();
-
-
     }
 }

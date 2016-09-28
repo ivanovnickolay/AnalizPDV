@@ -78,7 +78,10 @@ class getDataFromAnalizPDVOutDiff
 	 */
 	public function getAllDiff(int $month, int $year, string $numBranch)
 	{
-		$this->reconnect();
+		// так как в хранимой процедуре используются временные таблицы, для их обнуления
+		// "передергнем соединение с базой для очистки временных таблиц
+		$this->disconnect();
+		$this->connect();
 		$sql="CALL AnalizPDVOutDiffDateOneBranchInnerJoinERPN_tempTable(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
@@ -86,6 +89,8 @@ class getDataFromAnalizPDVOutDiff
 		$smtp->bindValue("nb",$numBranch);
 		$smtp->execute();
 		$arrayResult=$smtp->fetchAll();
+		//var_dump($arrayResult);
+
 		return $arrayResult;
 	}
 
@@ -99,7 +104,10 @@ class getDataFromAnalizPDVOutDiff
 	 */
 	public function getDiffToReestr(int $month, int $year, string $numBranch)
 	{
-		$this->reconnect();
+		// так как в хранимой процедуре используются временные таблицы, для их обнуления
+		// "передергнем соединение с базой для очистки временных таблиц
+		$this->disconnect();
+		$this->connect();
 		$sql="CALL AnalizPDVOutDiffDateOneBranchInnerJoinReestr_tempTable(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
@@ -120,7 +128,10 @@ class getDataFromAnalizPDVOutDiff
 	 */
 	public function getDiffToNotReestr(int $month, int $year, string $numBranch)
 	{
-		$this->reconnect();
+		// так как в хранимой процедуре используются временные таблицы, для их обнуления
+		// "передергнем соединение с базой для очистки временных таблиц
+		$this->disconnect();
+		$this->connect();
 		$sql="CALL AnalizPDVOutDiffDateOneBranchLeftJoinERPN_tempTable(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
