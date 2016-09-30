@@ -1,6 +1,6 @@
 <?php
 
-namespace LoadFileBundle\Controller;
+namespace AnalizPdvBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use LoadFileBundle\Entity\SprBranch;

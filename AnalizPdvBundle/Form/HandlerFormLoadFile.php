@@ -6,12 +6,12 @@
  * Time: 22:54
  */
 
-namespace LoadFileBundle\Form;
+namespace AnalizPdvBundle\Form;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\EntityManager;
-use LoadFileBundle\Entity\LoadFile;
+use AnalizPdvBundle\Entity\LoadFile;
 
 
 class HandlerFormLoadFile
