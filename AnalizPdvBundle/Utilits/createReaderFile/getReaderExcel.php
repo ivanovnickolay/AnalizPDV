@@ -78,7 +78,6 @@ class getReaderExcel
 
 	public function __destruct ()
 	{
-		// TODO: Implement __destruct() method.
 		unset($this->ChunkFilter);
 		unset($this->Reader);
 		unset($this->Excel);

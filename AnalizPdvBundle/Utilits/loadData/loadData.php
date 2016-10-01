@@ -44,7 +44,6 @@ class loadData
 
 	public function __destruct ()
 	{
-		// TODO: Implement __destruct() method.
 		unset($this->readerFile);
 		unset($this->validator);
 		unset($this->entity);

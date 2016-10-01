@@ -9,6 +9,7 @@
 namespace AnalizPdvBundle\Utilits\LoadInvoice\LoadInvoiceOut;
 
 
+use AnalizPdvBundle\Entity\ErpnOut;
 use Doctrine\ORM\EntityManager;
 use LoadFileBundle\Entity\Erpn_out;
 
@@ -62,13 +63,13 @@ class validInvoiceOut
      * @param Erpn_out $erpn_out
      * @return bool
      */
-    public function isUniqInvoice(Erpn_out $data)
+    public function isUniqInvoice(ErpnOut $data)
     {
         // если в массаиве нет похожих записей то
         //if ((!in_array($data->getKeyField(),$this->Keys))) {
             //todo написать запрос на получение количества сущностей по условию
             // проверим есть ли походжие в безе данных
-            if (($this->entityManager->getRepository("LoadFileBundle:Erpn_out")->ValidInvoice($data)))
+            if (($this->entityManager->getRepository("AnalizPdvBundle:ErpnOut")->ValidInvoice($data)))
             {
                     return true;
             } else

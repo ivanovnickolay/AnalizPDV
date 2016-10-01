@@ -8,6 +8,12 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Команда формирует анализ ПДВ по реестрам и ЕРПН по всем филиалам в периоде
+ * todo реализовать ввод параметров команды
+ * Class AnalizPDVByOneBranchStream_Command
+ * @package AnalizPdvBundle\Command
+ */
 class AnalizPDVByOneBranchStream_Command extends ContainerAwareCommand
 {
     /**
@@ -17,7 +23,7 @@ class AnalizPDVByOneBranchStream_Command extends ContainerAwareCommand
     {
         $this
             ->setName('analiz_pdv:AnalizPDVByOneBranchStream')
-            ->setDescription('analyze reestr by one branch');
+            ->setDescription('analyze reestr by All branch to period');
     }
 
     /**

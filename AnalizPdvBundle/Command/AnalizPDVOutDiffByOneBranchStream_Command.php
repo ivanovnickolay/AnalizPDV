@@ -7,6 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Команда формирует анализ опаздавших выданных НН по всем филиалам в периоде
+ * todo реализовать ввод параметров команды
+ * Class AnalizPDVOutDiffByOneBranchStream_Command
+ * @package AnalizPdvBundle\Command
+ */
 class AnalizPDVOutDiffByOneBranchStream_Command extends ContainerAwareCommand
 {
     /**

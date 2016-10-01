@@ -7,16 +7,14 @@
  */
 
 namespace AnalizPdvBundle\Model\getDataFromSQL;
-use Doctrine\ORM\EntityManager;
-
 
 /**
  * Задача класса предоставить данные для заполннения анализа
- * реестра и ЕРПН в разрезе ИНН
+ * реестра и ЕРПН в разрезе ИНН по одному филалу
  * Class getDataFromAnalizPDVOutINN
  * @package AnalizPdvBundle\Model\getDataFromSQL
  */
-class getDataOutINN extends getDataFromAnalizAbstract
+class getDataOutINNByOne extends getDataFromAnalizAbstract
 {
 	public function getReestrEqualErpn(int $month, int $year, string $numBranch)
 	{

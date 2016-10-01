@@ -7,6 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Команда формирует анализ совпадения номеров ИНН выданных НН по одному филиаоу в периоде
+ * todo реализовать ввод параметров команды
+ * Class AnalizPDVOutInnByOneBranchCommand
+ * @package AnalizPdvBundle\Command
+ */
 class AnalizPDVOutInnByOneBranchCommand extends ContainerAwareCommand
 {
     /**

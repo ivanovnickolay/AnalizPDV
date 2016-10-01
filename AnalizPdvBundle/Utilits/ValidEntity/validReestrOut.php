@@ -17,9 +17,9 @@ class validReestrOut extends interfaceValidEntity
 
 	public function validEntity ($entity)
 	{
-		// TODO: Implement validEntity() method.
 		$this->error='';
 		$this->entity=$entity;
+		// вызов правил валидации
 		$this->validTypeInvoiceFull($type=$this->entity->getTypeInvoiceFull());
 		$this->validInn($this->entity->getInnClient());
 		$this->validNumInvoice($this->entity->getNumInvoice());

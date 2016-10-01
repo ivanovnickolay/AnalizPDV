@@ -7,6 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Команда формирует сводный анализ ПДВ по реестрам и ЕРПН по всему ПАТ
+ * todo реализовать ввод параметров команды
+ * todo пример реализации https://github.com/sensiolabs/SensioGeneratorBundle/blob/master/Command/GenerateCommandCommand.php
+ * Class AnalizPDVByAll_UZ_Command
+ * @package AnalizPdvBundle\Command
+ */
 class AnalizPDVByAll_UZ_Command extends ContainerAwareCommand
 {
     /**

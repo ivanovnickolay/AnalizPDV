@@ -31,7 +31,6 @@ class createReestrOut extends createEntitys\interfaceReestr\createReestr
 	 */
 	public function createReestr (array $arr)
 	{
-		// TODO: Implement createReestr() method.
 		$this->reestrOut=new ReestrbranchOut();
 			$this->reestrOut->setMonth($arr[0][79]);
 				$this->reestrOut->setYear($arr[0][87]);

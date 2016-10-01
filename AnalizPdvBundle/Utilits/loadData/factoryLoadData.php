@@ -30,7 +30,6 @@ class factoryLoadData
  }
 	public function __destruct ()
 	{
-		// TODO: Implement __destruct() method.
 		unset($this->loaderClass);
 	}
 

@@ -7,8 +7,6 @@
  */
 
 namespace AnalizPdvBundle\Model\getDataFromSQL;
-use Doctrine\ORM\EntityManager;
-
 
 /**
  * Задача класса предоставить данные для заполннения анализа

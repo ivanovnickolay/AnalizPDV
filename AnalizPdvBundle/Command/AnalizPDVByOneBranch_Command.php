@@ -8,6 +8,12 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Команда формирует анализ ПДВ по реестрам и ЕРПН по одному филиалу
+ * todo реализовать ввод параметров команды
+ * Class AnalizPDVByOneBranch_Command
+ * @package AnalizPdvBundle\Command
+ */
 class AnalizPDVByOneBranch_Command extends ContainerAwareCommand
 {
     /**

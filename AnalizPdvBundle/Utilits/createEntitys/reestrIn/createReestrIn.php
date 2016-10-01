@@ -30,7 +30,6 @@ class createReestrIn extends createEntitys\interfaceReestr\createReestr
 	 */
 	public function createReestr (array $arr)
 	{
-		// TODO: Implement createReestr() method.
 		$this->reestrIn=new ReestrbranchIn();
 			$this->reestrIn->setMonth($arr[0][79]);
 				$this->reestrIn->setYear($arr[0][87]);

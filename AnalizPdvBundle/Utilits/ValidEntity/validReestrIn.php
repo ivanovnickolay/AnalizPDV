@@ -25,7 +25,6 @@ class validReestrIn extends interfaceValidEntity
 	 */
 	public function validEntity ($entity)
 	{
-		// TODO: Implement validEntity() method.
 		$this->error='';
 		$this->entity=$entity;
 		// вызов правил валидации
