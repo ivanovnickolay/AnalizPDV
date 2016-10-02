@@ -174,6 +174,19 @@ class getDataFromReestrsByOne
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;
 	}
+	public function getAllBranchToPeriodOut($month, $year)
+	{
+		//$smtp=$this->em->getConnection();
+		$this->reconnect();
+		$sql="SELECT DISTINCT rbi.num_branch FROM ReestrBranch_Out rbi
+			WHERE rbi.month =:m AND rbi.year=:y";
+		$smtp=$this->em->getConnection()->prepare($sql);
+		$smtp->bindValue("m",$month);
+		$smtp->bindValue("y",$year);
+		$smtp->execute();
+		$arrayResult=$smtp->fetchAll();
+		return $arrayResult;
+	}
 
 	public function disconnect()
 	{

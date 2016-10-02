@@ -70,7 +70,8 @@ class getDataFromAnalizPDVOutINN
 
 	public function getReestrEqualErpn(int $month, int $year, string $numBranch)
 	{
-		$this->reconnect();
+		$this->disconnect();
+		$this->connect();
 		$sql="CALL AnalizInnOutInnerJoinOneBranch_tempTable(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
@@ -83,7 +84,8 @@ class getDataFromAnalizPDVOutINN
 
 	public function getReestrNoEqualErpn(int $month, int $year, string $numBranch)
 	{
-		$this->reconnect();
+		$this->disconnect();
+		$this->connect();
 		$sql="CALL AnalizInnOutRightJoinOneBranch_tempTable(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
@@ -95,7 +97,8 @@ class getDataFromAnalizPDVOutINN
 	}
 	public function getErpnNoEqualReestr(int $month, int $year, string $numBranch)
 	{
-		$this->reconnect();
+		$this->disconnect();
+		$this->connect();
 		$sql="CALL AnalizInnOutLeftJoinOneBranch_tempTable(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);

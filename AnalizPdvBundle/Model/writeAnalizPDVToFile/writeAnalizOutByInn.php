@@ -56,7 +56,7 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 	public function writeAnalizPDVOutInnByAllBranch(int $month,int $year)
 	{
 		$data=new getDataFromReestrsByOne($this->em);
-		$arrAllBranch=$data->getAllBranchToPeriod($month,$year);
+		$arrAllBranch=$data->getAllBranchToPeriodOut($month,$year);
 		if(!empty($arrAllBranch)) {
 			foreach ($arrAllBranch as $arrAll)
 			{
