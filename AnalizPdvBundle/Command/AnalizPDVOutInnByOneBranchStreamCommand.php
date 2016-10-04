@@ -35,7 +35,7 @@ class AnalizPDVOutInnByOneBranchStreamCommand extends ContainerAwareCommand
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
         $write=new writeAnalizOutByInn($em);
-        $write->writeAnalizPDVOutInnByAllBranch(8,2016);
+        $write->writeAnalizPDVOutInnByAllBranch(5,2016);
         unset($write);
         gc_collect_cycles();
     }
