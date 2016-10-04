@@ -50,6 +50,7 @@ class validInputCommandTest extends KernelTestCase
 			["12",true],
 			["-2",false],
 			["o2",false],
+			["",false],
 		];
 	}
 	/**
@@ -74,6 +75,7 @@ class validInputCommandTest extends KernelTestCase
 			["2017",true],
 			["-2017",false],
 			["2o16",false],
+			["",false],
 		];
 	}
 	/**

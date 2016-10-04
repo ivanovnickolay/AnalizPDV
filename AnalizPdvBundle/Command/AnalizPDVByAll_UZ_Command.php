@@ -3,6 +3,7 @@
 namespace AnalizPdvBundle\Command;
 
 use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizPDVToFile;
+use AnalizPdvBundle\Utilits\validInputCommand;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -10,8 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Команда формирует сводный анализ ПДВ по реестрам и ЕРПН по всему ПАТ
- * todo реализовать ввод параметров команды
- * todo пример реализации https://github.com/sensiolabs/SensioGeneratorBundle/blob/master/Command/GenerateCommandCommand.php
+ * пример реализации https://github.com/sensiolabs/SensioGeneratorBundle/blob/master/Command/GenerateCommandCommand.php
  * Class AnalizPDVByAll_UZ_Command
  * @package AnalizPdvBundle\Command
  */
@@ -24,9 +24,11 @@ class AnalizPDVByAll_UZ_Command extends ContainerAwareCommand
     {
         $this
             ->setName('analiz_pdv:AnalizPDVByAll')
-            ->setDescription('analyze reestr by all UZ')
+            ->setDescription('Анализ ПДВ между ЕРПН и Реестрами филиалов в целом по ПАТ за период.')
             ->addOption('month',null,InputOption::VALUE_REQUIRED,'Введите месяц')
-            ->addOption('year',null,InputOption::VALUE_REQUIRED,'Введите год');
+            ->addOption('year',null,InputOption::VALUE_REQUIRED,'Введите год')
+            ->setHelp("Анализ ПДВ между ЕРПН и Реестрами филиалов в целом по ПАТ. Обязательные параметры
+             месяц анализа --month= и год анализа --year=. Например analiz_pdv:AnalizPDVByAll --month=6 --year=2016");
     }
 
     /**
@@ -35,20 +37,23 @@ class AnalizPDVByAll_UZ_Command extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         gc_enable();
-        $month=$input->getOption('month');
-            if(is_null($month)or empty($month))
-            {
-                $output->writeln("Вы не ввели обязательный параметр --month=__. Выполнение команды не возможно!!");
-                exit();
-            }
-        $year=$input->getOption('year');
-            if(is_null($year) or empty($year))
-            {
-                $output->writeln("Вы не ввели обязательный параметр --year=__. Выполнение команды не возможно!!");
-                exit();
-            }
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
+        $valid=new validInputCommand($em);
+        $month=$input->getOption('month');
+            if (!$valid->validMonth($month))
+            {
+                $output->writeln($valid->getTextError());
+                exit();
+            }
+
+        $year=$input->getOption('year');
+            if (!$valid->validMonth($year))
+            {
+                $output->writeln($valid->getTextError());
+                exit();
+            }
+
         $write=new writeAnalizPDVToFile($em);
         $write->writeAnalizPDVByAllUZ($month,$year);
         unset($write);

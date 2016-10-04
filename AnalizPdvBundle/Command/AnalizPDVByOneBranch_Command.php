@@ -23,7 +23,7 @@ class AnalizPDVByOneBranch_Command extends ContainerAwareCommand
     {
         $this
             ->setName('analiz_pdv:AnalizPDVByOneBranch')
-            ->setDescription('analyze reestr by one branch');
+            ->setDescription('Анализ ПДВ между ЕРПН и Реестрами филиалов по одному филиалу за период.');
     }
 
     /**

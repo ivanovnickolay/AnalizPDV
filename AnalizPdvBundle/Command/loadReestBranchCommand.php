@@ -25,7 +25,7 @@ class loadReestBranchCommand extends ContainerAwareCommand
     {
         $this
             ->setName('analiz_pdv:load_reest_branch')
-            ->setDescription('Load data from files to Dir');
+            ->setDescription('Загрузка файлов с реестрами в базу данных');
     }
 
     /**

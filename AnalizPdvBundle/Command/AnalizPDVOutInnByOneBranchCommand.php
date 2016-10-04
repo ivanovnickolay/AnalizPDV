@@ -21,8 +21,8 @@ class AnalizPDVOutInnByOneBranchCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:analiz_pdvout_inn_by_one_branch_command')
-            ->setDescription('Hello PhpStorm');
+            ->setName('analiz_pdv:OutGroupInnByOneBranch')
+            ->setDescription('Анализ НН по обязательствам в разрезе ИНН  по одному филиалу в периоде');
     }
 
     /**

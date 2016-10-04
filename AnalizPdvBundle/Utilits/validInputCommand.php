@@ -17,37 +17,58 @@ namespace AnalizPdvBundle\Utilits;
 class validInputCommand
 {
 	private $em;
-		public function __construct ($entityManager)
+	private $textError;
+
+	public function __construct ($entityManager)
 	{
 		$this->em=$entityManager;
 	}
 
 	public function  validMonth($month)
 	{
+		$result=true;
+		$this->textError='';
+		if(is_null($month) or empty($month))
+		{
+			$this->textError=$this->textError." Вы не ввели обязательный параметр --month=__. Выполнение команды не возможно!!";
+			$result=false;
+		}
+
+
 		$arrMonth=array(1,2,3,4,5,6,7,8,9,10,11,12);
-		if(2<strlen($month))
+		if(2<strlen($month) or (!in_array((int) $month,$arrMonth)))
 		{
-			return false;
+			$this->textErrorMonth=$this->textError." Вы не ввели не верное значение обязательного параметра --month=__. Выполнение команды
+                 не возможно!!";
+			$result=false;
 		}
-		if(!in_array((int) $month,$arrMonth))
-		{
-			return false;
-		}
-			return true;
+
+			return $result;
 	}
 
+	public function getTextError()
+	{
+		return $this->textError;
+	}
 	public function  validYear($year)
 	{
+		$result=true;
+		$this->textError='';
+
 		$arrYear=array(2015,2016,2017);
-		if(4<strlen($year))
+		if(is_null($year) or empty($year))
 		{
-			return false;
+			$this->textError=$this->textError."Вы не ввели обязательный параметр --year=__. Выполнение команды не возможно!!";
+			$result=false;
 		}
-		if(!in_array($year,$arrYear))
+		if(4<strlen($year) or (!in_array($year,$arrYear)))
 		{
-			return false;
+			$this->textErrorMonth=$this->textError." Вы не ввели не верное значение обязательного параметра --year=__. Выполнение команды
+                 не возможно!!";
+			$result=false;
 		}
-		return true;
+
+		return $result;
 	}
 	public function  validBranch($numBranch)
 	{

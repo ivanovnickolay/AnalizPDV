@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class AnalizPDVOutDiffByOneBranch_Command
  * @package AnalizPdvBundle\Command
  */
-class AnalizPDVOutDiffByOneBranch_Command extends ContainerAwareCommand
+class AnalizPDVOutDelayByOneBranch_Command extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -21,8 +21,8 @@ class AnalizPDVOutDiffByOneBranch_Command extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:AnalizOutDiffByOneBranch')
-            ->setDescription('Hello PhpStorm');
+            ->setName('analiz_pdv:OutDelayByOneBranch')
+            ->setDescription('Анализ НН по обязательствам, которые зарегистрированы с опазданием по одному филиалу в периоде');
     }
 
     /**
