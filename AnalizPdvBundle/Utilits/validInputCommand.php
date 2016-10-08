@@ -30,16 +30,19 @@ class validInputCommand
 		$this->textError='';
 		if(is_null($month) or empty($month))
 		{
-			$this->textError=$this->textError." Вы не ввели обязательный параметр --month=__. Выполнение команды не возможно!!";
+			$this->textError=$this->textError." Вы не ввели обязательный параметр (он нулевой или пустой) --month=__.
+			Выполнение команды  не возможно!!";
 			$result=false;
 		}
 
 
 		$arrMonth=array(1,2,3,4,5,6,7,8,9,10,11,12);
-		if(2<strlen($month) or (!in_array((int) $month,$arrMonth)))
+		$str=strlen($month);
+		$f=in_array((int) $month,$arrMonth);
+		if((2<strlen($month)) or (!in_array((int) $month,$arrMonth)))
 		{
-			$this->textErrorMonth=$this->textError." Вы не ввели не верное значение обязательного параметра --month=__. Выполнение команды
-                 не возможно!!";
+			$this->textError=$this->textError." Вы не ввели не верное значение обязательного параметра (он не в
+			дипазоне 1-12) --month=__. Выполнение команды не возможно!!";
 			$result=false;
 		}
 

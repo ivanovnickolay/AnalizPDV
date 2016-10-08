@@ -33,7 +33,8 @@ class AnalizPDVOutDelayByOneBranch_Command extends ContainerAwareCommand
         gc_enable();
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
-        $write=new writeAnalizPDVToFile($em);
+        $pathTemplate=$this->getContainer()->getParameter('path_template');
+        $write=new writeAnalizPDVToFile($em,$pathTemplate);
         $write->writeAnalizPDVOutDiffByOneBranch(8,2016,"682");
         unset($write);
         gc_collect_cycles();

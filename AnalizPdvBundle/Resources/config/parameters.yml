@@ -1,0 +1,14 @@
+# This file is auto-generated during the composer install
+imports:
+    - {resource: "@AnalizPdvBundle/Resources/config/parameters.yml"}
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: AnalizPDV
+    database_user: root
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: 7397d01d787832daf60c21c533e2e9d8206eac38

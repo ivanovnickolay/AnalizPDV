@@ -33,8 +33,8 @@ class AnalizPDVByOneBranch_Command extends ContainerAwareCommand
     {
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
-
-        $write=new writeAnalizPDVToFile($em);
+        $pathTemplate=$this->getContainer()->getParameter('path_template');
+        $write=new writeAnalizPDVToFile($em,$pathTemplate);
         $write->writeAnalizPDVByOneBranch(7,2016,"667");
         unset($write);
         gc_collect_cycles();

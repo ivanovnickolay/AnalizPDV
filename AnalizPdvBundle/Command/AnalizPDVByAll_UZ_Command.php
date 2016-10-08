@@ -48,13 +48,13 @@ class AnalizPDVByAll_UZ_Command extends ContainerAwareCommand
             }
 
         $year=$input->getOption('year');
-            if (!$valid->validMonth($year))
+            if (!$valid->validYear($year))
             {
                 $output->writeln($valid->getTextError());
                 exit();
             }
-
-        $write=new writeAnalizPDVToFile($em);
+        $pathTemplate=$this->getContainer()->getParameter('path_template');
+        $write=new writeAnalizPDVToFile($em,$pathTemplate);
         $write->writeAnalizPDVByAllUZ($month,$year);
         unset($write);
         gc_collect_cycles();

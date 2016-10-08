@@ -1,5 +1,15 @@
 parameters:
   file_dir: "%file_directory%"
+  file_directory: '%kernel.root_dir%/../web/uploads/'
+  file_dir_branch: '%kernel.root_dir%/../web/Doc/SprBranch/'
+  file_dir_InvoiceOut: '%kernel.root_dir%/../web/Doc/InvoiceOut/'
+     # Путь к папке где "лежат" файлы реестров для загрузки
+  file_dir_reestr: '%kernel.root_dir%/../web/Doc/reestrBranch/'
+  # Путь к папке куда переносятся файлы реестров после загрузки
+  file_dir_reestr_arch: '%kernel.root_dir%/../web/Doc/reestrBranchArch/'
+
+  path_template: "%kernel.root_dir%/../src/AnalizPdvBundle/Resources/templateAnaliz/"
+
 services:
 #    load_file.example:
 #        class: AnalizPdvBundle\Example

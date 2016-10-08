@@ -39,7 +39,8 @@ class AnalizPDVOutInnByOneBranchStreamCommand extends ContainerAwareCommand
         gc_enable();
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
-        $write=new writeAnalizOutByInn($em);
+        $pathTemplate=$this->getContainer()->getParameter('path_template');
+        $write=new writeAnalizOutByInn($em,$pathTemplate);
         $valid=new validInputCommand($em);
         $month=$input->getOption('month');
         if (!$valid->validMonth($month))
@@ -49,7 +50,7 @@ class AnalizPDVOutInnByOneBranchStreamCommand extends ContainerAwareCommand
         }
 
         $year=$input->getOption('year');
-        if (!$valid->validMonth($year))
+        if (!$valid->validYear($year))
         {
             $output->writeln($valid->getTextError());
             exit();
