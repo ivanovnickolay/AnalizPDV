@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManager;
 
 /**
  *
- * Задача класса предоставить данные для заполннения анализа реестров
+ * Задача класса предоставить данные для заполннения анализа реестров по всему УЗ за период
  * Class getReestrEqualErpn
  * @package AnalizPdvBundle\Model\getDataFromSQL
  */
@@ -38,7 +38,7 @@ class getDataFromReestrsAll
 {
 	//$smtp=$this->em->getConnection();
 	$this->reconnect();
-	$sql="SELECT
+	/*$sql="SELECT
         month,
         year,num_branch,
         COUNT(num_invoice),
@@ -56,7 +56,8 @@ class getDataFromReestrsAll
         		GROUP BY
        			 month,
        			year,
-        		num_branch";
+        		num_branch";*/
+	$sql="call getReestrInEqualErpnAllUZ(:m,:y)";
 	$smtp=$this->em->getConnection()->prepare($sql);
 	$smtp->bindValue("m",$month);
 	$smtp->bindValue("y",$year);
@@ -77,7 +78,7 @@ class getDataFromReestrsAll
 	{
 		//$smtp=$this->em->getConnection();
 		$this->reconnect();
-		$sql="SELECT month,
+		/**$sql="SELECT month,
 		  	year,
 		  	num_branch,
 		  	COUNT(num_branch),
@@ -89,7 +90,8 @@ class getDataFromReestrsAll
 		    GROUP BY
 		        month,
 		        year,
-		        num_branch";
+		        num_branch";*/
+		$sql="call getReestrInNotEqualErpnAllUZ(:m,:y)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);
@@ -101,7 +103,7 @@ class getDataFromReestrsAll
 	{
 		//$smtp=$this->em->getConnection();
 		$this->reconnect();
-		$sql="SELECT
+		/**$sql="SELECT
         month,
         year,num_branch,
         COUNT(num_invoice),
@@ -119,7 +121,8 @@ class getDataFromReestrsAll
         		GROUP BY
        			 month,
        			year,
-        		num_branch";
+        		num_branch";*/
+		$sql="call getReestrOutEqualErpnAllUZ(:m,:y)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);
@@ -140,7 +143,7 @@ class getDataFromReestrsAll
 	{
 		//$smtp=$this->em->getConnection();
 		$this->reconnect();
-		$sql="SELECT month,
+		/**$sql="SELECT month,
 		  	year,
 		  	num_branch,
 		  	COUNT(num_branch),
@@ -152,7 +155,8 @@ class getDataFromReestrsAll
 		    GROUP BY
 		        month,
 		        year,
-		        num_branch";
+		        num_branch";*/
+		$sql="call getReestrOutNotEqualErpnAllUZ(:m,:y)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);

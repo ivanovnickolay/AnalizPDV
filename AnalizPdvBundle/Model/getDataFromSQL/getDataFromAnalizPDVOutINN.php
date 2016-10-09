@@ -68,11 +68,20 @@ class getDataFromAnalizPDVOutINN
 		}
 	}
 
+	/**
+	 * Анализ документов в разрезе ИНН которые есть и в ЕРПН и в Реестре по филиалу
+	 * @param int $month
+	 * @param int $year
+	 * @param string $numBranch
+	 * @return array
+	 * @throws \Doctrine\DBAL\DBALException
+	 */
 	public function getReestrEqualErpn(int $month, int $year, string $numBranch)
 	{
 		$this->disconnect();
 		$this->connect();
-		$sql="CALL AnalizInnOutInnerJoinOneBranch_tempTable(:m,:y,:nb)";
+		//$sql="CALL AnalizInnOutInnerJoinOneBranch_tempTable(:m,:y,:nb)";
+		$sql="CALL getAnalizInnOutInnerJoin(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);
@@ -82,11 +91,20 @@ class getDataFromAnalizPDVOutINN
 		return $arrayResult;
 	}
 
+	/**
+	 * Анализ документов в разрезе ИНН которые есть в Реестре но нет в ЕРПН по филиалу
+	 * @param int $month
+	 * @param int $year
+	 * @param string $numBranch
+	 * @return array
+	 * @throws \Doctrine\DBAL\DBALException
+	 */
 	public function getReestrNoEqualErpn(int $month, int $year, string $numBranch)
 	{
 		$this->disconnect();
 		$this->connect();
-		$sql="CALL AnalizInnOutRightJoinOneBranch_tempTable(:m,:y,:nb)";
+		//$sql="CALL AnalizInnOutRightJoinOneBranch_tempTable(:m,:y,:nb)";
+		$sql="CALL getAnalizInnOutRightJoin(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);
@@ -95,15 +113,91 @@ class getDataFromAnalizPDVOutINN
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;
 	}
+	/**
+	 * Анализ документов в разрезе ИНН которые есть и в ЕРПН но нет в Реестре по филиалу
+	 * @param int $month
+	 * @param int $year
+	 * @param string $numBranch
+	 * @return array
+	 * @throws \Doctrine\DBAL\DBALException
+	 */
+
 	public function getErpnNoEqualReestr(int $month, int $year, string $numBranch)
 	{
 		$this->disconnect();
 		$this->connect();
-		$sql="CALL AnalizInnOutLeftJoinOneBranch_tempTable(:m,:y,:nb)";
+		//$sql="CALL AnalizInnOutLeftJoinOneBranch_tempTable(:m,:y,:nb)";
+		$sql="CALL getAnalizInnOutLeftJoin(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);
 		$smtp->bindValue("nb",$numBranch);
+		$smtp->execute();
+		$arrayResult=$smtp->fetchAll();
+		return $arrayResult;
+	}
+	/**
+	 * Анализ документов в разрезе ИНН которые есть и в ЕРПН и в Реестре по филиалу
+	 * @param int $month
+	 * @param int $year
+	 * @param string $numBranch
+	 * @return array
+	 * @throws \Doctrine\DBAL\DBALException
+	 */
+	public function getReestrEqualErpnAllUZ(int $month, int $year)
+	{
+		$this->disconnect();
+		$this->connect();
+		//$sql="CALL AnalizInnOutInnerJoinOneBranch_tempTable(:m,:y,:nb)";
+		$sql="CALL getAnalizInnOutInnerJoinAllUZ(:m,:y)";
+		$smtp=$this->em->getConnection()->prepare($sql);
+		$smtp->bindValue("m",$month);
+		$smtp->bindValue("y",$year);
+		$smtp->execute();
+		$arrayResult=$smtp->fetchAll();
+		return $arrayResult;
+	}
+	/**
+	 * Анализ документов в разрезе ИНН которые есть в Реестре но нет в ЕРПН по филиалу
+	 * @param int $month
+	 * @param int $year
+	 * @param string $numBranch
+	 * @return array
+	 * @throws \Doctrine\DBAL\DBALException
+	 */
+	public function getReestrNoEqualErpnAllUZ(int $month, int $year)
+	{
+		$this->disconnect();
+		$this->connect();
+		//$sql="CALL AnalizInnOutRightJoinOneBranch_tempTable(:m,:y,:nb)";
+		$sql="CALL getAnalizInnOutRightJoinAllUZ(:m,:y)";
+		$smtp=$this->em->getConnection()->prepare($sql);
+		$smtp->bindValue("m",$month);
+		$smtp->bindValue("y",$year);
+		//$smtp->bindValue("nb",$numBranch);
+		$smtp->execute();
+		$arrayResult=$smtp->fetchAll();
+		return $arrayResult;
+	}
+	/**
+	 * Анализ документов в разрезе ИНН которые есть и в ЕРПН но нет в Реестре по филиалу
+	 * @param int $month
+	 * @param int $year
+	 * @param string $numBranch
+	 * @return array
+	 * @throws \Doctrine\DBAL\DBALException
+	 */
+
+	public function getErpnNoEqualReestrAllUZ(int $month, int $year)
+	{
+		$this->disconnect();
+		$this->connect();
+		//$sql="CALL AnalizInnOutLeftJoinOneBranch_tempTable(:m,:y,:nb)";
+		$sql="CALL getAnalizInnOutLeftJoinAllUZ(:m,:y)";
+		$smtp=$this->em->getConnection()->prepare($sql);
+		$smtp->bindValue("m",$month);
+		$smtp->bindValue("y",$year);
+		//$smtp->bindValue("nb",$numBranch);
 		$smtp->execute();
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;
