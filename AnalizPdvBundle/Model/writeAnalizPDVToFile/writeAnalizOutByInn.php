@@ -11,8 +11,18 @@ namespace AnalizPdvBundle\Model\writeAnalizPDVToFile;
 
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutINN;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsByOne;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataOutINNByAll;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataOutINNByOne;
 use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 
+/**
+ * Класс формирует файлы анализа расхождения по ИНН по обязательствам ПАТ за период
+ * - по одному конкретному филиалу
+ * - по всем филиалам
+ * - по всей УЗ
+ * Class writeAnalizOutByInn
+ * @package AnalizPdvBundle\Model\writeAnalizPDVToFile
+ */
 class writeAnalizOutByInn extends writeAnalizToFileAbstract
 {
 	/**
@@ -25,7 +35,7 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 	{
 		//todo сменить жесткую привязку к файлу анализа
 		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
-		$data=new getDataFromAnalizPDVOutINN($this->em);
+		$data=new getDataOutINNByOne($this->em);
 		$write=new getWriteExcel($file);
 		$write->setParamFile($month,$year,$numBranch);
 		$write->getNewFileName();
@@ -71,7 +81,7 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 	{
 		//todo сменить жесткую привязку к файлу анализа
 		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
-		$data=new getDataFromAnalizPDVOutINN($this->em);
+		$data=new getDataOutINNByAll($this->em);
 		$write=new getWriteExcel($file);
 		$write->setParamFile($month,$year,"All");
 		$write->getNewFileName();

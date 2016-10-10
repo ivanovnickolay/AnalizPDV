@@ -1,0 +1,430 @@
+CREATE TABLE Erpn_out_svod_inn_date_create
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    month_create INT(11),
+    year_create INT(11),
+    inn VARCHAR(255),
+    numBranch VARCHAR(255),
+    sum_pdv DECIMAL(15,2),
+    key_field VARCHAR(255),
+    key_ VARCHAR(255) NOT NULL,
+    numMainBranch VARCHAR(255)
+);
+CREATE INDEX key_ ON Erpn_out_svod_inn_date_create (key_);
+CREATE INDEX vv ON Erpn_out_svod_inn_date_create (month_create, year_create, numBranch, inn);
+CREATE TABLE ErrorLoadReestr
+(
+    Id INT(10) UNSIGNED PRIMARY KEY NOT NULL,
+    key_field VARCHAR(50) COMMENT 'ключевое поле ',
+    TypeReestr VARCHAR(50) COMMENT 'тип реестра In/Out',
+    Error VARCHAR(500) COMMENT 'Описание ошибки валидации ',
+    numBranch VARCHAR(50) COMMENT 'Номер филиала '
+);
+CREATE TABLE LoadFile
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    original_name VARCHAR(50) NOT NULL,
+    upload_name VARCHAR(50) NOT NULL,
+    type_file VARCHAR(3) NOT NULL,
+    description_file VARCHAR(50) NOT NULL,
+    type_doc VARCHAR(50) NOT NULL,
+    upload_date DATETIME NOT NULL,
+    processing_date DATETIME NOT NULL
+);
+CREATE TABLE ReestrBranch_in
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    month INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный месяц  реестра ',
+    year INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный год  реестра ',
+    num_branch VARCHAR(255) COMMENT 'номер филиала ',
+    date_get_invoice DATE COMMENT 'дата получения НН',
+    date_create_invoice DATE COMMENT 'дата создания НН',
+    num_invoice VARCHAR(255) COMMENT 'номер НН',
+    type_invoice_full VARCHAR(255) COMMENT 'ПНЕ или РКЕ ',
+    name_client VARCHAR(500) COMMENT 'наименование клиента',
+    inn_client VARCHAR(255) COMMENT 'ИНН клиента ',
+    zag_summ DOUBLE(15,2) DEFAULT '0.00' COMMENT 'общая сумма с ПДВ (столб 8)',
+    baza_20 DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ (столб 10)',
+    pdv_20 DOUBLE(15,2) DEFAULT '0.00' COMMENT 'пдв по ставке 20 % (столб 11)',
+    baza_7 DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ (столб 12)',
+    pdv_7 DOUBLE(15,2) DEFAULT '0.00' COMMENT 'пдв по ставке 7 % (столб 13)',
+    baza_0 DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ (столб 14)',
+    pdv_0 DOUBLE(15,2) DEFAULT '0.00' COMMENT 'пдв по ставке 0 % (столб 15) ',
+    baza_zvil DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ (столб 16)',
+    pdv_zvil DOUBLE(15,2) DEFAULT '0.00' COMMENT 'ПДВ  (столб 17) ',
+    baza_ne_gos DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость не предназначених в хоз деятельности (столб 18)',
+    pdv_ne_gos DOUBLE(15,2) DEFAULT '0.00' COMMENT 'ПДВ не предназначених в хоз деятельности (столб 19)',
+    baza_za_mezhi DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ поставка услуг за пределы Украины (столб 20)',
+    pdv_za_mezhi DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость с ПДВ поставка услуг за пределы Украины (столб 21)',
+    rke_date_create_invoice DATE COMMENT 'дата сознание НН которую корректирует РКЕ',
+    rke_num_invoice VARCHAR(50) COMMENT 'номер НН которую корректирует РКЕ',
+    rke_pidstava VARCHAR(250) COMMENT 'основание для выписки РКЕ ',
+    key_field VARCHAR(250) COMMENT 'ключевое поле '
+);
+CREATE INDEX `key` ON ReestrBranch_in (key_field);
+CREATE INDEX `m+y` ON ReestrBranch_in (year, month);
+CREATE INDEX `month+year+branch` ON ReestrBranch_in (month, year, num_branch);
+CREATE TABLE ReestrBranch_out
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    month INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный месяц  реестра ',
+    year INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный год  реестра ',
+    num_branch VARCHAR(255) COMMENT 'номер филиала ',
+    date_create_invoice DATE COMMENT 'дата создания НН',
+    num_invoice VARCHAR(255) COMMENT 'номер НН',
+    type_invoice_full VARCHAR(255) COMMENT 'ПНЕ или РКЕ ',
+    type_invoice VARCHAR(5) COMMENT 'тип причины не выдачи покупателю ',
+    name_client VARCHAR(500) COMMENT 'наименование клиента',
+    inn_client VARCHAR(255) COMMENT 'ИНН клиента ',
+    zag_summ DOUBLE(15,2) DEFAULT '0.00' COMMENT 'общая сумма с ПДВ (столб 7)',
+    baza_20 DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ (столб 8)',
+    pdv_20 DOUBLE(15,2) DEFAULT '0.00' COMMENT 'пдв по ставке 20 % (столб 9)',
+    baza_7 DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ (столб 10)',
+    pdv_7 DOUBLE(15,2) DEFAULT '0.00' COMMENT 'пдв по ставке 7 % (столб 11)',
+    baza_0 DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ ставка 0 % (столб 12)',
+    baza_zvil DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ освобождены от налогообложения (столб 13)',
+    baza_ne_obj DOUBLE(15,2) DEFAULT '0.00' COMMENT 'сумма поставки для не есть объектом налогообложения (столб 14)',
+    baza_za_mezhi_tovar DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ поставка товаров за пределы Украины (столб 15)',
+    baza_za_mezhi_poslug DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость с ПДВ поставка услуг за пределы Украины (столб 16)',
+    rke_date_create_invoice DATE COMMENT 'дата сознание НН которую корректирует РКЕ',
+    rke_num_invoice VARCHAR(50) COMMENT 'номер НН которую корректирует РКЕ',
+    rke_pidstava VARCHAR(250) COMMENT 'основание для выписки РКЕ ',
+    key_field VARCHAR(250) COMMENT 'ключевое поле '
+);
+CREATE INDEX branch ON ReestrBranch_out (num_branch);
+CREATE INDEX IDX_ReestrBranch_out ON ReestrBranch_out (date_create_invoice, num_branch);
+CREATE INDEX `key` ON ReestrBranch_out (key_field);
+CREATE INDEX `month+year+branch` ON ReestrBranch_out (month, year, num_branch);
+CREATE TABLE Reestr_in_svod_inn
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    month INT(11),
+    year INT(11),
+    inn VARCHAR(255),
+    suma_invoice DOUBLE(15,2),
+    pdvinvoice DOUBLE(15,2),
+    baza_invoice DOUBLE(15,2),
+    key_field VARCHAR(50),
+    numBranch VARCHAR(255) COMMENT 'номер филиала '
+);
+CREATE UNIQUE INDEX `key` ON Reestr_in_svod_inn (id);
+CREATE TABLE Reestr_out_svod_inn
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    month INT(11),
+    year INT(11),
+    inn VARCHAR(255),
+    suma_invoice DOUBLE(15,2),
+    pdvinvoice DOUBLE(15,2),
+    baza_invoice DOUBLE(15,2),
+    key_field VARCHAR(50),
+    numBranch VARCHAR(255)
+);
+CREATE UNIQUE INDEX id ON Reestr_out_svod_inn (id);
+CREATE TABLE SprBranch
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    num_branch VARCHAR(3) NOT NULL,
+    name_branch VARCHAR(150) NOT NULL,
+    branch_adr VARCHAR(150) NOT NULL,
+    name_main_branch VARCHAR(100) NOT NULL,
+    num_main_branch VARCHAR(3) NOT NULL
+);
+CREATE INDEX mainBranch ON SprBranch (num_main_branch);
+CREATE INDEX num_branch ON SprBranch (num_branch);
+CREATE TABLE Erpn_in_svod_inn_date_create
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    month_create INT(11),
+    year_create INT(11),
+    inn VARCHAR(255),
+    numBranch VARCHAR(255),
+    sum_pdv DECIMAL(15,2),
+    key_field VARCHAR(255),
+    key_ VARCHAR(255) NOT NULL
+);
+CREATE INDEX key_ ON Erpn_in_svod_inn_date_create (key_);
+CREATE INDEX vv ON Erpn_in_svod_inn_date_create (month_create, year_create, numBranch, inn);
+CREATE TABLE Reestr_out_svod_inn_date_create
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    month_create INT(11),
+    year_create INT(11),
+    inn VARCHAR(255),
+    numBranch VARCHAR(255),
+    sum_pdv DECIMAL(15,2),
+    key_field VARCHAR(255),
+    key_ VARCHAR(255) NOT NULL
+);
+CREATE INDEX key_ ON Reestr_out_svod_inn_date_create (key_);
+CREATE INDEX vv ON Reestr_out_svod_inn_date_create (month_create, year_create, numBranch, inn);
+CREATE TABLE erpn_in
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    num_invoice VARCHAR(20) NOT NULL,
+    date_create_invoice DATE NOT NULL,
+    date_reg_invoice DATE NOT NULL,
+    type_invoice_full VARCHAR(255) NOT NULL,
+    edrpou_client VARCHAR(255),
+    inn_client VARCHAR(255) NOT NULL,
+    num_branch_client VARCHAR(255),
+    name_client VARCHAR(500) NOT NULL,
+    suma_invoice DOUBLE(15,2) NOT NULL,
+    pdvinvoice DOUBLE(15,2),
+    baza_invoice DOUBLE(15,2) NOT NULL,
+    name_vendor VARCHAR(500) NOT NULL,
+    num_branch_vendor VARCHAR(255),
+    num_reg_invoice VARCHAR(12) NOT NULL,
+    type_invoice VARCHAR(2),
+    num_contract VARCHAR(100),
+    date_contract DATE,
+    type_contract VARCHAR(100),
+    person_create_invoice VARCHAR(40),
+    key_field VARCHAR(50) NOT NULL,
+    rke_info VARCHAR(200)
+);
+CREATE INDEX inn ON erpn_in (inn_client);
+CREATE INDEX `key` ON erpn_in (key_field);
+CREATE UNIQUE INDEX Key_fields ON erpn_in (num_invoice, date_create_invoice, type_invoice_full, inn_client);
+CREATE TABLE erpn_out
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    num_invoice VARCHAR(20) NOT NULL,
+    date_create_invoice DATE NOT NULL,
+    date_reg_invoice DATE NOT NULL,
+    type_invoice_full VARCHAR(255) NOT NULL,
+    edrpou_client VARCHAR(255),
+    inn_client VARCHAR(255) NOT NULL,
+    num_branch_client VARCHAR(255),
+    name_client VARCHAR(500) NOT NULL,
+    suma_invoice DOUBLE(15,2) NOT NULL,
+    pdvinvoice DOUBLE(15,2),
+    baza_invoice DOUBLE(15,2) NOT NULL,
+    name_vendor VARCHAR(500) NOT NULL,
+    num_branch_vendor VARCHAR(255),
+    num_reg_invoice VARCHAR(12) NOT NULL,
+    type_invoice VARCHAR(2),
+    num_contract VARCHAR(100),
+    date_contract DATE,
+    type_contract VARCHAR(100),
+    person_create_invoice VARCHAR(40),
+    key_field VARCHAR(50),
+    rke_info VARCHAR(200),
+    num_main_branch VARCHAR(255)
+);
+CREATE INDEX inn ON erpn_out (inn_client);
+CREATE INDEX `key` ON erpn_out (key_field);
+CREATE UNIQUE INDEX Key_fields ON erpn_out (num_invoice, date_create_invoice, type_invoice_full, inn_client);
+CREATE INDEX num_branch_vendor ON erpn_out (num_branch_vendor);
+CREATE INDEX num_main_branch ON erpn_out (num_main_branch);
+CREATE TABLE erpn_in_svod_inn
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    month INT(11),
+    year INT(11),
+    inn VARCHAR(255) NOT NULL,
+    suma_invoice DOUBLE(15,2) NOT NULL,
+    pdvinvoice DOUBLE(15,2),
+    baza_invoice DOUBLE(15,2),
+    key_field VARCHAR(50)
+);
+CREATE UNIQUE INDEX UK_Erpn_in_svod_inn_key_field ON erpn_in_svod_inn (key_field);
+CREATE TABLE erpn_out_svod_inn
+(
+    id INT(11) PRIMARY KEY NOT NULL,
+    month INT(11) NOT NULL,
+    year INT(11) NOT NULL,
+    inn VARCHAR(255) NOT NULL,
+    suma_invoice DOUBLE(15,2) NOT NULL,
+    pdvinvoice DOUBLE(15,2),
+    baza_invoice DOUBLE(15,2),
+    key_field VARCHAR(50)
+);
+CREATE UNIQUE INDEX UK_Erpn_out_svod_inn_key_field ON erpn_out_svod_inn (key_field);
+CREATE TABLE erpn_in_svod_to_date_create_invoice
+(
+    month_create INT(2),
+    year_create INT(4),
+    inn_client VARCHAR(255) NOT NULL,
+    suma_invoice DOUBLE(15,2) NOT NULL,
+    pdvinvoice DOUBLE(15,2),
+    baza_invoice DOUBLE(15,2) NOT NULL,
+    key_field VARCHAR(50) NOT NULL
+);
+CREATE TABLE erpn_out_inn_group_numbranch
+(
+    month_create INT(2),
+    year_create INT(4),
+    inn_client VARCHAR(255) NOT NULL,
+    num_main_branch VARCHAR(255),
+    pdv DOUBLE(19,2)
+);
+CREATE TABLE erpn_out_svod_to_date_create_invoice
+(
+    month_create INT(11),
+    year_create INT(11),
+    inn VARCHAR(255),
+    numBranch VARCHAR(255),
+    expr1 DECIMAL(37,2)
+);
+CREATE TABLE `in_erpn=reestr`
+(
+    num_invoice VARCHAR(20) NOT NULL,
+    date_create_invoice DATE NOT NULL,
+    type_invoice_full VARCHAR(255) NOT NULL,
+    inn_client VARCHAR(255) NOT NULL,
+    name_client VARCHAR(500) NOT NULL,
+    suma_invoice DOUBLE(15,2) NOT NULL,
+    pdvinvoice DOUBLE(15,2),
+    baza_invoice DOUBLE(15,2) NOT NULL,
+    name_vendor VARCHAR(500) NOT NULL,
+    num_branch_client VARCHAR(255),
+    zag_summ DOUBLE(15,2) DEFAULT '0.00' COMMENT 'общая сумма с ПДВ (столб 8)',
+    pdv DOUBLE(19,2),
+    baza DOUBLE(19,2),
+    num_branch VARCHAR(255) COMMENT 'номер филиала ',
+    month INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный месяц  реестра ',
+    year INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный год  реестра '
+);
+CREATE TABLE no_valid_reestr_in
+(
+    id INT(11) DEFAULT '0' NOT NULL,
+    month INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный месяц  реестра ',
+    year INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный год  реестра ',
+    num_branch VARCHAR(255) COMMENT 'номер филиала ',
+    date_get_invoice DATE COMMENT 'дата получения НН',
+    date_create_invoice DATE COMMENT 'дата создания НН',
+    num_invoice VARCHAR(255) COMMENT 'номер НН',
+    type_invoice_full VARCHAR(255) COMMENT 'ПНЕ или РКЕ ',
+    name_client VARCHAR(500) COMMENT 'наименование клиента',
+    inn_client VARCHAR(255) COMMENT 'ИНН клиента ',
+    zag_summ DOUBLE(15,2) DEFAULT '0.00' COMMENT 'общая сумма с ПДВ (столб 8)',
+    baza_zvil DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ (столб 16)',
+    pdv DOUBLE(19,2),
+    baza DOUBLE(19,2),
+    pdv_zvil DOUBLE(15,2) DEFAULT '0.00' COMMENT 'ПДВ  (столб 17) ',
+    baza_ne_gos DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость не предназначених в хоз деятельности (столб 18)',
+    pdv_ne_gos DOUBLE(15,2) DEFAULT '0.00' COMMENT 'ПДВ не предназначених в хоз деятельности (столб 19)',
+    baza_za_mezhi DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ поставка услуг за пределы Украины (столб 20)',
+    pdv_za_mezhi DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость с ПДВ поставка услуг за пределы Украины (столб 21)',
+    rke_date_create_invoice DATE COMMENT 'дата сознание НН которую корректирует РКЕ',
+    rke_num_invoice VARCHAR(50) COMMENT 'номер НН которую корректирует РКЕ',
+    rke_pidstava VARCHAR(250) COMMENT 'основание для выписки РКЕ ',
+    key_field VARCHAR(250) COMMENT 'ключевое поле '
+);
+CREATE TABLE no_valid_reestr_out
+(
+    id INT(11) DEFAULT '0' NOT NULL,
+    month INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный месяц  реестра ',
+    year INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный год  реестра ',
+    num_branch VARCHAR(255) COMMENT 'номер филиала ',
+    date_create_invoice DATE COMMENT 'дата создания НН',
+    num_invoice VARCHAR(255) COMMENT 'номер НН',
+    type_invoice_full VARCHAR(255) COMMENT 'ПНЕ или РКЕ ',
+    name_client VARCHAR(500) COMMENT 'наименование клиента',
+    inn_client VARCHAR(255) COMMENT 'ИНН клиента ',
+    zag_summ DOUBLE(15,2) DEFAULT '0.00' COMMENT 'общая сумма с ПДВ (столб 7)',
+    pdv DOUBLE(19,2),
+    baza DOUBLE(19,2),
+    baza_zvil DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ освобождены от налогообложения (столб 13)',
+    baza_ne_obj DOUBLE(15,2) DEFAULT '0.00' COMMENT 'сумма поставки для не есть объектом налогообложения (столб 14)',
+    baza_za_mezhi_tovar DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость без ПДВ поставка товаров за пределы Украины (столб 15)',
+    baza_za_mezhi_poslug DOUBLE(15,2) DEFAULT '0.00' COMMENT 'стоимость с ПДВ поставка услуг за пределы Украины (столб 16)',
+    rke_date_create_invoice DATE COMMENT 'дата сознание НН которую корректирует РКЕ',
+    rke_num_invoice VARCHAR(50) COMMENT 'номер НН которую корректирует РКЕ',
+    rke_pidstava VARCHAR(250) COMMENT 'основание для выписки РКЕ '
+);
+CREATE TABLE `out_erpn=reestr`
+(
+    num_invoice VARCHAR(20) NOT NULL,
+    date_create_invoice DATE NOT NULL,
+    type_invoice_full VARCHAR(255) NOT NULL,
+    inn_client VARCHAR(255) NOT NULL,
+    name_client VARCHAR(500) NOT NULL,
+    suma_invoice DOUBLE(15,2) NOT NULL,
+    pdvinvoice DOUBLE(15,2),
+    baza_invoice DOUBLE(15,2) NOT NULL,
+    name_vendor VARCHAR(500) NOT NULL,
+    num_branch_client VARCHAR(255),
+    zag_summ DOUBLE(15,2) DEFAULT '0.00' COMMENT 'общая сумма с ПДВ (столб 7)',
+    pdv DOUBLE(19,2),
+    baza DOUBLE(19,2),
+    num_branch VARCHAR(255) COMMENT 'номер филиала ',
+    month INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный месяц  реестра ',
+    year INT(11) DEFAULT '0' NOT NULL COMMENT 'отчетный год  реестра '
+);
+CREATE TABLE reestr_out_inn_group_numbranch
+(
+    `MONTH(ReestrBranch_out.date_create_invoice)` INT(2),
+    `YEAR(ReestrBranch_out.date_create_invoice)` INT(4),
+    inn VARCHAR(255) COMMENT 'ИНН клиента ',
+    num_branch VARCHAR(255) COMMENT 'номер филиала ',
+    pdv DOUBLE(19,2),
+    key_ TEXT
+);
+CREATE TABLE erpn_out_svod_to_date_create_invoice_copy
+(
+    month_create INT(2),
+    year_create INT(4),
+    inn_client VARCHAR(255) NOT NULL,
+    suma_invoice DOUBLE(15,2) NOT NULL,
+    pdvinvoice DOUBLE(15,2),
+    baza_invoice DOUBLE(15,2) NOT NULL,
+    key_field VARCHAR(50)
+);
+CREATE TABLE `out_erpn=reestr_by_inn`
+(
+    month_create INT(11),
+    year_create INT(11),
+    inn VARCHAR(255),
+    numBranch VARCHAR(255),
+    erpn_pdv DECIMAL(15,2),
+    reestr_pdv DECIMAL(15,2),
+    saldo DECIMAL(16,2)
+);
+CREATE TABLE reestr_out_svod_to_date_create_invoice
+(
+    month_create INT(11),
+    year_create INT(11),
+    inn VARCHAR(255),
+    numBranch VARCHAR(255),
+    expr1 DECIMAL(37,2)
+);
+CREATE FUNCTION getMonth(str VARCHAR) RETURNS INT;
+CREATE FUNCTION getYear(str VARCHAR) RETURNS INT;
+CREATE PROCEDURE AnalizInnOutFullJoinOneBranch(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE AnalizInnOutInnerJoinOneBranch(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE AnalizInnOutLeftJoinOneBranch(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE AnalizInnOutRightJoinOneBranch(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE AnalizPDVOutDiffDateOneBranchInnerJoinERPN_tempTable(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE AnalizPDVOutDiffDateOneBranchInnerJoinReestr_tempTable(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE AnalizPDVOutDiffDateOneBranchLeftJoinERPN_tempTable(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE full_join(month INT, year INT);
+CREATE PROCEDURE `get_erpn=reestr_by_dateCreate`(month INT, year INT);
+CREATE PROCEDURE AnalizInnInInnerJoin(month INT, year INT);
+CREATE PROCEDURE AnalizInnInLeftJoin(month INT, year INT);
+CREATE PROCEDURE AnalizInnInRightJoin(month INT, year INT);
+CREATE PROCEDURE getAnalizInnOutInnerJoin(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE getAnalizInnOutInnerJoinAllUZ(m INT, y INT);
+CREATE PROCEDURE getAnalizInnOutLeftJoin(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE getAnalizInnOutLeftJoinAllUZ(m INT, y INT);
+CREATE PROCEDURE getAnalizInnOutRightJoin(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE getAnalizInnOutRightJoinAllUZ(m INT, y INT);
+CREATE PROCEDURE getDocErpnBy_AnalizInnInInnerJoin(month INT, year INT);
+CREATE PROCEDURE getDocErpnBy_AnalizInnInLeftJoin(month INT, year INT);
+CREATE PROCEDURE getDocReestrBy_AnalizInnInInnerJoin(month INT, year INT);
+CREATE PROCEDURE getDocReestrBy_AnalizInnInRightJoin(month INT, year INT);
+CREATE PROCEDURE getReestrInEqualErpn(month INT, year INT, branch VARCHAR);
+CREATE PROCEDURE getReestrInEqualErpnAllUZ(m INT, y INT);
+CREATE PROCEDURE getReestrInNotEqualErpn(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE getReestrInNotEqualErpnAllUZ(m INT, y INT);
+CREATE PROCEDURE getReestrOutEqualErpn(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE getReestrOutEqualErpnAllUZ(m INT, y INT);
+CREATE PROCEDURE getReestrOutNotEqualErpn(m INT, y INT, b VARCHAR);
+CREATE PROCEDURE getReestrOutNotEqualErpnAllUZ(m INT, y INT);
+CREATE PROCEDURE getTempTable_In(month INT, year INT);
+CREATE PROCEDURE getTmpTbl_InnInnerJoin(month INT, year INT);
+CREATE PROCEDURE getTmpTbl_InnLeftJoin(month INT, year INT);
+CREATE PROCEDURE getTmpTbl_InnRightJoin(month INT, year INT);
+CREATE PROCEDURE AnalizInnInInnerJoin(month INT, year INT);
+

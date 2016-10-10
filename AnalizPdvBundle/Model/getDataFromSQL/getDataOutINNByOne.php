@@ -9,7 +9,7 @@
 namespace AnalizPdvBundle\Model\getDataFromSQL;
 
 /**
- * Задача класса предоставить данные для заполннения анализа
+ * Задача класса предоставить данные для заполннения анализа обязательств
  * реестра и ЕРПН в разрезе ИНН по одному филалу
  * Class getDataFromAnalizPDVOutINN
  * @package AnalizPdvBundle\Model\getDataFromSQL

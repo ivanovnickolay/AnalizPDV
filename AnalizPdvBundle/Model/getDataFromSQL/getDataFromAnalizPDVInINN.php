@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManager;
 
 /**
  * Задача класса предоставить данные для заполннения анализа
- * реестра и ЕРПН в разрезе ИНН по обязательствам
+ * реестра и ЕРПН в разрезе ИНН по кредиту
  * Class getDataFromAnalizPDVOutINN
  * @package AnalizPdvBundle\Model\getDataFromSQL
  */
