@@ -131,7 +131,7 @@ public function __construct ($entityManager,string $pathToTemplate='')
 	 * @param int $year номер года по которому надо сформировать анализ
 	 * @param string $numBranch номер филиала по которому надо сформировать анализ
 	 */
-	public function writeAnalizPDVOutInnByOneBranch(int $month,int $year,string $numBranch)
+	public function OutGroupInnByOneBranch(int $month, int $year, string $numBranch)
 	{
 		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
 		$data=new getDataFromAnalizPDVOutINN($this->em);
@@ -171,7 +171,7 @@ public function __construct ($entityManager,string $pathToTemplate='')
 			{
 				foreach ($arrAll as $key => $numBranch)
 				{
-					$this->writeAnalizPDVOutInnByOneBranch($month,$year,(string) $numBranch);
+					$this->OutGroupInnByOneBranch($month,$year,(string) $numBranch);
 				}
 			}
 		}
@@ -182,7 +182,7 @@ public function __construct ($entityManager,string $pathToTemplate='')
 	 * @param int $year номер года по которому надо сформировать анализ
 	 * @param string $numBranch номер филиала по которому надо сформировать анализ
 	 */
-	public function writeAnalizPDVOutDiffByOneBranch(int $month,int $year,string $numBranch)
+	public function writeAnalizPDVOutDelayByOneBranch(int $month, int $year, string $numBranch)
 	{
 		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_DiffDate.xlsx";
 		$data=new getDataFromAnalizPDVOutDiff($this->em);
@@ -217,7 +217,7 @@ public function __construct ($entityManager,string $pathToTemplate='')
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
 	 */
-	public function writeAnalizPDVOutDiffByAllBranch(int $month,int $year)
+	public function writeOutDelayByAllBranch(int $month, int $year)
 	{
 		$data=new getDataFromReestrsByOne($this->em);
 		$arrAllBranch=$data->getAllBranch();
@@ -225,7 +225,7 @@ public function __construct ($entityManager,string $pathToTemplate='')
 			{
 				foreach ($arrAll as $key => $numBranch)
 				{
-					$this->writeAnalizPDVOutDiffByOneBranch($month,$year,$numBranch);
+					$this->writeAnalizPDVOutDelayByOneBranch($month,$year,$numBranch);
 				}
 			}
 		}

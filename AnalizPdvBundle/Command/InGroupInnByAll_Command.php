@@ -2,6 +2,7 @@
 
 namespace AnalizPdvBundle\Command;
 
+use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizInByInn;
 use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizOutByInn;
 use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizPDVToFile;
 use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizReestr;
@@ -17,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class AnalizPDVByAll_UZ_Command
  * @package AnalizPdvBundle\Command
  */
-class AnalizPDVOutInnByAll_UZ_Command extends ContainerAwareCommand
+class InGroupInnByAll_Command extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -25,12 +26,12 @@ class AnalizPDVOutInnByAll_UZ_Command extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:OutGroupInnByAll')
-            ->setDescription('Анализ обязательств ПДВ между ЕРПН и Реестрами филиалов в разрезе ИНН в целом по ПАТ за период.')
+            ->setName('analiz_pdv:InGroupInnByAll')
+            ->setDescription('Анализ кредита ПДВ между ЕРПН и Реестрами филиалов в разрезе ИНН в целом по ПАТ за период.')
             ->addOption('month',null,InputOption::VALUE_REQUIRED,'Введите месяц')
             ->addOption('year',null,InputOption::VALUE_REQUIRED,'Введите год')
             ->setHelp("Анализ ПДВ между ЕРПН и Реестрами филиалов в целом по ПАТ. Обязательные параметры
-             месяц анализа --month= и год анализа --year=. Например analiz_pdv:OutGroupInnByAll --month=6 --year=2016");
+             месяц анализа --month= и год анализа --year=. Например analiz_pdv:InGroupInnByAll --month=6 --year=2016");
     }
 
     /**
@@ -57,8 +58,8 @@ class AnalizPDVOutInnByAll_UZ_Command extends ContainerAwareCommand
             }
         $pathTemplate=$this->getContainer()->getParameter('path_template');
         //$write=new writeAnalizPDVToFile($em,$pathTemplate);
-        $write=new writeAnalizOutByInn($em,$pathTemplate);
-        $write->writeAnalizPDVOutInnByAllUZ($month,$year);
+        $write=new writeAnalizInByInn($em,$pathTemplate);
+        $write->writeAnalizPDVInInnByAllUZ($month,$year);
         unset($write);
         gc_collect_cycles();
 

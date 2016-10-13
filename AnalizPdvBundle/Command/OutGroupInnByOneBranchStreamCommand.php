@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class AnalizPDVOutInnByOneBranchCommand
  * @package AnalizPdvBundle\Command
  */
-class AnalizPDVOutInnByOneBranchStreamCommand extends ContainerAwareCommand
+class OutGroupInnByOneBranchStreamCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}

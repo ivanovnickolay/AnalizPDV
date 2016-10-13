@@ -8,12 +8,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Команда формирует анализ опаздавших выданных НН одному филиалу в периоде
+ * Команда формирует анализ совпадения номеров ИНН выданных НН по одному филиаоу в периоде
  * todo реализовать ввод параметров команды
- * Class AnalizPDVOutDiffByOneBranch_Command
+ * Class AnalizPDVOutInnByOneBranchCommand
  * @package AnalizPdvBundle\Command
  */
-class AnalizPDVOutDelayByOneBranch_Command extends ContainerAwareCommand
+class OutGroupInnByOneBranchCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -21,8 +21,8 @@ class AnalizPDVOutDelayByOneBranch_Command extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:OutDelayByOneBranch')
-            ->setDescription('Анализ НН по обязательствам, которые зарегистрированы с опазданием по одному филиалу в периоде');
+            ->setName('analiz_pdv:OutGroupInnByOneBranch')
+            ->setDescription('Анализ НН по обязательствам в разрезе ИНН  по одному филиалу в периоде');
     }
 
     /**
@@ -35,7 +35,7 @@ class AnalizPDVOutDelayByOneBranch_Command extends ContainerAwareCommand
         $em=$dt->getManager();
         $pathTemplate=$this->getContainer()->getParameter('path_template');
         $write=new writeAnalizPDVToFile($em,$pathTemplate);
-        $write->writeAnalizPDVOutDiffByOneBranch(8,2016,"682");
+        $write->OutGroupInnByOneBranch(7,2016,"667");
         unset($write);
         gc_collect_cycles();
     }

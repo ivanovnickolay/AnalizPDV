@@ -2,19 +2,18 @@
 
 namespace AnalizPdvBundle\Command;
 
-
 use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizPDVToFile;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Команда формирует анализ ПДВ по реестрам и ЕРПН по одному филиалу
+ * Команда формирует анализ опаздавших выданных НН одному филиалу в периоде
  * todo реализовать ввод параметров команды
- * Class AnalizPDVByOneBranch_Command
+ * Class AnalizPDVOutDiffByOneBranch_Command
  * @package AnalizPdvBundle\Command
  */
-class AnalizPDVByOneBranch_Command extends ContainerAwareCommand
+class OutDelayByOneBranch_Command extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -22,8 +21,8 @@ class AnalizPDVByOneBranch_Command extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:AnalizPDVByOneBranch')
-            ->setDescription('Анализ ПДВ между ЕРПН и Реестрами филиалов по одному филиалу за период.');
+            ->setName('analiz_pdv:OutDelayByOneBranch')
+            ->setDescription('Анализ НН по обязательствам, которые зарегистрированы с опазданием по одному филиалу в периоде');
     }
 
     /**
@@ -31,11 +30,12 @@ class AnalizPDVByOneBranch_Command extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        gc_enable();
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
         $pathTemplate=$this->getContainer()->getParameter('path_template');
         $write=new writeAnalizPDVToFile($em,$pathTemplate);
-        $write->writeAnalizPDVByOneBranch(7,2016,"667");
+        $write->writeAnalizPDVOutDelayByOneBranch(8,2016,"682");
         unset($write);
         gc_collect_cycles();
     }

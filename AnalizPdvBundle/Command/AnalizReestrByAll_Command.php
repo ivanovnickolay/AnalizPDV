@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class AnalizPDVByAll_UZ_Command
  * @package AnalizPdvBundle\Command
  */
-class AnalizPDVByAll_UZ_Command extends ContainerAwareCommand
+class AnalizReestrByAll_Command extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -24,12 +24,12 @@ class AnalizPDVByAll_UZ_Command extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:AnalizPDVByAll')
+            ->setName('analiz_pdv:AnalizReestrByAll')
             ->setDescription('Анализ ПДВ между ЕРПН и Реестрами филиалов в целом по ПАТ за период.')
             ->addOption('month',null,InputOption::VALUE_REQUIRED,'Введите месяц')
             ->addOption('year',null,InputOption::VALUE_REQUIRED,'Введите год')
             ->setHelp("Анализ ПДВ между ЕРПН и Реестрами филиалов в целом по ПАТ. Обязательные параметры
-             месяц анализа --month= и год анализа --year=. Например analiz_pdv:AnalizPDVByAll --month=6 --year=2016");
+             месяц анализа --month= и год анализа --year=. Например analiz_pdv:AnalizReestrByAll --month=6 --year=2016");
     }
 
     /**

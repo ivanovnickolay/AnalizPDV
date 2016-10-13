@@ -2,7 +2,6 @@
 
 namespace AnalizPdvBundle\Command;
 
-
 use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizPDVToFile;
 use AnalizPdvBundle\Utilits\validInputCommand;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -11,11 +10,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Команда формирует анализ ПДВ по реестрам и ЕРПН по всем филиалам в периоде
- * Class AnalizPDVByOneBranchStream_Command
+ * Команда формирует анализ опаздавших выданных НН по всем филиалам в периоде
+  * Class AnalizPDVOutDiffByOneBranchStream_Command
  * @package AnalizPdvBundle\Command
  */
-class AnalizPDVByOneBranchStream_Command extends ContainerAwareCommand
+class OutDelayByOneBranchStream_Command extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -23,12 +22,12 @@ class AnalizPDVByOneBranchStream_Command extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('analiz_pdv:AnalizPDVByOneBranchStream')
-            ->setDescription('Анализ ПДВ между ЕРПН и Реестрами филиалов по каждому филиалу в периоде.')
+            ->setName('analiz_pdv:OutDelayOneBranchStream')
+            ->setDescription('Анализ НН по обязательствам, которые зарегистрированы с опазданием по каждому филиалу в периоде')
             ->addOption('month',null,InputOption::VALUE_REQUIRED,'Введите месяц')
             ->addOption('year',null,InputOption::VALUE_REQUIRED,'Введите год')
-            ->setHelp("Анализ ПДВ между ЕРПН и Реестрами филиалов по всем филиалам отдельно. Обязательные параметры
-             месяц анализа --month= и год анализа --year=. Например analiz_pdv:AnalizPDVByOneBranchStream --month=6 --year=2016");
+            ->setHelp("Анализ НН по обязательствам, которые зарегистрированы с опазданием по каждому филиалу в периоде.
+            Обязательные параметры месяц анализа --month= и год анализа --year=. Например analiz_pdv:OutDelayOneBranchStream --month=6 --year=2016");
     }
 
     /**
@@ -39,7 +38,6 @@ class AnalizPDVByOneBranchStream_Command extends ContainerAwareCommand
         gc_enable();
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
-
         $valid=new validInputCommand($em);
         $month=$input->getOption('month');
         if (!$valid->validMonth($month))
@@ -56,9 +54,8 @@ class AnalizPDVByOneBranchStream_Command extends ContainerAwareCommand
         }
         $pathTemplate=$this->getContainer()->getParameter('path_template');
         $write=new writeAnalizPDVToFile($em,$pathTemplate);
-        $write->writeAnalizPDVByAllBranch($month,$year);
+        $write->writeOutDelayByAllBranch($month,$year);
         unset($write);
         gc_collect_cycles();
     }
-
 }
