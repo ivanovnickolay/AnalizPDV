@@ -12,6 +12,7 @@ namespace AnalizPdvBundle\Model\writeAnalizPDVToFile;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutINN;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsByOne;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataOutINNByAll;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataOutInnByAllUZ;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataOutINNByOne;
 use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 
@@ -25,6 +26,7 @@ use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
  */
 class writeAnalizOutByInn extends writeAnalizToFileAbstract
 {
+	const fileNameAllUZ="AnalizPDV_Out_INN.xlsx";
 	/**
 	 *формирование файла анализа расхождений по ИНН по одному конкретному филиалу
 	 * @param int $month номер месяца по которому надо сформировать анализ
@@ -101,5 +103,62 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 		$write->fileWriteAndSave();
 		unset($data,$write);
 		gc_collect_cycles();
+	}
+
+	public function writeAnalizPDVOutInnByAllUZ_new(int $month,int $year)
+	{
+		//todo сменить жесткую привязку к файлу анализа
+		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
+		$file=$this->pathToTemplate.self::fileNameAllUZ;
+		//echo $file;
+		if (file_exists($file))
+		{
+			$data=new getDataOutInnByAllUZ($this->em);
+			$write=new getWriteExcel($file);
+			$write->setParamFile($month,$year,"All");
+			$write->getNewFileName();
+
+			$arr=$data->getReestrEqualErpnAllUZ($month,$year);
+			$write->setDataFromWorksheet('Out_R=E',$arr,'A4');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getReestrEqualErpnAllUZ_DocErpn($month,$year);
+			$write->setDataFromWorksheet('Out_R=E DocByE',$arr,'A3');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getReestrEqualErpnAllUZ_DocReestr($month,$year);
+			$write->setDataFromWorksheet('Out_R=E DocByR',$arr,'A3');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getReestrNoEqualErpnAllUZ($month,$year);
+			$write->setDataFromWorksheet('Out_R<>E',$arr,'A4');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getReestrNoEqualErpnAllUZ_DocReestr($month,$year);
+			$write->setDataFromWorksheet('Out_R<>E DocByR',$arr,'A3');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getErpnNoEqualReestrAllUZ($month,$year);
+			$write->setDataFromWorksheet('Out_E<>R',$arr,'A4');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getErpnNoEqualReestrAllUZ_DocErpn($month,$year);
+			$write->setDataFromWorksheet('Out_E<>R DocByE',$arr,'A3');
+			unset($arr);
+			gc_collect_cycles();
+
+			$write->fileWriteAndSave();
+			unset($data,$write);
+			gc_collect_cycles();
+		}	else
+		{
+			echo "File ".$file." not found";
+		}
 	}
 }

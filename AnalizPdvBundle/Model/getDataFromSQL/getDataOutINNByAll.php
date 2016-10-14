@@ -53,6 +53,7 @@ class getDataOutINNByAll extends getDataFromAnalizAbstract
 		$this->connect();
 		//$sql="CALL AnalizInnOutInnerJoinOneBranch_tempTable(:m,:y,:nb)";
 		$sql="CALL getAnalizInnOutInnerJoinAllUZ(:m,:y)";
+
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);
