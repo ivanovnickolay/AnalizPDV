@@ -138,7 +138,7 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 		return $arrayResult;
 	}
 
-	public function getEqualNoReestrErpnAllUZ_DocErpn(int $month, int $year)
+	public function getErpnNoEqualReestrAllUZ_DocErpn(int $month, int $year)
 	{
 		$this->disconnect();
 		$this->connect();
