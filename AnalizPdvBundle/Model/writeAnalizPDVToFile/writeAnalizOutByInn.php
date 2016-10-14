@@ -107,7 +107,6 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 
 	public function writeAnalizPDVOutInnByAllUZ_new(int $month,int $year)
 	{
-		//todo сменить жесткую привязку к файлу анализа
 		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
 		$file=$this->pathToTemplate.self::fileNameAllUZ;
 		//echo $file;
