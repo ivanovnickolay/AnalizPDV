@@ -1,0 +1,1 @@
+﻿UPDATE erpn_out eo SET eo.num_main_branch=(SELECT sb.num_main_branch FROM SprBranch sb WHERE sb.num_branch=eo.num_branch_vendor)

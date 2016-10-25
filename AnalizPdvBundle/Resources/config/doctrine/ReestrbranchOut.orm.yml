@@ -193,4 +193,8 @@ AnalizPdvBundle\Entity\ReestrbranchOut:
                 fixed: false
                 comment: 'ключевое поле '
             column: key_field
+        month_create_invoice:
+            type: integer
+        year_create_invoice:
+            type: integer
     lifecycleCallbacks: {  }

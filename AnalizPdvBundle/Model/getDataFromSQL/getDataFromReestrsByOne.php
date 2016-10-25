@@ -53,7 +53,7 @@ class getDataFromReestrsByOne
 				(pdvinvoice - pdv) as saldo_pdv
 				from `in_erpn=reestr`
 				WHERE month =:m AND year=:y AND num_branch=:nb";*/
-		$sql="CALL getReestrInEqualErpn(m,y,nb)";
+		$sql="CALL getReestrInEqualErpn(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);
@@ -80,7 +80,7 @@ class getDataFromReestrsByOne
 			zag_summ,baza,pdv
 			from no_valid_reestr_in
 			WHEre month=:m and year=:y and num_branch=:nb";*/
-		$sql="call getReestrInNotEqualErpn(m,y,nb)";
+		$sql="call getReestrInNotEqualErpn(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);
@@ -118,7 +118,7 @@ class getDataFromReestrsByOne
 				(pdvinvoice - pdv) as saldo_pdv
 				from `out_erpn=reestr`
 				WHERE month =:m AND year=:y AND num_branch=:nb";*/
-		$sql="call getReestrOutEqualErpn(m,y,nb)";
+		$sql="call getReestrOutEqualErpn(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);
@@ -146,7 +146,7 @@ class getDataFromReestrsByOne
 			zag_summ,baza,pdv
 			from no_valid_reestr_out
 			WHEre month=:m and year=:y and num_branch=:nb";*/
-		$sql="call getReestrOutNotEqualErpn(m,y,nb)";
+		$sql="call getReestrOutNotEqualErpn(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);

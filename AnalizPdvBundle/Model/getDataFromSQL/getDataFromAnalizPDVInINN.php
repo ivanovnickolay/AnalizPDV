@@ -81,7 +81,7 @@ class getDataFromAnalizPDVOutINN
 		$this->disconnect();
 		$this->connect();
 		//$sql="CALL AnalizInnOutInnerJoinOneBranch_tempTable(:m,:y,:nb)";
-		$sql="CALL getAnalizInnOutInnerJoin(:m,:y,:nb)";
+		$sql="CALL getAnalizInnOutInnerJoin(:m,:y,:nb)";//
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
 		$smtp->bindValue("y",$year);

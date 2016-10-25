@@ -1,0 +1,1 @@
+﻿UPDATE erpn_out eo SET eo.month_create_invoice=MONTH(eo.date_create_invoice),eo.year_create_invoice=YEAR(eo.date_create_invoice);

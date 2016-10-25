@@ -1,0 +1,82 @@
+Db;Name;Comment;класс;функция ;Вызовы внутри хранимых процедур 
+analizpdv;AnalizInnOutFullJoinOneBranch;;-;-;
+analizpdv;AnalizInnOutInnerJoinOneBranch;Внутренне соединение данных ЕРПН и реестра за период по одному филиалу;-;-;
+analizpdv;AnalizInnOutLeftJoinOneBranch;Левое соединение данных ЕРПН и реестра за период по одному филиалу. Вывод только данных из ЕРПН которые не совпали с реестром;-;-;
+analizpdv;AnalizInnOutRightJoinOneBranch;Правое соединение данных ЕРПН и реестра за период по одному филиалу. Вывод только данных из Реестра которые не совпали с ЕРПН;-;-;
+analizpdv;AnalizPDVOutDiffDateOneBranchInnerJoinERPN_tempTable;;getDataFromAnalizPDVOutDiff;getAllDiff;
+;;;getDataPDVOutDiff;getAllDiff;
+analizpdv;AnalizPDVOutDiffDateOneBranchInnerJoinReestr_tempTable;Проверка факта включения опаздавших в реестр филиала;getDataFromAnalizPDVOutDiff;getDiffToReestr;
+;;;getDataPDVOutDiff;getDiffToReestr;
+analizpdv;AnalizPDVOutDiffDateOneBranchLeftJoinERPN_tempTable;Проверка факта включения опаздавших в реестр филиала;getDataFromAnalizPDVOutDiff;getDiffToNotReestr;
+;;;getDataPDVOutDiff;getDiffToNotReestr;
+analizpdv;full_join;;-;-;
+analizpdv;getAnalizInnInInnerJoinAllUZ;Анализ ПДВ по кредиту в резрезе ИНН за период. Внутренне соединение для не совпавших сумм ПДВ;getDataInINNByAll ;getReestrEqualErpnAllUZ;
+analizpdv;getAnalizInnInLeftJoinAllUZ;Анализ ПДВ по кредиту в резрезе ИНН за период. Вывод только ИНН с ЕРПН которые не имеют сумм в реестрах;getDataInINNByAll ;getErpnNoEqualReestrAllUZ;
+;;;getDataInINNByAll;getEqualNoReestrErpnAllUZ;
+analizpdv;getAnalizInnInRightJoinAllUZ;Анализ ПДВ по кредиту в резрезе ИНН за период. Вывод только ИНН с Реестров  которые не имеют сумм в ЕРПН;getDataInINNByAll;getReestrNoEqualErpnAllUZ;
+analizpdv;getAnalizInnOutInnerJoin;;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVInINN.php;getReestrEqualErpn;
+;;;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutINN.php;getReestrEqualErpn;
+analizpdv;getAnalizInnOutInnerJoinAllUZ;;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVInINN.php;getReestrEqualErpnAllUZ;
+;;;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutINN.php;getReestrEqualErpnAllUZ;
+;;;getDataOutINNByAll;getReestrEqualErpnAllUZ;
+analizpdv;getAnalizInnOutInnerJoinAllUZ_tmp;;getDataOutInnByAllUZ;getReestrEqualErpnAllUZ;
+analizpdv;getAnalizInnOutInnerJoinBranch;Внетренне соединение данных ЕРПН и реестра за период по филиалу.;-;-;
+analizpdv;getAnalizInnOutLeftJoin;Левое соединение данных ЕРПН и реестра за период по УЗ. Вывод только данных из ЕРПН которые не совпали с реестром;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVInINN.php;getErpnNoEqualReestr;
+;;;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutINN.php;getErpnNoEqualReestr;
+analizpdv;getAnalizInnOutLeftJoinAllUZ;Левое соединение данных ЕРПН и реестра за период по УЗ. Вывод только данных из ЕРПН которые не совпали с реестром;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVInINN.php;getErpnNoEqualReestrAllUZ;
+;;;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutINN.php;getErpnNoEqualReestrAllUZ;
+;;;getDataOutINNByAll;getErpnNoEqualReestrAllUZ;
+;;;getDataOutInnByAllUZ;getErpnNoEqualReestrAllUZ;
+analizpdv;getAnalizInnOutLeftJoinBranch;Левое соединение данных ЕРПН и реестра за период по УЗ. Вывод только данных из ЕРПН которые не совпали с реестром;-;-;
+analizpdv;getAnalizInnOutRightJoin;Правое соединение данных ЕРПН и реестра за период по одному филиалу. Вывод только данных из Реестра которые не совпали с ЕРПН;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVInINN.php;getReestrNoEqualErpn;
+;;;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutINN.php;getReestrNoEqualErpn;
+analizpdv;getAnalizInnOutRightJoinAllUZ;Правое соединение данных ЕРПН и реестра за период по одному филиалу. Вывод только данных из Реестра которые не совпали с ЕРПН;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVInINN.php;getReestrNoEqualErpnAllUZ;
+;;;getDataFromAnalizPDVOutINN D:\OpenServer525\domains\AnalizPDV\src\AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutINN.php;getReestrNoEqualErpnAllUZ;
+;;;getDataOutINNByAll;getReestrNoEqualErpnAllUZ;
+;;;getDataOutInnByAllUZ;getReestrNoEqualErpnAllUZ;
+analizpdv;getAnalizInnOutRightJoinBranch;Правое соединение данных ЕРПН и реестра за период по одному филиалу. Вывод только данных из Реестра которые не совпали с ЕРПН;-;-;
+analizpdv;getDocErpnBy_AnalizInnInInnerJoinAllUZ;Получает список полученных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnInInnerJoin;getDataInINNByAll;getReestrEqualErpnAllUZ_DocErpn;
+analizpdv;getDocErpnBy_AnalizInnInLeftJoin;Получает список полученных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnInLeftJoin;getDataInINNByAll;getErpnNoEqualReestrAllUZ_DocErpn;
+analizpdv;getDocErpnBy_AnalizInnOutInnerJoinAllUZ;Получает список полученных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnInInnerJoinAllUZ;getDataOutInnByAllUZ;getReestrEqualErpnAllUZ_DocErpn;
+analizpdv;getDocErpnBy_AnalizInnOutInnerJoinBranch;Получает список полученных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnInInnerJoin;-;-;
+analizpdv;getDocErpnBy_AnalizInnOutLeftJoinAllUZ;Получает список выданных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnOutLeftJoinBranch;getDataOutInnByAllUZ;getErpnNoEqualReestrAllUZ_DocErpn;
+analizpdv;getDocErpnBy_AnalizInnOutLeftJoinBranch;Получает список выданных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnOutLeftJoinBranch;-;-;
+analizpdv;getDocReestrBy_AnalizInnInInnerJoinAllUZ;Получает список полученных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnInInnerJoin;getDataInINNByAll;getReestrEqualErpnAllUZ_DocReestr;
+analizpdv;getDocReestrBy_AnalizInnInRightJoin;Получает список полученных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnInInnerJoin;getDataInINNByAll;getReestrNoEqualErpnAllUZ_DocReestr;
+analizpdv;getDocReestrBy_AnalizInnOutInnerJoinAllUZ;Получает список полученных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnOutInnerJoinAllUZ;getDataOutInnByAllUZ;getReestrEqualErpnAllUZ_DocReestr;
+analizpdv;getDocReestrBy_AnalizInnOutInnerJoinBranch;Получает список полученных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnOutInnerJoin;-;-;
+analizpdv;getDocReestrBy_AnalizInnOutRightJoinAllUZ;Получает список выданных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnOutInnerJoinBranch;getDataOutInnByAllUZ;getReestrNoEqualErpnAllUZ_DocReestr;
+analizpdv;getDocReestrBy_AnalizInnOutRightJoinBranch;Получает список выданных НН из ЕРПН  по ИПНам которые признаны ошибочними при AnalizInnOutInnerJoinBranch;-;-;
+analizpdv;getReestrInEqualErpn;Возвращает массив информации с реестра полученных НН которые совпали с ЕРПН по параметрам;getDataFromReestrsByOne;getReestrInEqualErpn;
+analizpdv;getReestrInEqualErpnAllUZ;Возвращает массив информации с реестра полученных НН которые совпали с ЕРПН по параметрам в целом по УЗ;getDataFromReestrsAll;getReestrInEqualErpn;
+analizpdv;getReestrInNotEqualErpn;Возвращает массив информации с реестра полученных НН которые НЕ совпали с ЕРПН по параметрам;getDataFromReestrsByOne;getReestrInNotEqualErpn;
+analizpdv;getReestrInNotEqualErpnAllUZ;Возвращает массив информации с реестра полученных НН которые НЕ совпали с ЕРПН по параметрам по всему УЗ;getDataFromReestrsAll;getReestrInNotEqualErpn;
+analizpdv;getReestrOutEqualErpn;Возвращает массив информации с реестра выданных НН которые совпали с ЕРПН по параметрам;getDataFromReestrsByOne;getReestrOutEqualErpn;
+analizpdv;getReestrOutEqualErpnAllUZ;Возвращает массив информации с реестра выданных НН которые совпали с ЕРПН по параметрам по всему УЗ;getDataFromReestrsAll;getReestrOutEqualErpn;
+analizpdv;getReestrOutNotEqualErpn;Возвращает массив информации с реестра выданных НН которые НЕ совпали с ЕРПН по параметрам;getDataFromReestrsByOne;getReestrOutNotEqualErpn;
+analizpdv;getReestrOutNotEqualErpnAllUZ;Возвращает массив информации с реестра выданных НН которые НЕ совпали с ЕРПН по параметрам по всему УЗ;getDataFromReestrsAll;getReestrOutNotEqualErpn;
+analizpdv;getTempTable_In;Формирует временные таблицы для анализа ПДВ по кредиту в резрезе ИНН за период;;;
+analizpdv;getTmpTbl_InnInnerJoin;;;;getDocErpnBy_AnalizInnInInnerJoin
+;;;;;getDocReestrBy_AnalizInnInInnerJoin
+analizpdv;getTmpTbl_InnLeftJoin;;;;getDocErpnBy_AnalizInnInLeftJoin
+analizpdv;getTmpTbl_InnRightJoin;;;;getDocReestrBy_AnalizInnInRightJoin
+analizpdv;getTmpTbl_OutAllUZ;Формирует временные таблицы для анализа ПДВ по обязательствам в резрезе ИНН за период по УЗ;;;getAnalizInnOutInnerJoinAllUZ_tmp
+;;;;;getAnalizInnOutLeftJoinAllUZ
+;;;;;getAnalizInnOutRightJoinAllUZ
+;;;;;getTmpTbl_OutInnerJoinAllUZ
+;;;;;getTmpTbl_OutLeftJoinAllUZ
+;;;;;getTmpTbl_OutRightJoinAllUZ
+analizpdv;getTmpTbl_OutBranch;Формирует временные таблицы для анализа ПДВ по обязательствам в резрезе ИНН за период УЗ;;;getAnalizInnOutInnerJoinBranch
+;;;;;getTmpTbl_OutInnerJoin
+;;;;;getTmpTbl_OutLeftJoin
+analizpdv;getTmpTbl_OutInnerJoin;;;;getDocErpnBy_AnalizInnOutInnerJoinBranch
+;;;;;getDocReestrBy_AnalizInnOutInnerJoinBranch
+analizpdv;getTmpTbl_OutInnerJoinAllUZ;;;;getDocErpnBy_AnalizInnOutInnerJoinAllUZ
+;;;;;getDocReestrBy_AnalizInnOutInnerJoinAllUZ
+analizpdv;getTmpTbl_OutLeftJoin;формирование временных таблиц по левому объединению - данные только с ЕРПН по филиалу за период;;;getAnalizInnOutLeftJoinBranch
+;;;;;getDocErpnBy_AnalizInnOutLeftJoinBranch
+analizpdv;getTmpTbl_OutLeftJoinAllUZ;формирование временных таблиц по левому объединению - данные только с ЕРПН по филиалу за период;;;getDocErpnBy_AnalizInnOutLeftJoinBranch
+analizpdv;getTmpTbl_OutRightJoin;;;;getAnalizInnOutRightJoinBranch
+;;;;;getDocReestrBy_AnalizInnOutRightJoinBranch
+analizpdv;getTmpTbl_OutRightJoinAllUZ;;;;getDocReestrBy_AnalizInnOutRightJoinAllUZ
+analizpdv;get_erpn=reestr_by_dateCreate;Возвращает результат внутреннего соединения для данных ЕРПН и Реестров;-;-;-

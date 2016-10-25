@@ -1,0 +1,1 @@
+﻿UPDATE ReestrBranch_out rbo SET rbo.month_create_invoice=MONTH(rbo.date_create_invoice),rbo.year_create_invoice=YEAR(rbo.date_create_invoice);

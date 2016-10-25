@@ -127,6 +127,41 @@ class ReestrbranchOut
      */
     private $keyField;
 
+    private $month_create_invoice;
+
+    /**
+     * @return mixed
+     */
+    public function getMonthCreateInvoice ()
+    {
+        return $this->month_create_invoice;
+    }
+
+    /**
+     * @param mixed $month_create_invoice
+     */
+    public function setMonthCreateInvoice ($month_create_invoice)
+    {
+        $this->month_create_invoice = $month_create_invoice;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getYearCreateInvoice ()
+    {
+        return $this->year_create_invoice;
+    }
+
+    /**
+     * @param mixed $year_create_invoice
+     */
+    public function setYearCreateInvoice ($year_create_invoice)
+    {
+        $this->year_create_invoice = $year_create_invoice;
+    }
+    private $year_create_invoice;
+
 
     /**
      * Get id
