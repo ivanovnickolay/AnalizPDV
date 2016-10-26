@@ -1,0 +1,18 @@
+class AnalizReestrByAll_Command extends ContainerAwareCommand
+	class validInputCommand
+		method validInputCommand.validMonth
+		method validInputCommand.validYear
+		method validInputCommand.getTextError
+	class writeAnalizReestr
+		method writeAnalizReestr.writeAnalizPDVByAllUZ
+			class getDataFromReestrsAll		
+				method getDataFromReestrsAll.getReestrInEqualErpn
+				method getDataFromReestrsAll.getReestrInNotEqualErpn
+				method getDataFromReestrsAll.getReestrOutEqualErpn
+				method getDataFromReestrsAll.getReestrOutNotEqualErpn
+			class getWriteExcel
+				method getWriteExcel.setParamFile
+				method getWriteExcel.getNewFileName
+				method getWriteExcel.setDataFromWorksheet
+				method getWriteExcel.fileWriteAndSave
+

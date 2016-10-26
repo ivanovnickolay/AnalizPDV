@@ -18,10 +18,12 @@ use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 class writeAnalizInByInn extends writeAnalizToFileAbstract
 {
 	const fileNameAllUZ="AnalizPDV_In_INN.xlsx";
-		/**
-	 * @param int $month
-	 * @param int $year
-	 */
+	/**
+	 * Формирование файла анализа выданных НН в разрезе ИНН в целом по ПАТ
+ 	 * @param int $month месяц
+	 * @param int $year год
+
+	  */
 	public function writeAnalizPDVInInnByAllUZ(int $month, int $year)
 	{
 		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_In_INN.xlsx";

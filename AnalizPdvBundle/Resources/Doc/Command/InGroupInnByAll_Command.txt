@@ -1,0 +1,20 @@
+class InGroupInnByAll_Command extends ContainerAwareCommand
+	class validInputCommand
+		method validInputCommand.validMonth
+		method validInputCommand.validYear
+		method validInputCommand.getTextError
+	class writeAnalizInByInn
+	    method writeAnalizInByInn.writeAnalizPDVInInnByAllUZ
+			class getWriteExcel
+				method getWriteExcel.setParamFile
+				method getWriteExcel.getNewFileName
+				method getWriteExcel.setDataFromWorksheet
+				method getWriteExcel.fileWriteAndSave
+            class getDataInINNByAll
+                method getDataInINNByAll.getReestrEqualErpnAllUZ
+                method getDataInINNByAll.getReestrEqualErpnAllUZ_DocErpn
+                method getDataInINNByAll.getReestrEqualErpnAllUZ_DocReestr
+                method getDataInINNByAll.getReestrNoEqualErpnAllUZ
+                method getDataInINNByAll.getReestrNoEqualErpnAllUZ_DocReestr
+                method getDataInINNByAll.getErpnNoEqualReestrAllUZ
+                method getDataInINNByAll.getErpnNoEqualReestrAllUZ_DocErpn

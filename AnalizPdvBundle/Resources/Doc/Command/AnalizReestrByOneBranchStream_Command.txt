@@ -1,0 +1,22 @@
+class AnalizReestrByOneBranchStream_Command extends ContainerAwareCommand
+	class validInputCommand
+		method validInputCommand.validMonth
+		method validInputCommand.validYear
+		method validInputCommand.getTextError
+	class writeAnalizPDVToFile
+		method writeAnalizPDVToFile.writeAnalizPDVByAllBranch	
+			class getDataFromReestrsByOne
+				method getDataFromReestrsByOne.getAllBranchToPeriod
+			method writeAnalizPDVToFile.writeAnalizPDVByOneBranch	
+				class getDataFromReestrsByOne
+					method getDataFromReestrsByOne.getReestrInEqualErpn
+					method getDataFromReestrsByOne.getReestrInNotEqualErpn
+					method getDataFromReestrsByOne.getReestrOutEqualErpn
+					method getDataFromReestrsByOne.getReestrOutNotEqualErpn
+				class getWriteExcel
+					method getWriteExcel.setParamFile
+					method getWriteExcel.getNewFileName
+					method getWriteExcel.setDataFromWorksheet
+					method getWriteExcel.fileWriteAndSave
+
+		
