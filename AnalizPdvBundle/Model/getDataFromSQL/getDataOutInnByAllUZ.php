@@ -23,6 +23,8 @@ class getDataOutInnByAllUZ extends getDataFromAnalizAbstract
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @uses writeAnalizOutByInn::writeAnalizPDVOutInnByAllUZ_new - отсюда вызывается функция
+	 * @uses store_procedure::getAnalizInnOutLeftJoinAllUZ - хранимая процедура для генерации данных
 	 */
 
 	public function getErpnNoEqualReestrAllUZ(int $month, int $year)
@@ -41,11 +43,13 @@ class getDataOutInnByAllUZ extends getDataFromAnalizAbstract
 	}
 
 	/**
-	 * Получение документов с ЕРПН по расхождению
+	 * Получение документов с ЕРПН по расхождению сформированому в getErpnNoEqualReestrAllUZ
 	 * @param int $month
 	 * @param int $year
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @uses writeAnalizOutByInn::writeAnalizPDVOutInnByAllUZ_new - отсюда вызывается функция
+	 * @uses store_procedure::getDocErpnBy_AnalizInnOutLeftJoinAllUZ - хранимая процедура для генерации данных
 	 */
 	public function getErpnNoEqualReestrAllUZ_DocErpn(int $month, int $year)
 	{
@@ -62,12 +66,14 @@ class getDataOutInnByAllUZ extends getDataFromAnalizAbstract
 		return $arrayResult;
 	}
 	/**
-	 * Анализ документов в разрезе ИНН которые есть и в ЕРПН и в Реестре по филиалу
+	 * Анализ документов в разрезе ИНН которые есть и в ЕРПН и в Реестре по ПАТ
 	 * @param int $month
 	 * @param int $year
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @uses writeAnalizOutByInn::writeAnalizPDVOutInnByAllUZ_new - отсюда вызывается функция
+	 * @uses store_procedure::getAnalizInnOutInnerJoinAllUZ_tmp - хранимая процедура для генерации данных
 	 */
 	public function getReestrEqualErpnAllUZ(int $month, int $year)
 	{
@@ -83,11 +89,13 @@ class getDataOutInnByAllUZ extends getDataFromAnalizAbstract
 		return $arrayResult;
 	}
 	/**
-	 * Получение документов с ЕРПН по расхождению
+	 * Получение документов с ЕРПН по расхождению сформированному в getReestrEqualErpnAllUZ
 	 * @param int $month
 	 * @param int $year
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @uses writeAnalizOutByInn::writeAnalizPDVOutInnByAllUZ_new - отсюда вызывается функция
+	 * @uses store_procedure::getDocErpnBy_AnalizInnOutInnerJoinAllUZ - хранимая процедура для генерации данных
 	 */
 
 	public function getReestrEqualErpnAllUZ_DocErpn(int $month, int $year)
@@ -105,11 +113,13 @@ class getDataOutInnByAllUZ extends getDataFromAnalizAbstract
 	}
 
 	/**
-	 * Получение документов с Реестров по расхождению
+	 * Получение документов с Реестров по расхождению сформированному в getReestrEqualErpnAllUZ
 	 * @param int $month
 	 * @param int $year
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @uses writeAnalizOutByInn::writeAnalizPDVOutInnByAllUZ_new - отсюда вызывается функция
+	 * @uses store_procedure::getDocReestrBy_AnalizInnOutInnerJoinAllUZ - хранимая процедура для генерации данных
 	 */
 	public function getReestrEqualErpnAllUZ_DocReestr(int $month, int $year)
 	{
@@ -125,12 +135,14 @@ class getDataOutInnByAllUZ extends getDataFromAnalizAbstract
 		return $arrayResult;
 	}
 	/**
-	 * Анализ документов в разрезе ИНН которые есть в Реестре но нет в ЕРПН по филиалу
+	 * Анализ документов в разрезе ИНН которые есть в Реестре но нет в ЕРПН по ПАТ
 	 * @param int $month
 	 * @param int $year
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @uses writeAnalizOutByInn::writeAnalizPDVOutInnByAllUZ_new - отсюда вызывается функция
+	 * @uses store_procedure::getAnalizInnOutRightJoinAllUZ - хранимая процедура для генерации данных
 	 */
 	public function getReestrNoEqualErpnAllUZ(int $month, int $year)
 	{
@@ -147,11 +159,13 @@ class getDataOutInnByAllUZ extends getDataFromAnalizAbstract
 		return $arrayResult;
 	}
 	/**
-	 * Получение документов с Реестров по расхождению
+	 * Получение документов с Реестров по расхождению сформированому getReestrNoEqualErpnAllUZ
 	 * @param int $month
 	 * @param int $year
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @uses writeAnalizOutByInn::writeAnalizPDVOutInnByAllUZ_new - отсюда вызывается функция
+	 * @uses store_procedure::getDocReestrBy_AnalizInnOutRightJoinAllUZ - хранимая процедура для генерации данных
 	 */
 	public function getReestrNoEqualErpnAllUZ_DocReestr(int $month, int $year)
 	{

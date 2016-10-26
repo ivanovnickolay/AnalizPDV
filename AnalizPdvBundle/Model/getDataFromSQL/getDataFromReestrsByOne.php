@@ -157,7 +157,7 @@ class getDataFromReestrsByOne
 	}
 
 	/**
-	 * получить массив всех филиалов которые имели реестры в данном периоде
+	 * получает список уникальных филиалов из реестра полученных НН за период
 	 * @param $month
 	 * @param $year
 	 * @return array
@@ -192,6 +192,14 @@ class getDataFromReestrsByOne
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;
 	}
+
+	/**
+	 * получает список уникальных  филиалов из реестра выдынных НН за период
+	 * @param $month
+	 * @param $year
+	 * @return array
+	 * @uses writeAnalizOutByInn::writeAnalizPDVOutInnByAllBranch - отсюда вызывается функция
+	 */
 	public function getAllBranchToPeriodOut($month, $year)
 	{
 		//$smtp=$this->em->getConnection();

@@ -68,18 +68,34 @@ class getWriteExcel
 		}
 	}
 
-	public function setParamFile($month,$year,$numBranch)
+	/**
+	 * установка данных для формирования названия файла с готовым анализом
+	 * @param $month месяц анализа
+	 * @param $year год анализа
+	 * @param $numBranch номер филиала
+	 */
+	public function setParamFile($month, $year, $numBranch)
 	{
 		$this->month=$month;
 		$this->year=$year;
 		$this->numBranch=$numBranch;
 	}
 
-	public function setDataFromWorksheet($nameWorksheet, array $data,string $startCell)
+	/**
+	 * Вставляет массив данных на лист файла шаблона
+	 * @param string $nameWorksheet  наименование листа в который надо вставить данные
+	 * @param array $data массив с данными
+	 * @param string $startCell начальная ячейка для вставки данных из массива
+	 */
+	public function setDataFromWorksheet($nameWorksheet, array $data, string $startCell)
 	{
 		$this->Excel->getSheetByName("$nameWorksheet")->fromArray($data,null,$startCell);
 	}
 
+	/**
+	 * Сохранение файлы в директорию указаную в $fileNameTemplate с новым названием
+	 *
+	 */
 	public function fileWriteAndSave()
 	{
 		//$this->Writer=new \PHPExcel_Writer_Excel2007($this->Excel);
@@ -92,6 +108,10 @@ class getWriteExcel
 		unset($this->Excel);
 	}
 
+	/**
+	 * Формирование нового названия файла исходя их месяца, года и номера филиала
+	 * @return string
+	 */
 	public function getNewFileName()
 	{
 		list( $dirname, $basename, $extension, $filename ) = array_values( pathinfo($this->fileNameTemplate));

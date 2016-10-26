@@ -15,6 +15,11 @@ use AnalizPdvBundle\Model\getDataFromSQL\getDataInINNByAll;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataOutINNByAll;
 use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 
+/**
+ * Формирование файла анализа выданных НН в разрезе ИНН в целом по ПАТ
+ * @package AnalizPdvBundle\Model\writeAnalizPDVToFile
+ * @inheritdoc
+ */
 class writeAnalizInByInn extends writeAnalizToFileAbstract
 {
 	const fileNameAllUZ="AnalizPDV_In_INN.xlsx";
@@ -22,7 +27,18 @@ class writeAnalizInByInn extends writeAnalizToFileAbstract
 	 * Формирование файла анализа выданных НН в разрезе ИНН в целом по ПАТ
  	 * @param int $month месяц
 	 * @param int $year год
-
+	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ
+	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ_DocErpn
+	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ_DocReestr
+	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ_DocReestr
+	 * @uses getDataInINNByAll::getReestrNoEqualErpnAllUZ
+	 * @uses getDataInINNByAll::getReestrNoEqualErpnAllUZ_DocReestr
+	 * @uses getDataInINNByAll::getErpnNoEqualReestrAllUZ
+	 * @uses getDataInINNByAll::getErpnNoEqualReestrAllUZ_DocErpn
+	 * @uses getWriteExcel::setParamFile
+	 * @uses getWriteExcel::getNewFileName
+	 * @uses getWriteExcel::setDataFromWorksheet
+	 * @uses getWriteExcel::fileWriteAndSave
 	  */
 	public function writeAnalizPDVInInnByAllUZ(int $month, int $year)
 	{

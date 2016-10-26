@@ -18,20 +18,27 @@ use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 
 /**
  * Класс формирует файлы анализа расхождения по ИНН по обязательствам ПАТ за период
- * - по одному конкретному филиалу
- * - по всем филиалам
- * - по всей УЗ
- * Class writeAnalizOutByInn
+ * @see writeAnalizPDVOutInnByOneBranch по одному конкретному филиалу
+ * @see writeAnalizPDVOutInnByAllBranch по всем филиалам
+ * @see writeAnalizPDVOutInnByAllUZ по всей УЗ без документов
+ * @see writeAnalizPDVOutInnByAllUZ_new по всей УЗ с документами которые вызвали расхождение
  * @package AnalizPdvBundle\Model\writeAnalizPDVToFile
  */
 class writeAnalizOutByInn extends writeAnalizToFileAbstract
 {
 	const fileNameAllUZ="AnalizPDV_Out_INN.xlsx";
 	/**
-	 *формирование файла анализа расхождений по ИНН по одному конкретному филиалу
+	 *формирование файла анализа расхождений обязательств по ИНН по одному конкретному филиалу
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
 	 * @param string $numBranch номер филиала по которому надо сформировать анализ
+	 * @uses getDataOutINNByOne::getReestrEqualErpn формирование данных
+	 * @uses getDataOutINNByOne::getErpnNoEqualReestr формирование данных
+	 * @uses getDataOutINNByOne::getReestrNoEqualErpn формирование данных
+	 * @uses getWriteExcel::setParamFile
+	 * @uses getWriteExcel::getNewFileName
+	 * @uses getWriteExcel::setDataFromWorksheet
+	 * @uses getWriteExcel::fileWriteAndSave
 	 */
 	public function writeAnalizPDVOutInnByOneBranch(int $month,int $year,string $numBranch)
 	{
@@ -41,14 +48,17 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 		$write=new getWriteExcel($file);
 		$write->setParamFile($month,$year,$numBranch);
 		$write->getNewFileName();
+
 		$arr=$data->getReestrEqualErpn($month,$year,$numBranch);
 		$write->setDataFromWorksheet('Out_reestr=erpn',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
+
 		$arr=$data->getErpnNoEqualReestr($month,$year,$numBranch);
 		$write->setDataFromWorksheet('Out_erpn<>reestr',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
+
 		$arr=$data->getReestrNoEqualErpn($month,$year,$numBranch);
 		$write->setDataFromWorksheet('Out_reestr<>erpn',$arr,'A4');
 		unset($arr);
@@ -60,10 +70,11 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 	}
 
 	/**
-	 * формирование файлов анализа расхождений по ИНН по всем филиалам
-	 * каждый филиал в свой файл
+	 * формирование файлов анализа расхождений обязательств по ИНН по всем филиалам каждый филиал в свой файл
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
+	 * @uses getDataFromReestrsByOne::getAllBranchToPeriodOut
+	 * @uses writeAnalizPDVOutInnByOneBranch
 	 */
 	public function writeAnalizPDVOutInnByAllBranch(int $month,int $year)
 	{
@@ -79,7 +90,21 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 			}
 		}
 	}
-	public function writeAnalizPDVOutInnByAllUZ(int $month,int $year)
+
+	/**
+	 * формирование файла анализа расхождений обязательств по ИНН по ПАТ целиком без документов
+	 * @param int $month
+	 * @param int $year
+	 *  @uses getDataOutINNByAll::getReestrEqualErpnAllUZ формирование данных
+	 *  @uses getDataOutINNByAll::getErpnNoEqualReestrAllUZ формирование данных
+	 *  @uses getDataOutINNByAll::getReestrNoEqualErpnAllUZ формирование данных
+	 * @uses getWriteExcel::setParamFile
+	 * @uses getWriteExcel::getNewFileName
+	 * @uses getWriteExcel::setDataFromWorksheet
+	 * @uses getWriteExcel::fileWriteAndSave
+	 * @see OutGroupInnByAll_Command::execute  - отсюда вызывается функция
+	 */
+	public function writeAnalizPDVOutInnByAllUZ(int $month, int $year)
 	{
 		//todo сменить жесткую привязку к файлу анализа
 		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
@@ -87,14 +112,17 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 		$write=new getWriteExcel($file);
 		$write->setParamFile($month,$year,"All");
 		$write->getNewFileName();
+
 		$arr=$data->getReestrEqualErpnAllUZ($month,$year);
 		$write->setDataFromWorksheet('Out_reestr=erpn',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
+
 		$arr=$data->getErpnNoEqualReestrAllUZ($month,$year);
 		$write->setDataFromWorksheet('Out_erpn<>reestr',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
+
 		$arr=$data->getReestrNoEqualErpnAllUZ($month,$year);
 		$write->setDataFromWorksheet('Out_reestr<>erpn',$arr,'A4');
 		unset($arr);
@@ -105,7 +133,25 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 		gc_collect_cycles();
 	}
 
-	public function writeAnalizPDVOutInnByAllUZ_new(int $month,int $year)
+	/**
+	 * формирование файла анализа расхождений обязательств по ИНН по ПАТ целиком
+	 * с документами которые вызвали расхождение
+	 * @param int $month
+	 * @param int $year
+	 * @uses getDataOutInnByAllUZ::getReestrEqualErpnAllUZ формирование данных
+	 * @uses getDataOutInnByAllUZ::getReestrEqualErpnAllUZ_DocErpn формирование данных
+	 * @uses getDataOutInnByAllUZ::getReestrEqualErpnAllUZ_DocReestr формирование данных
+	 * @uses getDataOutInnByAllUZ::getReestrNoEqualErpnAllUZ формирование данных
+	 * @uses getDataOutInnByAllUZ::getReestrNoEqualErpnAllUZ_DocReestr формирование данных
+	 * @uses getDataOutInnByAllUZ::getErpnNoEqualReestrAllUZ формирование данных
+	 * @uses getDataOutInnByAllUZ::getErpnNoEqualReestrAllUZ_DocErpn формирование данных
+	 * @uses getWriteExcel::setParamFile
+	 * @uses getWriteExcel::getNewFileName
+	 * @uses getWriteExcel::setDataFromWorksheet
+	 * @uses getWriteExcel::fileWriteAndSave
+	 * @see OutGroupInnByAllUZ_Command::execute  - отсюда вызывается функция
+	 */
+	public function writeAnalizPDVOutInnByAllUZ_new(int $month, int $year)
 	{
 		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
 		$file=$this->pathToTemplate.self::fileNameAllUZ;

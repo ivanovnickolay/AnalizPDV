@@ -7,6 +7,7 @@
  */
 
 namespace AnalizPdvBundle\Model\getDataFromSQL;
+use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizInByInn;
 
 /**
  * Задача класса предоставить данные для заполннения анализа кредита
@@ -17,12 +18,14 @@ namespace AnalizPdvBundle\Model\getDataFromSQL;
 class getDataInINNByAll extends getDataFromAnalizAbstract
 {
 	/**
-	 * Анализ документов в разрезе ИНН которые есть и в ЕРПН но нет в Реестре по филиалу
+	 * Анализ документов в разрезе ИНН которые есть и в ЕРПН но нет в Реестре по УЗ
 	 * @param int $month
 	 * @param int $year
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @uses store_procedure::getAnalizInnInLeftJoinAllUZ - хранимая процедура для генерации данных
 	 */
 
 	public function getErpnNoEqualReestrAllUZ(int $month, int $year)
@@ -40,12 +43,14 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 		return $arrayResult;
 	}
 	/**
-	 * Анализ документов в разрезе ИНН которые есть и в ЕРПН и в Реестре по филиалу
+	 * Анализ документов в разрезе ИНН которые есть и в ЕРПН и в Реестре по УЗ
 	 * @param int $month
 	 * @param int $year
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @uses store_procedure::getAnalizInnInInnerJoinAllUZ - хранимая процедура для генерации данных
 	 */
 	public function getReestrEqualErpnAllUZ(int $month, int $year)
 	{
@@ -61,6 +66,15 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 		return $arrayResult;
 	}
 
+	/**
+	 * Получение документов из ЕРПН по которым в getReestrEqualErpnAllUZ сформированы расходждения
+	 * @param int $month
+	 * @param int $year
+	 * @return array
+	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @uses store_procedure::getDocErpnBy_AnalizInnInInnerJoinAllUZ - хранимая процедура для генерации данных
+	 *
+	 */
 	public function getReestrEqualErpnAllUZ_DocErpn(int $month, int $year)
 	{
 		$this->disconnect();
@@ -74,6 +88,16 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;
 	}
+
+	/**
+	 * Получение документов из реестров филиалов по которым в getReestrEqualErpnAllUZ сформированы расходждения
+	 * @param int $month
+	 * @param int $year
+	 * @return array
+	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @uses store_procedure::getDocReestrBy_AnalizInnInInnerJoinAllUZ - хранимая процедура для генерации данных
+
+	 */
 	public function getReestrEqualErpnAllUZ_DocReestr(int $month, int $year)
 	{
 		$this->disconnect();
@@ -88,12 +112,14 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 		return $arrayResult;
 	}
 	/**
-	 * Анализ документов в разрезе ИНН которые есть в Реестре но нет в ЕРПН по филиалу
+	 * Анализ документов в разрезе ИНН которые есть в Реестре но нет в ЕРПН по УЗ
 	 * @param int $month
 	 * @param int $year
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @uses store_procedure::getAnalizInnInRightJoinAllUZ - хранимая процедура для генерации данных
 	 */
 	public function getReestrNoEqualErpnAllUZ(int $month, int $year)
 	{
@@ -109,6 +135,15 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;
 	}
+
+	/**
+	 * Получение документов из реестров филиалов по которым в getReestrNoEqualErpnAllUZ сформированы расхождения
+	 * @param int $month
+	 * @param int $year
+	 * @return array
+	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @uses store_procedure::getDocReestrBy_AnalizInnInRightJoin - хранимая процедура для генерации данных
+	 */
 	public function getReestrNoEqualErpnAllUZ_DocReestr(int $month, int $year)
 	{
 		$this->disconnect();
@@ -123,6 +158,13 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;
 	}
+
+	/**
+	 * если не используется ни где = удалить !!!
+	 * @param int $month
+	 * @param int $year
+	 * @return array
+	 */
 	public function getEqualNoReestrErpnAllUZ(int $month, int $year)
 	{
 		$this->disconnect();
@@ -138,6 +180,14 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 		return $arrayResult;
 	}
 
+	/**
+	 * Получение документов из ЕРПН по которым в getErpnNoEqualReestrAllUZ сформированы расходждения
+	 * @param int $month
+	 * @param int $year
+	 * @return array
+	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @uses store_procedure::getDocErpnBy_AnalizInnInLeftJoin - хранимая процедура для генерации данных
+	 */
 	public function getErpnNoEqualReestrAllUZ_DocErpn(int $month, int $year)
 	{
 		$this->disconnect();
