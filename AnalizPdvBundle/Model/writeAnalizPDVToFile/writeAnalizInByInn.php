@@ -39,6 +39,7 @@ class writeAnalizInByInn extends writeAnalizToFileAbstract
 	 * @uses getWriteExcel::getNewFileName
 	 * @uses getWriteExcel::setDataFromWorksheet
 	 * @uses getWriteExcel::fileWriteAndSave
+	 * @see InGroupInnByAll_Command::execute - - отсюда вызывается функция
 	  */
 	public function writeAnalizPDVInInnByAllUZ(int $month, int $year)
 	{

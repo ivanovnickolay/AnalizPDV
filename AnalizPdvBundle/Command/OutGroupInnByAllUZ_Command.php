@@ -34,9 +34,13 @@ class OutGroupInnByAllUZ_Command extends ContainerAwareCommand
              месяц анализа --month= и год анализа --year=. Например analiz_pdv:OutGroupInnByAllUZ --month=6 --year=2016");
     }
 
-    /**
-     * {@inheritdoc}
-     */
+	/**
+	 * {@inheritdoc}
+	 * @uses validInputCommand::validMonth
+	 * @uses validInputCommand::validYear
+	 * @uses validInputCommand::getTextError
+	 * @uses writeAnalizOutByInn::writeAnalizPDVOutInnByAllUZ_new формирование файла анализа
+	 */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         gc_enable();

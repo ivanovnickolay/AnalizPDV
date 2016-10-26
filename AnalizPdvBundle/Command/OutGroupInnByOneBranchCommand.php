@@ -27,6 +27,7 @@ class OutGroupInnByOneBranchCommand extends ContainerAwareCommand
 
     /**
      * {@inheritdoc}
+     *
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

@@ -36,6 +36,10 @@ class InGroupInnByAll_Command extends ContainerAwareCommand
 
     /**
      * {@inheritdoc}
+     * @uses validInputCommand::validMonth
+     * @uses validInputCommand::validYear
+     * @uses validInputCommand::getTextError
+     * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ формирование файла анализа
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
