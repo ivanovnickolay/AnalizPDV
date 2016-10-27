@@ -2,6 +2,7 @@
 
 namespace AnalizPdvBundle\Command;
 
+use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizOutDelayDate;
 use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizPDVToFile;
 use AnalizPdvBundle\Utilits\validInputCommand;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -30,9 +31,14 @@ class OutDelayByOneBranchStream_Command extends ContainerAwareCommand
             Обязательные параметры месяц анализа --month= и год анализа --year=. Например analiz_pdv:OutDelayOneBranchStream --month=6 --year=2016");
     }
 
-    /**
-     * {@inheritdoc}
-     */
+	/**
+	 * {@inheritdoc}
+	 * @uses validInputCommand::validMonth
+	 * @uses validInputCommand::validYear
+	 * @uses validInputCommand::getTextError
+	 * @see writeAnalizPDVToFile::writeOutDelayByAllBranch формирование файла анализа (убрано 27-10-16)
+	 * @see writeAnalizOutDelayDate::writeAnalizPDVOutDelayByAllBranch формирование файла анализа
+	 */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         gc_enable();
@@ -53,8 +59,11 @@ class OutDelayByOneBranchStream_Command extends ContainerAwareCommand
             exit();
         }
         $pathTemplate=$this->getContainer()->getParameter('path_template');
-        $write=new writeAnalizPDVToFile($em,$pathTemplate);
-        $write->writeOutDelayByAllBranch($month,$year);
+        //$write=new writeAnalizPDVToFile($em,$pathTemplate);
+        //$write->writeOutDelayByAllBranch($month,$year);
+
+	    $write=new writeAnalizOutDelayDate($em,$pathTemplate);
+	    $write->writeAnalizPDVOutDelayByAllBranch($month,$year);
         unset($write);
         gc_collect_cycles();
     }

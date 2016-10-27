@@ -18,17 +18,17 @@ use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 
 /**
  * Класс формирует файлы анализа расхождения по ИНН по обязательствам ПАТ за период
- * @see writeAnalizPDVOutInnByOneBranch по одному конкретному филиалу
- * @see writeAnalizPDVOutInnByAllBranch по всем филиалам
- * @see writeAnalizPDVOutInnByAllUZ по всей УЗ без документов
- * @see writeAnalizPDVOutInnByAllUZ_new по всей УЗ с документами которые вызвали расхождение
+ * @see writeAnalizOutByInn::writeAnalizPDVOutInnByOneBranch по одному конкретному филиалу без документов
+ * @see writeAnalizOutByInn::writeAnalizPDVOutInnByAllBranch по всем филиалам без документов
+ * @see writeAnalizOutByInn::writeAnalizPDVOutInnByAllUZ по всей УЗ без документов
+ * @see writeAnalizOutByInn::writeAnalizPDVOutInnByAllUZ_new по всей УЗ с документами которые вызвали расхождение
  * @package AnalizPdvBundle\Model\writeAnalizPDVToFile
  */
 class writeAnalizOutByInn extends writeAnalizToFileAbstract
 {
 	const fileNameAllUZ="AnalizPDV_Out_INN.xlsx";
 	/**
-	 *формирование файла анализа расхождений обязательств по ИНН по одному конкретному филиалу
+	 *формирование файла анализа расхождений обязательств по ИНН по одному конкретному филиалу без документов
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
 	 * @param string $numBranch номер филиала по которому надо сформировать анализ
@@ -39,6 +39,7 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 	 * @uses getWriteExcel::getNewFileName
 	 * @uses getWriteExcel::setDataFromWorksheet
 	 * @uses getWriteExcel::fileWriteAndSave
+	 * @see OutGroupInnByOneBranchCommand::execute - отсюда вызывается функция
 	 */
 	public function writeAnalizPDVOutInnByOneBranch(int $month,int $year,string $numBranch)
 	{
@@ -70,11 +71,13 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 	}
 
 	/**
-	 * формирование файлов анализа расхождений обязательств по ИНН по всем филиалам каждый филиал в свой файл
+	 * формирование файлов анализа расхождений обязательств по ИНН (без документов)
+	 * по всем филиалам каждый филиал в свой файл
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
 	 * @uses getDataFromReestrsByOne::getAllBranchToPeriodOut
 	 * @uses writeAnalizPDVOutInnByOneBranch
+	 * @see OutGroupInnByOneBranchStreamCommand::execute - отсюда вызывается функция
 	 */
 	public function writeAnalizPDVOutInnByAllBranch(int $month,int $year)
 	{

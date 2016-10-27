@@ -17,6 +17,7 @@ use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 
 /**
  * Формирование файла анализа выданных НН в разрезе ИНН в целом по ПАТ
+ * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - формирование анализа
  * @package AnalizPdvBundle\Model\writeAnalizPDVToFile
  * @inheritdoc
  */
@@ -27,14 +28,14 @@ class writeAnalizInByInn extends writeAnalizToFileAbstract
 	 * Формирование файла анализа выданных НН в разрезе ИНН в целом по ПАТ
  	 * @param int $month месяц
 	 * @param int $year год
-	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ
-	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ_DocErpn
-	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ_DocReestr
-	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ_DocReestr
-	 * @uses getDataInINNByAll::getReestrNoEqualErpnAllUZ
-	 * @uses getDataInINNByAll::getReestrNoEqualErpnAllUZ_DocReestr
-	 * @uses getDataInINNByAll::getErpnNoEqualReestrAllUZ
-	 * @uses getDataInINNByAll::getErpnNoEqualReestrAllUZ_DocErpn
+	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ формирование данных
+	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ_DocErpn формирование данных
+	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ_DocReestr формирование данных
+	 * @uses getDataInINNByAll::getReestrEqualErpnAllUZ_DocReestr формирование данных
+	 * @uses getDataInINNByAll::getReestrNoEqualErpnAllUZ формирование данных
+	 * @uses getDataInINNByAll::getReestrNoEqualErpnAllUZ_DocReestr формирование данных
+	 * @uses getDataInINNByAll::getErpnNoEqualReestrAllUZ формирование данных
+	 * @uses getDataInINNByAll::getErpnNoEqualReestrAllUZ_DocErpn формирование данных
 	 * @uses getWriteExcel::setParamFile
 	 * @uses getWriteExcel::getNewFileName
 	 * @uses getWriteExcel::setDataFromWorksheet

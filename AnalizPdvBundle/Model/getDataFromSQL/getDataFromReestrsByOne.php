@@ -13,46 +13,38 @@ use Doctrine\ORM\EntityManager;
 
 /**
  *
- * Задача класса предоставить данные для заполннения анализа реестров
- * Class getReestrEqualErpn
+ * Задача класса предоставить данные для заполннения анализа реестров и ЕРПН по одному филиалу
  * @package AnalizPdvBundle\Model\getDataFromSQL
  */
 class getDataFromReestrsByOne
 {
 	private $em;
+
+	/**
+	 * getDataFromReestrsByOne constructor.
+	 * @param EntityManager $em
+	 */
 	public function __construct (EntityManager $em)
 	{
 		$this->em=$em;
 	}
 
 	/**
-	 * Возвращает массив информации с реестра полученных НН которые совпали с ЕРПН по параметрам
+	 * Возвращает массив информации с реестра полученных НН которые совпали с ЕРПН
+	 * по параметрам по одному филиалу
 	 * @link  http://yapro.ru/web-master/mysql/doctrine2-nativnie-zaprosi.html
 	 * @param $month string
 	 * @param $year string
 	 * @param $numBranch string
 	 * @return array arrayResult
+	 * @see writeAnalizReestr::writeAnalizPDVByOneBranch - отсюда вызывается функция
+	 * @see writeAnalizPDVToFile::writeAnalizPDVByOneBranch - отсюда вызывается функция
+	 * @uses store_procedure::getReestrInEqualErpn - хранимая процедура для генерации данных
 	 */
 	public function getReestrInEqualErpn($month, $year, $numBranch)
 	{
 		//$smtp=$this->em->getConnection();
 		$this->reconnect();
-		/**$sql="SELECT month,year,num_branch,type_invoice_full,
-				num_invoice,
-				date_format(date_create_invoice,'%d.%m.%Y'),
-				inn_client,
-				name_client,
-				suma_invoice as edrpou_sum,
-				baza_invoice as edrpou_baza,
-				pdvinvoice as edrpou_pdv,
-				zag_summ as reestr_sum,
-				baza as reestr_baza,
-				pdv as reestr_pdv,
-				(suma_invoice - zag_summ) as saldo_sum,
-				(baza_invoice - baza) as saldo_baza,
-				(pdvinvoice - pdv) as saldo_pdv
-				from `in_erpn=reestr`
-				WHERE month =:m AND year=:y AND num_branch=:nb";*/
 		$sql="CALL getReestrInEqualErpn(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
@@ -63,23 +55,21 @@ class getDataFromReestrsByOne
 		return $arrayResult;
 	}
 	/**
-	 * Возвращает массив информации с реестра полученных НН которые НЕ совпали с ЕРПН по параметрам
+	 * Возвращает массив информации с реестра полученных НН которые НЕ совпали с ЕРПН
+	 * по параметрам по одному филиалу
 	 * @link  http://yapro.ru/web-master/mysql/doctrine2-nativnie-zaprosi.html
 	 * @param $month string
 	 * @param $year string
 	 * @param $numBranch string
 	 * @return array arrayResult
+	 * @see writeAnalizReestr::writeAnalizPDVByOneBranch - отсюда вызывается функция
+	 * @see writeAnalizPDVToFile::writeAnalizPDVByOneBranch - отсюда вызывается функция
+	 * @uses store_procedure::getReestrInNotEqualErpn - хранимая процедура для генерации данных
 	 */
 	public function getReestrInNotEqualErpn($month, $year, $numBranch)
 	{
 		//$smtp=$this->em->getConnection();
 		$this->reconnect();
-		/**$sql="SELECT month,year,num_branch,type_invoice_full,
-			num_invoice, date_format(date_create_invoice,'%d.%m.%Y'),
-			inn_client,name_client,
-			zag_summ,baza,pdv
-			from no_valid_reestr_in
-			WHEre month=:m and year=:y and num_branch=:nb";*/
 		$sql="call getReestrInNotEqualErpn(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
@@ -97,27 +87,13 @@ class getDataFromReestrsByOne
 	 * @param $year string
 	 * @param $numBranch string
 	 * @return array arrayResult
+	 * @see writeAnalizReestr::writeAnalizPDVByOneBranch - отсюда вызывается функция
+	 * @see writeAnalizPDVToFile::writeAnalizPDVByOneBranch - отсюда вызывается функция
+	 * @uses store_procedure::getReestrOutEqualErpn - хранимая процедура для генерации данных
 	 */
 	public function getReestrOutEqualErpn($month, $year, $numBranch)
 	{
-		//$smtp=$this->em->getConnection();
 		$this->reconnect();
-		/**$sql="SELECT month,year,num_branch,type_invoice_full,
-				num_invoice,
-				date_format(date_create_invoice,'%d.%m.%Y'),
-				inn_client,
-				name_client,
-				suma_invoice as edrpou_sum,
-				baza_invoice as edrpou_baza,
-				pdvinvoice as edrpou_pdv,
-				zag_summ as reestr_sum,
-				baza as reestr_baza,
-				pdv as reestr_pdv,
-				(suma_invoice - zag_summ) as saldo_sum,
-				(baza_invoice - baza) as saldo_baza,
-				(pdvinvoice - pdv) as saldo_pdv
-				from `out_erpn=reestr`
-				WHERE month =:m AND year=:y AND num_branch=:nb";*/
 		$sql="call getReestrOutEqualErpn(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
@@ -135,17 +111,14 @@ class getDataFromReestrsByOne
 	 * @param $year string
 	 * @param $numBranch string
 	 * @return array arrayResult
+	 * @see writeAnalizReestr::writeAnalizPDVByOneBranch - отсюда вызывается функция
+	 * @see writeAnalizPDVToFile::writeAnalizPDVByOneBranch - отсюда вызывается функция
+	 * @uses store_procedure::getReestrOutNotEqualErpn - хранимая процедура для генерации данных
 	 */
 	public function getReestrOutNotEqualErpn($month, $year, $numBranch)
 	{
 		//$smtp=$this->em->getConnection();
 		$this->reconnect();
-		/**$sql="SELECT month,year,num_branch,type_invoice_full,
-			num_invoice, date_format(date_create_invoice,'%d.%m.%Y'),
-			inn_client,name_client,
-			zag_summ,baza,pdv
-			from no_valid_reestr_out
-			WHEre month=:m and year=:y and num_branch=:nb";*/
 		$sql="call getReestrOutNotEqualErpn(:m,:y,:nb)";
 		$smtp=$this->em->getConnection()->prepare($sql);
 		$smtp->bindValue("m",$month);
@@ -162,6 +135,7 @@ class getDataFromReestrsByOne
 	 * @param $year
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @see writeAnalizReestr::writeAnalizPDVByAllBranch - отсюда вызывается функция
 	 */
 	public function getAllBranchToPeriod($month, $year)
 	{
@@ -181,6 +155,7 @@ class getDataFromReestrsByOne
 	 * получить список всех главных филиалов ПАТ
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @see writeAnalizPDVToFile::writeOutDelayByAllBranch - отсюда вызывается функция
 	 */
 	public function getAllBranch()
 	{

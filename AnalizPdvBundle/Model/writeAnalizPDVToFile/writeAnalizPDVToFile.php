@@ -7,18 +7,21 @@
  */
 
 namespace AnalizPdvBundle\Model\writeAnalizPDVToFile;
-use AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutDiff;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutDelay;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutINN;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsAll;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsByOne;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataOutDelay;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataPDVOutDelay;
 use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 use Doctrine\ORM\EntityManager;
 
 
 /**
- * Задача класса реализация алгоритмов ормирования
- * файлов анализов ПДВ из одного места
- * Class writeAnalizPDVToFile
+ * Реализация алгоритмов формирования файлов анализов реестров и ЕРПН по документам  за период
+ * @uses writeAnalizPDVToFile::writeAnalizPDVByAllUZ - анализ по всему УЗ
+ * @uses writeAnalizPDVToFile::writeAnalizPDVByOneBranch - анализ по одному филиалу
+ * @uses writeAnalizPDVToFile::writeAnalizPDVByAllBranch - анализ по всем филиалам, каждый в свой файл
  * @package AnalizPdvBundle\Model\writeAnalizPDVToFile
  */
 class writeAnalizPDVToFile
@@ -27,7 +30,12 @@ class writeAnalizPDVToFile
 	private $pathToTemplate;
 	const fileName="AnalizPDV_All.xlsx";
 
-public function __construct ($entityManager,string $pathToTemplate='')
+	/**
+	 * writeAnalizPDVToFile constructor.
+	 * @param $entityManager
+	 * @param string $pathToTemplate
+	 */
+	public function __construct ($entityManager, string $pathToTemplate='')
 {
 	$this->em=$entityManager;
 	$this->pathToTemplate=$pathToTemplate;
@@ -75,6 +83,15 @@ public function __construct ($entityManager,string $pathToTemplate='')
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
 	 * @param string $numBranch номер филиала по которому надо сформировать анализ
+	 * @uses getDataFromReestrsByOne::getReestrInEqualErpn - формирование данных
+	 * @uses getDataFromReestrsByOne::getReestrInNotEqualErpn - формирование данных
+	 * @uses getDataFromReestrsByOne::getReestrOutEqualErpn - формирование данных
+	 * @uses getDataFromReestrsByOne::getReestrOutNotEqualErpn - формирование данных
+	 * @uses getWriteExcel::setParamFile
+	 * @uses getWriteExcel::getNewFileName
+	 * @uses getWriteExcel::setDataFromWorksheet
+	 * @uses getWriteExcel::fileWriteAndSave
+	 * @see AnalizReestrByOneBranch_Command::execute - отсюда вызывается функция (убрано 27-10-16)
 	 */
 	public function writeAnalizPDVByOneBranch(int $month,int $year,string $numBranch)
 	{
@@ -83,32 +100,38 @@ public function __construct ($entityManager,string $pathToTemplate='')
 		$write=new getWriteExcel($file);
 		$write->setParamFile($month,$year,$numBranch);
 		$write->getNewFileName();
+
 		$arr=$data->getReestrInEqualErpn($month,$year,$numBranch);
 		$write->setDataFromWorksheet('In_reestr=edrpu',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
+
 		$arr=$data->getReestrInNotEqualErpn($month,$year,$numBranch);
 		$write->setDataFromWorksheet('In_reestr<>edrpou',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
+
 		$arr=$data->getReestrOutEqualErpn($month,$year,$numBranch);
 		$write->setDataFromWorksheet('Out_reestr=edrpu',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
+
 		$arr=$data->getReestrOutNotEqualErpn($month,$year,$numBranch);
 		$write->setDataFromWorksheet('Out_reestr<>edrpou',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
+
 		$write->fileWriteAndSave();
 		unset($data,$write);
 		gc_collect_cycles();
 	}
 
 	/**
-	 * формирование файлов анализа по всем филиалам
-	 * каждый филиал в свой файл
+	 * формирование файлов анализа по всем филиалам каждый филиал в свой файл
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
+	 * @uses writeAnalizPDVToFile::writeAnalizPDVByOneBranch
+	 * @see AnalizReestrByOneBranchStream_Command::execute - отсюда вызывается функция
 	 */
 	public function writeAnalizPDVByAllBranch(int $month,int $year)
 	{
@@ -126,10 +149,19 @@ public function __construct ($entityManager,string $pathToTemplate='')
 	}
 
 	/**
-	 *формирование файла анализа расхождений по ИНН по одному конкретному филиалу
+	 * формирование файла анализа расхождений по ИНН по одному конкретному филиалу
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
 	 * @param string $numBranch номер филиала по которому надо сформировать анализ
+	 * @uses getDataFromAnalizPDVOutINN::getReestrInEqualErpn - формирование данных
+	 * @uses getDataFromAnalizPDVOutINN::getReestrInNotEqualErpn - формирование данных
+	 * @uses getDataFromAnalizPDVOutINN::getReestrOutEqualErpn - формирование данных
+	 * @uses getDataFromAnalizPDVOutINN::getReestrOutNotEqualErpn - формирование данных
+	 * @uses getWriteExcel::setParamFile
+	 * @uses getWriteExcel::getNewFileName
+	 * @uses getWriteExcel::setDataFromWorksheet
+	 * @uses getWriteExcel::fileWriteAndSave
+	 * @see OutGroupInnByOneBranchCommand::execute - отсюда вызывается функция (удалено 27-10-16)
 	 */
 	public function OutGroupInnByOneBranch(int $month, int $year, string $numBranch)
 	{
@@ -138,14 +170,17 @@ public function __construct ($entityManager,string $pathToTemplate='')
 		$write=new getWriteExcel($file);
 		$write->setParamFile($month,$year,$numBranch);
 		$write->getNewFileName();
+
 		$arr=$data->getReestrEqualErpn($month,$year,$numBranch);
 		$write->setDataFromWorksheet('Out_reestr=erpn',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
+
 		$arr=$data->getErpnNoEqualReestr($month,$year,$numBranch);
 		$write->setDataFromWorksheet('Out_erpn<>reestr',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
+
 		$arr=$data->getReestrNoEqualErpn($month,$year,$numBranch);
 		$write->setDataFromWorksheet('Out_reestr<>erpn',$arr,'A4');
 		unset($arr);
@@ -178,29 +213,43 @@ public function __construct ($entityManager,string $pathToTemplate='')
 	}
 	/**
 	 *формирование файла анализа опаздавших НН по одному конкретному филиалу
+	 * @deprecated замена вызова getDataFromAnalizPDVOutDelay на более современный getDataOutDelay 27-10-16
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
 	 * @param string $numBranch номер филиала по которому надо сформировать анализ
+	 * @uses getDataFromAnalizPDVOutDelay::getAllDelay - формирование данных
+	 * @uses getDataFromAnalizPDVOutDelay::getDelayToReestr- формирование данных
+	 * @uses getDataFromAnalizPDVOutDelay::getDelayToNotReestr- формирование данных
+	 * @uses getWriteExcel::setParamFile
+	 * @uses getWriteExcel::getNewFileName
+	 * @uses getWriteExcel::setDataFromWorksheet
+	 * @uses getWriteExcel::fileWriteAndSave
+	 * @see AnalizReestrByOneBranch_Command::execute - отсюда вызывается функция (убрано 27-10-16)
+	 * @see writeAnalizPDVToFile::writeOutDelayByAllBranch - отсюда вызывается функция
 	 */
 	public function writeAnalizPDVOutDelayByOneBranch(int $month, int $year, string $numBranch)
 	{
 		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_DiffDate.xlsx";
-		$data=new getDataFromAnalizPDVOutDiff($this->em);
+		//$data=new getDataFromAnalizPDVOutDelay($this->em);
+		$data=new getDataOutDelay($this->em);
 		$write=new getWriteExcel($file);
 		echo "$month $year $numBranch begin   \r\n";
 		$write->setParamFile($month,$year,$numBranch);
 		$write->getNewFileName();
 		echo " getAllDiff begin   \r\n";
-		$arr=$data->getAllDiff($month,$year,$numBranch);
+
+		$arr=$data->getAllDelay($month,$year,$numBranch);
 		echo " getAllDiff end   \r\n";
 		$write->setDataFromWorksheet('AllDiff_out',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
-		$arr=$data->getDiffToReestr($month,$year,$numBranch);
+
+		$arr=$data->getDelayToReestr($month,$year,$numBranch);
 		$write->setDataFromWorksheet('DiffOut_reestr=erpn',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
-		$arr=$data->getDiffToNotReestr($month,$year,$numBranch);
+
+		$arr=$data->getDelayToNotReestr($month,$year,$numBranch);
 		$write->setDataFromWorksheet('DiffOut_reestr<>erpn',$arr,'A4');
 		unset($arr);
 		gc_collect_cycles();
@@ -216,6 +265,9 @@ public function __construct ($entityManager,string $pathToTemplate='')
 	 * каждый филиал в свой файл
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
+	 * @uses writeAnalizPDVToFile::writeAnalizPDVOutDelayByOneBranch - формирование анализа
+	 * @uses getDataFromReestrsByOne::getAllBranch получение списка филиалов
+	 * @see OutDelayByOneBranchStream_Command::execute - отсюда вызывается функция (убрано 27-10-16)
 	 */
 	public function writeOutDelayByAllBranch(int $month, int $year)
 	{

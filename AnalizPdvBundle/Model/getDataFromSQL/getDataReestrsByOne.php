@@ -13,6 +13,7 @@ namespace AnalizPdvBundle\Model\getDataFromSQL;
  *
  * Задача класса предоставить данные для заполннения анализа реестров
  * по одному филиалу за период
+ * НЕ используется - нет вызовов класса - удалить ??
  * todo перевести SQL в хранимые процедуры
  * Class getReestrEqualErpn
  * @package AnalizPdvBundle\Model\getDataFromSQL

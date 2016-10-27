@@ -2,6 +2,7 @@
 
 namespace AnalizPdvBundle\Command;
 
+use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizOutDelayDate;
 use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizPDVToFile;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,6 +28,8 @@ class OutDelayByOneBranch_Command extends ContainerAwareCommand
 
     /**
      * {@inheritdoc}
+     * @uses writeAnalizPDVToFile::writeAnalizPDVOutDelayByOneBranch - формирование анализа (удалено 27-10-16)
+     * @uses writeAnalizOutDelayDate::writeAnalizPDVOutDelayByOneBranch - формирование анализа
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -34,8 +37,11 @@ class OutDelayByOneBranch_Command extends ContainerAwareCommand
         $dt=$this->getContainer()->get('doctrine');
         $em=$dt->getManager();
         $pathTemplate=$this->getContainer()->getParameter('path_template');
-        $write=new writeAnalizPDVToFile($em,$pathTemplate);
-        $write->writeAnalizPDVOutDelayByOneBranch(8,2016,"682");
+        //$write=new writeAnalizPDVToFile($em,$pathTemplate);
+        //$write->writeAnalizPDVOutDelayByOneBranch(8,2016,"682");
+
+	    $write=new writeAnalizOutDelayDate($em,$pathTemplate);
+	    $write->writeAnalizPDVOutDelayByOneBranch(8,2016,"682");
         unset($write);
         gc_collect_cycles();
     }

@@ -9,12 +9,12 @@
 namespace AnalizPdvBundle\Model\getDataFromSQL;
 
 /**
- * Задача класса предоставить данные для заполннения анализа
- * опаздавших выданных НН
- * Class getDataFromAnalizPDVOutINN
+ * Задача класса предоставить данные для заполннения анализа опаздавших выданных НН
+ * Дубль класса getDataFromAnalizPDVOutDelay
+ * @see writeAnalizPDVToFile::writeAnalizPDVOutDelayByOneBranch заменить вызов (заменено 27-10-16)
  * @package AnalizPdvBundle\Model\getDataFromSQL
  */
-class getDataPDVOutDiff extends getDataFromAnalizAbstract
+class getDataOutDelay extends getDataFromAnalizAbstract
 {
 	/**
 	 * Получаем весь список опаздавших с регистрацией НН
@@ -23,8 +23,11 @@ class getDataPDVOutDiff extends getDataFromAnalizAbstract
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @see writeAnalizPDVToFile::writeAnalizPDVOutDelayByOneBranch - отсюда вызывается функция (убрано 27-10-16)
+	 * @see writeAnalizOutDelayDate::writeAnalizPDVOutDelayByOneBranch - отсюда вызывается функция
+	 * @uses store_procedure::AnalizPDVOutDiffDateOneBranchInnerJoinERPN_tempTable - хранимая процедура для генерации данных
 	 */
-	public function getAllDiff(int $month, int $year, string $numBranch)
+	public function getAllDelay(int $month, int $year, string $numBranch)
 	{
 		// так как в хранимой процедуре используются временные таблицы, для их обнуления
 		// "передергнем соединение с базой для очистки временных таблиц
@@ -49,8 +52,11 @@ class getDataPDVOutDiff extends getDataFromAnalizAbstract
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @see writeAnalizPDVToFile::writeAnalizPDVOutDelayByOneBranch - отсюда вызывается функция (убрано 27-10-16)
+	 * @see writeAnalizOutDelayDate::writeAnalizPDVOutDelayByOneBranch - отсюда вызывается функция
+	 * @uses store_procedure::AnalizPDVOutDiffDateOneBranchInnerJoinReestr_tempTable - хранимая процедура для генерации данных
 	 */
-	public function getDiffToReestr(int $month, int $year, string $numBranch)
+	public function getDelayToReestr(int $month, int $year, string $numBranch)
 	{
 		// так как в хранимой процедуре используются временные таблицы, для их обнуления
 		// "передергнем соединение с базой для очистки временных таблиц
@@ -73,8 +79,11 @@ class getDataPDVOutDiff extends getDataFromAnalizAbstract
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
+	 * @see writeAnalizPDVToFile::writeAnalizPDVOutDelayByOneBranch - отсюда вызывается функция (убрано 27-10-16)
+	 * @see writeAnalizOutDelayDate::writeAnalizPDVOutDelayByOneBranch - отсюда вызывается функция
+	 * @uses store_procedure::AnalizPDVOutDiffDateOneBranchLeftJoinERPN_tempTable - хранимая процедура для генерации данных
 	 */
-	public function getDiffToNotReestr(int $month, int $year, string $numBranch)
+	public function getDelayToNotReestr(int $month, int $year, string $numBranch)
 	{
 		// так как в хранимой процедуре используются временные таблицы, для их обнуления
 		// "передергнем соединение с базой для очистки временных таблиц

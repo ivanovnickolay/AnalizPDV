@@ -10,8 +10,7 @@ namespace AnalizPdvBundle\Model\getDataFromSQL;
 use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizInByInn;
 
 /**
- * Задача класса предоставить данные для заполннения анализа кредита
- * реестра и ЕРПН в разрезе ИНН всему УЗ
+ * Задача класса предоставить данные для заполннения анализа кредита реестра и ЕРПН в разрезе ИНН всему УЗ
  * Class getDataFromAnalizPDVOutINN
  * @package AnalizPdvBundle\Model\getDataFromSQL
  */
@@ -24,7 +23,7 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
-	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @see writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
 	 * @uses store_procedure::getAnalizInnInLeftJoinAllUZ - хранимая процедура для генерации данных
 	 */
 
@@ -49,7 +48,7 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
-	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @see writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
 	 * @uses store_procedure::getAnalizInnInInnerJoinAllUZ - хранимая процедура для генерации данных
 	 */
 	public function getReestrEqualErpnAllUZ(int $month, int $year)
@@ -71,7 +70,7 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 	 * @param int $month
 	 * @param int $year
 	 * @return array
-	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @see writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
 	 * @uses store_procedure::getDocErpnBy_AnalizInnInInnerJoinAllUZ - хранимая процедура для генерации данных
 	 *
 	 */
@@ -94,7 +93,7 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 	 * @param int $month
 	 * @param int $year
 	 * @return array
-	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @see writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
 	 * @uses store_procedure::getDocReestrBy_AnalizInnInInnerJoinAllUZ - хранимая процедура для генерации данных
 
 	 */
@@ -118,7 +117,7 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 	 * @param string $numBranch
 	 * @return array
 	 * @throws \Doctrine\DBAL\DBALException
-	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @see writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
 	 * @uses store_procedure::getAnalizInnInRightJoinAllUZ - хранимая процедура для генерации данных
 	 */
 	public function getReestrNoEqualErpnAllUZ(int $month, int $year)
@@ -141,7 +140,7 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 	 * @param int $month
 	 * @param int $year
 	 * @return array
-	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @see writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
 	 * @uses store_procedure::getDocReestrBy_AnalizInnInRightJoin - хранимая процедура для генерации данных
 	 */
 	public function getReestrNoEqualErpnAllUZ_DocReestr(int $month, int $year)
@@ -185,7 +184,7 @@ class getDataInINNByAll extends getDataFromAnalizAbstract
 	 * @param int $month
 	 * @param int $year
 	 * @return array
-	 * @uses writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
+	 * @see writeAnalizInByInn::writeAnalizPDVInInnByAllUZ - отсюда вызывается функция
 	 * @uses store_procedure::getDocErpnBy_AnalizInnInLeftJoin - хранимая процедура для генерации данных
 	 */
 	public function getErpnNoEqualReestrAllUZ_DocErpn(int $month, int $year)

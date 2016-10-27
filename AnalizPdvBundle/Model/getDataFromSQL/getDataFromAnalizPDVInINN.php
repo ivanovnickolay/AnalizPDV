@@ -19,6 +19,11 @@ use Doctrine\ORM\EntityManager;
 class getDataFromAnalizPDVOutINN
 {
 	private $em;
+
+	/**
+	 * getDataFromAnalizPDVOutINN constructor.
+	 * @param EntityManager $em
+	 */
 	public function __construct (EntityManager $em)
 	{
 		$this->em=$em;

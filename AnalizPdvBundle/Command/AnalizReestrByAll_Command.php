@@ -32,9 +32,13 @@ class AnalizReestrByAll_Command extends ContainerAwareCommand
              месяц анализа --month= и год анализа --year=. Например analiz_pdv:AnalizReestrByAll --month=6 --year=2016");
     }
 
-    /**
-     * {@inheritdoc}
-     */
+	/**
+	 * {@inheritdoc}
+	 * @uses validInputCommand::validMonth
+	 * @uses validInputCommand::validYear
+	 * @uses validInputCommand::getTextError
+	 * @uses writeAnalizReestr::writeAnalizPDVByAllUZ формирование файла анализа
+	 */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         gc_enable();

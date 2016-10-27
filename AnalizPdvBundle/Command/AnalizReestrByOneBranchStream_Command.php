@@ -31,9 +31,13 @@ class AnalizReestrByOneBranchStream_Command extends ContainerAwareCommand
              месяц анализа --month= и год анализа --year=. Например analiz_pdv:AnalizReestrByOneBranchStream --month=6 --year=2016");
     }
 
-    /**
-     * {@inheritdoc}
-     */
+	/**
+	 * {@inheritdoc}
+	 * @uses validInputCommand::validMonth
+	 * @uses validInputCommand::validYear
+	 * @uses validInputCommand::getTextError
+	 * @uses writeAnalizPDVToFile::writeAnalizPDVByAllBranch формирование файла анализа
+	 */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         gc_enable();

@@ -11,11 +11,21 @@ namespace AnalizPdvBundle\Model\getDataFromSQL;
 
 use Doctrine\ORM\EntityManager;
 
+/**
+ * Абстрактный класс который наследуют все классы которые "тянут" данные
+ * для формирования анализов
+ * Class getDataFromAnalizAbstract
+ * @package AnalizPdvBundle\Model\getDataFromSQL
+  */
 class getDataFromAnalizAbstract
 {
 
 	protected $em;
 
+	/**
+	 * getDataFromAnalizAbstract constructor.
+	 * @param EntityManager $em
+	 */
 	final function __construct (EntityManager $em)
 	{
 		$this->em=$em;
