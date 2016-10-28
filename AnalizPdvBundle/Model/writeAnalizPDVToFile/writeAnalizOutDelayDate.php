@@ -12,6 +12,7 @@ namespace AnalizPdvBundle\Model\writeAnalizPDVToFile;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromAnalizPDVOutDelay;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsByOne;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataOutDelay;
+use AnalizPdvBundle\Model\getDataFromSQL\getDataOutDelayByAll;
 use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 
 /**
@@ -89,5 +90,47 @@ class writeAnalizOutDelayDate extends writeAnalizToFileAbstract
 		}
 	}
 
+	/**
+	 * формирование файла анализа опаздавших выданных НН по всему ПАТ
+	 * @param int $month номер месяца по которому надо сформировать анализ
+	 * @param int $year номер года по которому надо сформировать анализ
+	 * @uses getDataFromAnalizPDVOutDelay::getAllDelay - формирование данных
+	 * @uses getDataFromAnalizPDVOutDelay::getDelayToReestr- формирование данных
+	 * @uses getDataFromAnalizPDVOutDelay::getDelayToNotReestr- формирование данных
+	 * @uses getWriteExcel::setParamFile
+	 * @uses getWriteExcel::getNewFileName
+	 * @uses getWriteExcel::setDataFromWorksheet
+	 * @uses getWriteExcel::fileWriteAndSave
+	 * @see OutDelayByAll_Command::execute - отсюда вызывается функция
+	 */
+	public function writeAnalizPDVOutDelayByAllUZ(int $month,int $year)
+	{
+		//todo сменить жесткую привязку к файлу анализа
+		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_DiffDate.xlsx";
+		//$data=new getDataFromAnalizPDVOutDelay($this->em);
+		$data=new getDataOutDelayByAll($this->em);
+		$write=new getWriteExcel($file);
+		$write->setParamFile($month,$year,"All");
+		$write->getNewFileName();
+
+		$arr=$data->getAllDelay($month,$year);
+		$write->setDataFromWorksheet('AllDiff_out',$arr,'A4');
+		unset($arr);
+		gc_collect_cycles();
+
+		$arr=$data->getDelayToReestr($month,$year);
+		$write->setDataFromWorksheet('DiffOut_reestr=erpn',$arr,'A4');
+		unset($arr);
+		gc_collect_cycles();
+
+		$arr=$data->getDelayToNotReestr($month,$year);
+		$write->setDataFromWorksheet('DiffOut_reestr<>erpn',$arr,'A4');
+		unset($arr);
+		gc_collect_cycles();
+
+		$write->fileWriteAndSave();
+		unset($data,$write);
+		gc_collect_cycles();
+	}
 
 }
