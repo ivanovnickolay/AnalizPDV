@@ -41,8 +41,8 @@ class OutGroupInnByOneBranchCommand extends ContainerAwareCommand
         //$write->OutGroupInnByOneBranch(7,2016,"667");
 
 	    $write=new writeAnalizOutByInn($em,$pathTemplate);
-	    $write->writeAnalizPDVOutInnByOneBranch(7,2016,"667");
-
+	   //$write->writeAnalizPDVOutInnByOneBranch(7,2016,"667");
+	    $write->writeAnalizPDVOutInnByOneBranchWithDoc(7,2016,"667");
         unset($write);
         gc_collect_cycles();
     }

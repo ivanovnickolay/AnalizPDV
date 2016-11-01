@@ -27,6 +27,7 @@ use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
 class writeAnalizOutByInn extends writeAnalizToFileAbstract
 {
 	const fileNameAllUZ="AnalizPDV_Out_INN.xlsx";
+	const fileNameOneBranch="AnalizPDV_Out_INN_By_Branch.xlsx";
 	/**
 	 *формирование файла анализа расхождений обязательств по ИНН по одному конкретному филиалу без документов
 	 * @param int $month номер месяца по которому надо сформировать анализ
@@ -71,7 +72,99 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 	}
 
 	/**
+	 *формирование файла анализа расхождений обязательств по ИНН по одному конкретному филиалу c документами
+	 * @param int $month номер месяца по которому надо сформировать анализ
+	 * @param int $year номер года по которому надо сформировать анализ
+	 * @param string $numBranch номер филиала по которому надо сформировать анализ
+	 * @uses getDataOutINNByOne::getReestrEqualErpn формирование данных
+	 * @uses getDataOutINNByOne::getErpnNoEqualReestr формирование данных
+	 * @uses getDataOutINNByOne::getReestrNoEqualErpn формирование данных
+	 * @uses getWriteExcel::setParamFile
+	 * @uses getWriteExcel::getNewFileName
+	 * @uses getWriteExcel::setDataFromWorksheet
+	 * @uses getWriteExcel::fileWriteAndSave
+	 * @see OutGroupInnByOneBranchCommand::execute - отсюда вызывается функция
+	 */
+	public function writeAnalizPDVOutInnByOneBranchWithDoc(int $month,int $year,string $numBranch)
+	{
+
+		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
+		$file=$this->pathToTemplate.self::fileNameOneBranch;
+		//echo $file;
+		if (file_exists($file)) {
+			$data = new getDataOutINNByOne($this->em);
+			$write = new getWriteExcel($file);
+			$write->setParamFile ($month , $year , $numBranch);
+			$write->getNewFileName ();
+
+			$arr=$data->getReestrEqualErpn($month,$year, $numBranch);
+			$write->setDataFromWorksheet('Out_R=E',$arr,'A4');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getReestrEqualErpn_DocErpn($month,$year, $numBranch);
+			$write->setDataFromWorksheet('Out_R=E DocByE',$arr,'A3');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getReestrEqualErpn_DocReestr($month,$year, $numBranch);
+			$write->setDataFromWorksheet('Out_R=E DocByR',$arr,'A3');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getReestrNoEqualErpn($month,$year, $numBranch);
+			$write->setDataFromWorksheet('Out_R<>E',$arr,'A4');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getReestrNoEqualErpn_DocReestr($month,$year, $numBranch);
+			$write->setDataFromWorksheet('Out_R<>E DocByR',$arr,'A3');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getErpnNoEqualReestr($month,$year, $numBranch);
+			$write->setDataFromWorksheet('Out_E<>R',$arr,'A4');
+			unset($arr);
+			gc_collect_cycles();
+
+			$arr=$data->getErpnNoEqualReestr_DocErpn($month,$year, $numBranch);
+			$write->setDataFromWorksheet('Out_E<>R DocByE',$arr,'A3');
+			unset($arr);
+			gc_collect_cycles();
+
+			$write->fileWriteAndSave();
+			unset($data,$write);
+			gc_collect_cycles();
+		}	else {
+			echo "File " . $file . " not found";
+		}
+	}
+
+	/**
 	 * формирование файлов анализа расхождений обязательств по ИНН (без документов)
+	 * по всем филиалам каждый филиал в свой файл
+	 * @param int $month номер месяца по которому надо сформировать анализ
+	 * @param int $year номер года по которому надо сформировать анализ
+	 * @uses getDataFromReestrsByOne::getAllBranchToPeriodOut
+	 * @uses writeAnalizPDVOutInnByOneBranchWithDoc
+	 * @see OutGroupInnByOneBranchStreamCommand::execute - отсюда вызывается функция
+	 */
+	public function writeAnalizPDVOutInnByAllBranch(int $month,int $year)
+	{
+		$data=new getDataFromReestrsByOne($this->em);
+		$arrAllBranch=$data->getAllBranchToPeriodOut($month,$year);
+		if(!empty($arrAllBranch)) {
+			foreach ($arrAllBranch as $arrAll)
+			{
+				foreach ($arrAll as $key => $numBranch)
+				{
+					$this->writeAnalizPDVOutInnByOneBranchWithDoc($month,$year,(string) $numBranch);
+				}
+			}
+		}
+	}
+	/**
+	 * формирование файлов анализа расхождений обязательств по ИНН (c документами)
 	 * по всем филиалам каждый филиал в свой файл
 	 * @param int $month номер месяца по которому надо сформировать анализ
 	 * @param int $year номер года по которому надо сформировать анализ
@@ -79,7 +172,7 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 	 * @uses writeAnalizPDVOutInnByOneBranch
 	 * @see OutGroupInnByOneBranchStreamCommand::execute - отсюда вызывается функция
 	 */
-	public function writeAnalizPDVOutInnByAllBranch(int $month,int $year)
+	public function writeAnalizPDVOutInnByAllBranchWithDoc(int $month,int $year)
 	{
 		$data=new getDataFromReestrsByOne($this->em);
 		$arrAllBranch=$data->getAllBranchToPeriodOut($month,$year);
@@ -93,7 +186,6 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 			}
 		}
 	}
-
 	/**
 	 * формирование файла анализа расхождений обязательств по ИНН по ПАТ целиком без документов
 	 * @param int $month
