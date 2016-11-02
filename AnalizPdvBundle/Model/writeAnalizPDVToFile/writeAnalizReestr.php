@@ -22,7 +22,8 @@ use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
  */
 class writeAnalizReestr extends writeAnalizToFileAbstract
 {
-	const fileName="AnalizPDV_All.xlsx";
+	const fileNameAllUZ="AnalizPDV_All.xlsx";
+	const fileNameOneBranch="AnalizPDV.xlsx";
 
 	/**
 	 * формирование файла анализа реестров и ЕРПН по документам сводного всему УЗ
@@ -41,9 +42,9 @@ class writeAnalizReestr extends writeAnalizToFileAbstract
 	 */
 	public function writeAnalizPDVByAllUZ(int $month, int $year)
 	{
-		//todo сменить жесткую привязку к файлу анализа
+
 		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_All.xlsx";
-		$file=$this->pathToTemplate.self::fileName;
+		$file=$this->pathToTemplate.self::fileNameAllUZ;
 		//echo $file;
 		if (file_exists($file)) {
 			$data=new getDataFromReestrsAll($this->em);
@@ -97,36 +98,44 @@ class writeAnalizReestr extends writeAnalizToFileAbstract
 	 */
 	public function writeAnalizPDVByOneBranch(int $month,int $year,string $numBranch)
 	{
-		//todo сменить жесткую привязку к вайлу анализа
-		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV.xlsx";
-		$data=new getDataFromReestrsByOne($this->em);
-		$write=new getWriteExcel($file);
-		$write->setParamFile($month,$year,$numBranch);
-		$write->getNewFileName();
 
-		$arr=$data->getReestrInEqualErpn($month,$year,$numBranch);
-		$write->setDataFromWorksheet('In_reestr=edrpu',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV.xlsx";
+		$file=$this->pathToTemplate.self::fileNameOneBranch;
+		//echo $file;
+		if (file_exists($file))
+		{
+				$data=new getDataFromReestrsByOne($this->em);
+				$write=new getWriteExcel($file);
+				$write->setParamFile($month,$year,$numBranch);
+				$write->getNewFileName();
 
-		$arr=$data->getReestrInNotEqualErpn($month,$year,$numBranch);
-		$write->setDataFromWorksheet('In_reestr<>edrpou',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getReestrInEqualErpn($month,$year,$numBranch);
+				$write->setDataFromWorksheet('In_reestr=edrpu',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$arr=$data->getReestrOutEqualErpn($month,$year,$numBranch);
-		$write->setDataFromWorksheet('Out_reestr=edrpu',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getReestrInNotEqualErpn($month,$year,$numBranch);
+				$write->setDataFromWorksheet('In_reestr<>edrpou',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$arr=$data->getReestrOutNotEqualErpn($month,$year,$numBranch);
-		$write->setDataFromWorksheet('Out_reestr<>edrpou',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getReestrOutEqualErpn($month,$year,$numBranch);
+				$write->setDataFromWorksheet('Out_reestr=edrpu',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$write->fileWriteAndSave();
-		unset($data,$write);
-		gc_collect_cycles();
+				$arr=$data->getReestrOutNotEqualErpn($month,$year,$numBranch);
+				$write->setDataFromWorksheet('Out_reestr<>edrpou',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
+
+				$write->fileWriteAndSave();
+				unset($data,$write);
+				gc_collect_cycles();
+		} else
+		{
+			echo "File ".$file." not found";
+		}
 	}
 
 	/**

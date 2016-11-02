@@ -23,6 +23,7 @@ use AnalizPdvBundle\Utilits\createWriteFile\getWriteExcel;
  */
 class writeAnalizOutDelayDate extends writeAnalizToFileAbstract
 {
+	const fileNameAllUZ="AnalizPDV_DiffDate.xlsx";
 
 	/**
 	 * формирование файла анализа опаздавших выданных НН по одному конкретному филиалу
@@ -40,32 +41,38 @@ class writeAnalizOutDelayDate extends writeAnalizToFileAbstract
 	 */
 	public function writeAnalizPDVOutDelayByOneBranch(int $month,int $year,string $numBranch)
 	{
-		//todo сменить жесткую привязку к файлу анализа
-		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_DiffDate.xlsx";
+
+		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_DiffDate.xlsx";
 		//$data=new getDataFromAnalizPDVOutDelay($this->em);
-		$data=new getDataOutDelay($this->em);
-		$write=new getWriteExcel($file);
-		$write->setParamFile($month,$year,$numBranch);
-		$write->getNewFileName();
+		$file=$this->pathToTemplate.self::fileNameOneBranch;
+		//echo $file;
+		if (file_exists($file)) {
+				$data=new getDataOutDelay($this->em);
+				$write=new getWriteExcel($file);
+				$write->setParamFile($month,$year,$numBranch);
+				$write->getNewFileName();
 
-		$arr=$data->getAllDelay($month,$year,$numBranch);
-		$write->setDataFromWorksheet('AllDiff_out',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getAllDelay($month,$year,$numBranch);
+				$write->setDataFromWorksheet('AllDiff_out',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$arr=$data->getDelayToReestr($month,$year,$numBranch);
-		$write->setDataFromWorksheet('DiffOut_reestr=erpn',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getDelayToReestr($month,$year,$numBranch);
+				$write->setDataFromWorksheet('DiffOut_reestr=erpn',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$arr=$data->getDelayToNotReestr($month,$year,$numBranch);
-		$write->setDataFromWorksheet('DiffOut_reestr<>erpn',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getDelayToNotReestr($month,$year,$numBranch);
+				$write->setDataFromWorksheet('DiffOut_reestr<>erpn',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$write->fileWriteAndSave();
-		unset($data,$write);
-		gc_collect_cycles();
+				$write->fileWriteAndSave();
+				unset($data,$write);
+				gc_collect_cycles();
+		}	else {
+			echo "File " . $file . " not found";
+		}
 	}
 
 	/**
@@ -105,32 +112,39 @@ class writeAnalizOutDelayDate extends writeAnalizToFileAbstract
 	 */
 	public function writeAnalizPDVOutDelayByAllUZ(int $month,int $year)
 	{
-		//todo сменить жесткую привязку к файлу анализа
-		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_DiffDate.xlsx";
+
+		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_DiffDate.xlsx";
+		$file=$this->pathToTemplate.self::fileNameOneBranch;
+		//echo $file;
+		if (file_exists($file))
+		{
 		//$data=new getDataFromAnalizPDVOutDelay($this->em);
-		$data=new getDataOutDelayByAll($this->em);
-		$write=new getWriteExcel($file);
-		$write->setParamFile($month,$year,"All");
-		$write->getNewFileName();
+				$data=new getDataOutDelayByAll($this->em);
+				$write=new getWriteExcel($file);
+				$write->setParamFile($month,$year,"All");
+				$write->getNewFileName();
 
-		$arr=$data->getAllDelay($month,$year);
-		$write->setDataFromWorksheet('AllDiff_out',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getAllDelay($month,$year);
+				$write->setDataFromWorksheet('AllDiff_out',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$arr=$data->getDelayToReestr($month,$year);
-		$write->setDataFromWorksheet('DiffOut_reestr=erpn',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getDelayToReestr($month,$year);
+				$write->setDataFromWorksheet('DiffOut_reestr=erpn',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$arr=$data->getDelayToNotReestr($month,$year);
-		$write->setDataFromWorksheet('DiffOut_reestr<>erpn',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getDelayToNotReestr($month,$year);
+				$write->setDataFromWorksheet('DiffOut_reestr<>erpn',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$write->fileWriteAndSave();
-		unset($data,$write);
-		gc_collect_cycles();
+				$write->fileWriteAndSave();
+				unset($data,$write);
+				gc_collect_cycles();
+		}	else {
+			echo "File " . $file . " not found";
+		}
 	}
 
 }

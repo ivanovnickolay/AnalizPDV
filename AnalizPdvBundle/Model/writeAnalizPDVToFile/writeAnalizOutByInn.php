@@ -44,31 +44,37 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 	 */
 	public function writeAnalizPDVOutInnByOneBranch(int $month,int $year,string $numBranch)
 	{
-		//todo сменить жесткую привязку к файлу анализа
-		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
-		$data=new getDataOutINNByOne($this->em);
-		$write=new getWriteExcel($file);
-		$write->setParamFile($month,$year,$numBranch);
-		$write->getNewFileName();
 
-		$arr=$data->getReestrEqualErpn($month,$year,$numBranch);
-		$write->setDataFromWorksheet('Out_reestr=erpn',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
+		$file=$this->pathToTemplate.self::fileNameOneBranch;
+		//echo $file;
+		if (file_exists($file)) {
+				$data=new getDataOutINNByOne($this->em);
+				$write=new getWriteExcel($file);
+				$write->setParamFile($month,$year,$numBranch);
+				$write->getNewFileName();
 
-		$arr=$data->getErpnNoEqualReestr($month,$year,$numBranch);
-		$write->setDataFromWorksheet('Out_erpn<>reestr',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getReestrEqualErpn($month,$year,$numBranch);
+				$write->setDataFromWorksheet('Out_reestr=erpn',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$arr=$data->getReestrNoEqualErpn($month,$year,$numBranch);
-		$write->setDataFromWorksheet('Out_reestr<>erpn',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getErpnNoEqualReestr($month,$year,$numBranch);
+				$write->setDataFromWorksheet('Out_erpn<>reestr',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$write->fileWriteAndSave();
-		unset($data,$write);
-		gc_collect_cycles();
+				$arr=$data->getReestrNoEqualErpn($month,$year,$numBranch);
+				$write->setDataFromWorksheet('Out_reestr<>erpn',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
+
+				$write->fileWriteAndSave();
+				unset($data,$write);
+				gc_collect_cycles();
+		}	else {
+			echo "File " . $file . " not found";
+		}
 	}
 
 	/**
@@ -201,31 +207,37 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 	 */
 	public function writeAnalizPDVOutInnByAllUZ(int $month, int $year)
 	{
-		//todo сменить жесткую привязку к файлу анализа
-		$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
-		$data=new getDataOutINNByAll($this->em);
-		$write=new getWriteExcel($file);
-		$write->setParamFile($month,$year,"All");
-		$write->getNewFileName();
 
-		$arr=$data->getReestrEqualErpnAllUZ($month,$year);
-		$write->setDataFromWorksheet('Out_reestr=erpn',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_Out_INN.xlsx";
+		$file=$this->pathToTemplate.self::fileNameOneBranch;
+		//echo $file;
+		if (file_exists($file)) {
+				$data=new getDataOutINNByAll($this->em);
+				$write=new getWriteExcel($file);
+				$write->setParamFile($month,$year,"All");
+				$write->getNewFileName();
 
-		$arr=$data->getErpnNoEqualReestrAllUZ($month,$year);
-		$write->setDataFromWorksheet('Out_erpn<>reestr',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getReestrEqualErpnAllUZ($month,$year);
+				$write->setDataFromWorksheet('Out_reestr=erpn',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$arr=$data->getReestrNoEqualErpnAllUZ($month,$year);
-		$write->setDataFromWorksheet('Out_reestr<>erpn',$arr,'A4');
-		unset($arr);
-		gc_collect_cycles();
+				$arr=$data->getErpnNoEqualReestrAllUZ($month,$year);
+				$write->setDataFromWorksheet('Out_erpn<>reestr',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
 
-		$write->fileWriteAndSave();
-		unset($data,$write);
-		gc_collect_cycles();
+				$arr=$data->getReestrNoEqualErpnAllUZ($month,$year);
+				$write->setDataFromWorksheet('Out_reestr<>erpn',$arr,'A4');
+				unset($arr);
+				gc_collect_cycles();
+
+				$write->fileWriteAndSave();
+				unset($data,$write);
+				gc_collect_cycles();
+		}	else {
+			echo "File " . $file . " not found";
+		}
 	}
 
 	/**
