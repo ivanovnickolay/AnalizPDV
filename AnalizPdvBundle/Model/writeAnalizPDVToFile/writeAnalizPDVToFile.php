@@ -28,7 +28,8 @@ class writeAnalizPDVToFile
 {
 	private $em;
 	private $pathToTemplate;
-	const fileName="AnalizPDV_All.xlsx";
+	const fileNameAllUZ="AnalizPDV_All.xlsx";
+	const fileNameOneBranch="AnalizPDV_All.xlsx";
 
 	/**
 	 * writeAnalizPDVToFile constructor.
@@ -49,7 +50,7 @@ class writeAnalizPDVToFile
 	public function writeAnalizPDVByAllUZ(int $month, int $year)
 {
 	//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_All.xlsx";
-	$file=$this->pathToTemplate.self::fileName;
+	$file=$this->pathToTemplate.self::fileNameAllUZ;
 	echo $file;
 	if (file_exists($file)) {
 		$data = new getDataFromReestrsAll($this->em);

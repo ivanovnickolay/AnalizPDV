@@ -4,6 +4,7 @@ namespace AnalizPdvBundle\Command;
 
 
 use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizPDVToFile;
+use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizReestr;
 use AnalizPdvBundle\Utilits\validInputCommand;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,7 +37,8 @@ class AnalizReestrByOneBranchStream_Command extends ContainerAwareCommand
 	 * @uses validInputCommand::validMonth
 	 * @uses validInputCommand::validYear
 	 * @uses validInputCommand::getTextError
-	 * @uses writeAnalizPDVToFile::writeAnalizPDVByAllBranch формирование файла анализа
+	 * @uses writeAnalizPDVToFile::writeAnalizPDVByAllBranch формирование файла анализа (удалено 06-11-16)
+	 * @uses writeAnalizReestr::writeAnalizPDVByAllBranch формирование файла анализа
 	 */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -59,8 +61,10 @@ class AnalizReestrByOneBranchStream_Command extends ContainerAwareCommand
             exit();
         }
         $pathTemplate=$this->getContainer()->getParameter('path_template');
-        $write=new writeAnalizPDVToFile($em,$pathTemplate);
-        $write->writeAnalizPDVByAllBranch($month,$year);
+        //$write=new writeAnalizPDVToFile($em,$pathTemplate);
+	    $write=new writeAnalizReestr($em,$pathTemplate);
+        //$write->writeAnalizPDVByAllBranch($month,$year);
+	    $write->writeAnalizPDVByAllBranch($month,$year);
         unset($write);
         gc_collect_cycles();
     }

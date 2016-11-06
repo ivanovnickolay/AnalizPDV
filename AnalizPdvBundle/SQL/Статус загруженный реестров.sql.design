@@ -13,7 +13,7 @@
     <ConnectionString>User Id=root;Host=localhost;Database=AnalizPDV;Character Set=utf8</ConnectionString>
     <Database>AnalizPDV</Database>
   </Connection>
-  <Views ShowAdditionalViews="False" IsLayoutActiveAttribute="True" MainViewAttribute="Code" MainViewScale="50">
+  <Views ShowAdditionalViews="False" IsLayoutActiveAttribute="True" MainViewAttribute="Code" MainViewScale="48">
     <View Name="Design" Visible="False" />
     <View Name="Code" Visible="True">
       <Data />
