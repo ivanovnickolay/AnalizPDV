@@ -103,6 +103,9 @@ class writeAnalizOutByInn extends writeAnalizToFileAbstract
 			$write->setParamFile ($month , $year , $numBranch);
 			$write->getNewFileName ();
 
+			$data->disconnect();
+			$data->connect();
+
 			$arr=$data->getReestrEqualErpn($month,$year, $numBranch);
 			$write->setDataFromWorksheet('Out_R=E',$arr,'A4');
 			unset($arr);

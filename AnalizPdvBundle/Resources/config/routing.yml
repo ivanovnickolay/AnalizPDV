@@ -19,3 +19,12 @@ load_file_newLoad:
 LoadBranch:
     path: /LoadBranch
     defaults: {_controller: AnalizPdvBundle:LoadBranch:Load}
+
+docErpn_search:
+  path: /searchDocErpn
+  defaults: {_controller: AnalizPdvBundle:searchDocErpn:viewForm}
+
+docErpn_getDoc:
+  path: /getDocErpn
+  defaults: {_controller: AnalizPdvBundle:searchDocErpn:getDoc}
+  methods: [POST]

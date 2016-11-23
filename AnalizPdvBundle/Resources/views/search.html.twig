@@ -1,0 +1,111 @@
+{% extends '::base.html.twig' %}
+
+{% block form %}
+
+<h1>Поиск документов с ЕРПН по реквизитам </h1>
+<form class="form " role="form" method="post"  name="searchDocByErpn">
+ <div class="form-group">
+  <label for="typeRoute"> Направление поиска </label>
+  <select id="typeRoute" class="form-control">
+     <option class="active">Выданные</option>
+     <option>Полученные</option>
+  </select>
+ </div>
+ <div class="form-group">
+  <label for="periodCreate">Период создания документа </label>
+  <input type="month" class="form-control" id="periodCreate">
+ </div>
+ <div class="form-group">
+  <label for="numDoc">Номер документа </label>
+  <input class="form-control" id="numDoc">
+ </div>
+ <div class="form-group">
+  <label for="dataDoc">Дата создания документа </label>
+  <input type="date" class="form-control" id="dataDoc">
+ </div>
+ <div class="form-group">
+  <label for="InnDoc">ИНН контрагента </label>
+  <input type="number" class="form-control" id="InnDoc">
+ </div>
+ <button type="submit" id="submitForm" class="btn btn-primary">Искать</button>
+</form>
+{% endblock %}
+{% block JS %}
+ <script>
+ function firstValues () {
+     //установка первоначальных значений
+     var date=new Date();
+     var curr_month = date.getMonth() + 1;
+     var curr_year = date.getFullYear();
+     $("#periodCreate").val(curr_year+"-"+curr_month);
+ }
+
+ $(document).ready(function(){
+     //установка первоначальных значений
+     firstValues()
+
+   $("#submitForm").click(function(){
+   // обработка валидации и формирование аякс запроса
+    });
+
+
+   $("#numDoc").blur(function () {
+       // todo дополнить проверкой на отсутствие букв
+    $(".error_numDoc").remove();
+      var numDoc=$("#numDoc").val();
+          if ((numDoc)=="")
+          {
+             $("#numDoc").after("<span class='error_numDoc' style='color: red'>Номер документа не может быть пустым " +
+                     "</span>")
+             $("#numDoc").focus()
+          }
+   })
+
+   $("#periodCreate").change(function () {
+       $(".error_periodCreate").remove();
+       var periodCreate=$("#periodCreate").val();
+       if ((periodCreate) == "")
+       {
+           $("#periodCreate").after("<span class='error_periodCreate' style='color: red' >Период создания документа " +
+                   "не может быть пустым </span>")
+           $("#periodCreate").focus();
+       }
+
+   })
+
+   $("#dataDoc").blur(function () {
+
+       $(".error_dataDoc").remove();
+       var dataDoc=$("#dataDoc").val();
+       if ((dataDoc) == "")
+       {
+           $("#dataDoc").after("<span class='error_dataDoc' style='color: red' >Дата создания документа не может быть " +
+                   "пустым </span>")
+           $("#dataDoc").focus();
+       }
+   })
+
+    $("#InnDoc").blur(function () {
+
+        // todo дополнить проверкой на наличие только цифр
+
+            $(".error_InnDoc").remove();
+            var InnDoc=$("#InnDoc").val();
+               if (((InnDoc).length>12)||((InnDoc).length==0))
+               {
+                   $("#InnDoc").after("<span class='error_InnDoc' style='color: red' >ИНН не может быть длинее 12 " +
+                           "цифр и не может быть пустым </span>")
+                   $("#InnDoc").focus();
+               }
+            if (is)
+            {
+                $("#InnDoc").after("<span class='error_InnDoc' style='color: red' >ИНН не может быть длинее 12 цифр</span>")
+                $("#InnDoc").focus();
+            }
+
+   })
+   });
+
+  </script>
+{% endblock %}
+
