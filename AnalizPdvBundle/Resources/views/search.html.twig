@@ -12,7 +12,7 @@
   </select>
  </div>
  <div class="form-group">
-  <label for="periodCreate">Период создания документа </label>
+  <label for="periodCreate">Период поиска документа </label>
   <input type="month" class="form-control" id="periodCreate">
  </div>
  <div class="form-group">
@@ -25,7 +25,7 @@
  </div>
  <div class="form-group">
   <label for="InnDoc">ИНН контрагента </label>
-  <input type="number" class="form-control" id="InnDoc">
+  <input type="number" class="form-control" id="InnDoc" MAXLENGTH="12">
  </div>
  <button type="submit" id="submitForm" class="btn btn-primary">Искать</button>
 </form>
@@ -53,21 +53,50 @@
        // todo дополнить проверкой на отсутствие букв
     $(".error_numDoc").remove();
       var numDoc=$("#numDoc").val();
-          if ((numDoc)=="")
+       /**
+      if ((numDoc)=="")
           {
              $("#numDoc").after("<span class='error_numDoc' style='color: red'>Номер документа не может быть пустым " +
                      "</span>")
              $("#numDoc").focus()
-          }
+          }*/
+
+       if(/[^\d\/]/g.test(numDoc))
+        {
+            $("#numDoc").after("<span class='error_numDoc' style='color: red'>Номер документа должен содержать только" +
+                    " цифры и символ / </span>")
+            $("#numDoc").focus()
+        }
+
    })
 
    $("#periodCreate").change(function () {
        $(".error_periodCreate").remove();
+
        var periodCreate=$("#periodCreate").val();
+       var arrPeriod=periodCreate.split("-");
+
+       var dataDoc=$("#dataDoc").val();
+       var arrDataDoc=dataDoc.split("-");
+       /*
        if ((periodCreate) == "")
        {
            $("#periodCreate").after("<span class='error_periodCreate' style='color: red' >Период создания документа " +
                    "не может быть пустым </span>")
+           $("#periodCreate").focus();
+       }*/
+       // проверяем что бы совпадали период поиска и дата создания документа
+       if(arrPeriod[0]!=arrDataDoc[0])
+       {
+           $("#periodCreate").after("<span class='error_periodCreate' style='color: red' >Год периода поиска " +
+                   "документа и год даты создания документа не совпадают </span>")
+           $("#periodCreate").focus();
+       }
+
+       if(arrPeriod[1]!=arrDataDoc[1])
+       {
+           $("#periodCreate").after("<span class='error_periodCreate' style='color: red' >Месяц периода поиска " +
+                   "документа и месяц даты создания документа не совпадают </span>")
            $("#periodCreate").focus();
        }
 
@@ -77,19 +106,36 @@
 
        $(".error_dataDoc").remove();
        var dataDoc=$("#dataDoc").val();
+       var arrDataDoc=dataDoc.split("-");
+       var periodCreate=$("#periodCreate").val();
+       var arrPeriod=periodCreate.split("-");
+      /*
        if ((dataDoc) == "")
-       {
-           $("#dataDoc").after("<span class='error_dataDoc' style='color: red' >Дата создания документа не может быть " +
-                   "пустым </span>")
-           $("#dataDoc").focus();
-       }
+               {
+                   $("#dataDoc").after("<span class='error_dataDoc' style='color: red' >Дата поиска документа не может быть " +
+                           "пустым </span>")
+                   $("#dataDoc").focus();
+               }
+       */
+        // проверяем что бы совпадали период поиска и дата создания документа
+       if(arrPeriod[0]!=arrDataDoc[0])
+             {
+                 $("#dataDoc").after("<span class='error_dataDoc' style='color: red' >Год периода поиска " +
+                         "документа и год даты создания документа не совпадают </span>")
+                 $("#dataDoc").focus();
+             }
+       if(arrPeriod[1]!=arrDataDoc[1])
+               {
+                   $("#dataDoc").after("<span class='error_dataDoc' style='color: red' >Месяц периода поиска " +
+                           "документа и месяц даты создания документа не совпадают </span>")
+                   $("#dataDoc").focus();
+               }
+
    })
 
     $("#InnDoc").blur(function () {
-
-        // todo дополнить проверкой на наличие только цифр
-
-            $(".error_InnDoc").remove();
+        // Если в поле введен любой арифметический знак среди цифр то поле все равно пустое
+         $(".error_InnDoc").remove();
             var InnDoc=$("#InnDoc").val();
                if (((InnDoc).length>12)||((InnDoc).length==0))
                {
@@ -97,11 +143,7 @@
                            "цифр и не может быть пустым </span>")
                    $("#InnDoc").focus();
                }
-            if (is)
-            {
-                $("#InnDoc").after("<span class='error_InnDoc' style='color: red' >ИНН не может быть длинее 12 цифр</span>")
-                $("#InnDoc").focus();
-            }
+
 
    })
    });
