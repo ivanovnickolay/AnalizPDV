@@ -2,35 +2,37 @@
 
 {% block form %}
 
-<h1>Поиск документов с ЕРПН по реквизитам </h1>
-<form class="form " role="form" method="post"  name="searchDocByErpn">
+<h2>Поиск документов с ЕРПН по реквизитам </h2>
+<form class="form" role="form" method="post" name="searchDocByErpn">
  <div class="form-group">
-  <label for="typeRoute"> Направление поиска </label>
-  <select id="typeRoute" class="form-control">
-     <option class="active">Выданные</option>
-     <option>Полученные</option>
-  </select>
+      <label for="typeRoute"> Направление поиска </label>
+      <select id="typeRoute" name="typeRoute" class="form-control">
+         <option class="active">Выданные</option>
+         <option>Полученные</option>
+      </select>
  </div>
  <div class="form-group">
-  <label for="periodCreate">Период поиска документа </label>
-  <input type="month" class="form-control" id="periodCreate">
+      <label for="periodCreate">Период поиска документа </label>
+      <input type="month" class="form-control" id="periodCreate" name="periodCreate">
  </div>
  <div class="form-group">
-  <label for="numDoc">Номер документа </label>
-  <input class="form-control" id="numDoc">
+      <label for="numDoc">Номер документа </label>
+      <input class="form-control" id="numDoc" name="numDoc">
  </div>
  <div class="form-group">
-  <label for="dataDoc">Дата создания документа </label>
-  <input type="date" class="form-control" id="dataDoc">
+      <label for="dataDoc">Дата создания документа </label>
+      <input type="date" class="form-control" id="dataDoc" name="dataDoc">
  </div>
  <div class="form-group">
-  <label for="InnDoc">ИНН контрагента </label>
-  <input type="number" class="form-control" id="InnDoc" MAXLENGTH="12">
+      <label for="InnDoc">ИНН контрагента </label>
+      <input type="number" class="form-control" id="InnDoc" name="InnDoc" MAXLENGTH="12">
  </div>
  <button type="submit" id="submitForm" class="btn btn-primary">Искать</button>
 </form>
 {% endblock %}
 {% block JS %}
+<script src="{{ asset ('bundles/validForm.js') }}"></script>
+
  <script>
  function firstValues () {
      //установка первоначальных значений
@@ -40,37 +42,53 @@
      $("#periodCreate").val(curr_year+"-"+curr_month);
  }
 
+    // проверка форммы на наличие не исправленных ошибок
+  function isValidForm() {
+     var error = $("span#error").length;
+      // если количество спанов с ошибками более нуля то ошибки есть
+     if (error!=0)
+     {
+        return false;
+     }
+        return true
+ }
  $(document).ready(function(){
      //установка первоначальных значений
      firstValues()
 
    $("#submitForm").click(function(){
    // обработка валидации и формирование аякс запроса
+      // проверяем форму на наличие спанов с ошибками
+       if(!isValidForm())
+          {
+              alert("Форма содержит ошибки ");
+              return false;
+          }
+          var  d = $(".form").serialize();
+       alert(d);
+       $.ajax({
+           url: '{{ path('docErpn_getDoc') }}',
+           type: 'post',
+           data: $(".form").serialize()})
+
     });
 
-
    $("#numDoc").blur(function () {
-       // todo дополнить проверкой на отсутствие букв
-    $(".error_numDoc").remove();
+
+     $(".error_numDoc").remove();
       var numDoc=$("#numDoc").val();
-       /**
-      if ((numDoc)=="")
-          {
-             $("#numDoc").after("<span class='error_numDoc' style='color: red'>Номер документа не может быть пустым " +
-                     "</span>")
-             $("#numDoc").focus()
-          }*/
-
-       if(/[^\d\/]/g.test(numDoc))
-        {
-            $("#numDoc").after("<span class='error_numDoc' style='color: red'>Номер документа должен содержать только" +
-                    " цифры и символ / </span>")
-            $("#numDoc").focus()
-        }
-
+        if(isValid_numDoc(numDoc))
+            {
+                $("#numDoc").after("<span class='error_numDoc' style='color: red' id='error'>Номер документа должен " +
+            "содержать " +
+                        "только" +
+                        " цифры и символ / </span>")
+                $("#numDoc").focus()
+            }
    })
 
    $("#periodCreate").change(function () {
+
        $(".error_periodCreate").remove();
 
        var periodCreate=$("#periodCreate").val();
@@ -86,20 +104,18 @@
            $("#periodCreate").focus();
        }*/
        // проверяем что бы совпадали период поиска и дата создания документа
-       if(arrPeriod[0]!=arrDataDoc[0])
+       if (isValid_periodCreate_dataDoc_year(periodCreate,dataDoc))
        {
-           $("#periodCreate").after("<span class='error_periodCreate' style='color: red' >Год периода поиска " +
+           $("#periodCreate").after("<span class='error_periodCreate' style='color: red' id='error' >Год периода поиска " +
                    "документа и год даты создания документа не совпадают </span>")
            $("#periodCreate").focus();
        }
-
-       if(arrPeriod[1]!=arrDataDoc[1])
+       if (isValid_periodCreate_dataDoc_month(periodCreate,dataDoc))
        {
-           $("#periodCreate").after("<span class='error_periodCreate' style='color: red' >Месяц периода поиска " +
+           $("#periodCreate").after("<span class='error_periodCreate' style='color: red' id='error'>Месяц периода поиска " +
                    "документа и месяц даты создания документа не совпадают </span>")
            $("#periodCreate").focus();
        }
-
    })
 
    $("#dataDoc").blur(function () {
@@ -118,33 +134,30 @@
                }
        */
         // проверяем что бы совпадали период поиска и дата создания документа
-       if(arrPeriod[0]!=arrDataDoc[0])
-             {
-                 $("#dataDoc").after("<span class='error_dataDoc' style='color: red' >Год периода поиска " +
-                         "документа и год даты создания документа не совпадают </span>")
-                 $("#dataDoc").focus();
-             }
-       if(arrPeriod[1]!=arrDataDoc[1])
-               {
-                   $("#dataDoc").after("<span class='error_dataDoc' style='color: red' >Месяц периода поиска " +
-                           "документа и месяц даты создания документа не совпадают </span>")
-                   $("#dataDoc").focus();
-               }
-
+       if (isValid_periodCreate_dataDoc_year(periodCreate,dataDoc))
+       {
+           $("#dataDoc").after("<span class='error_dataDoc' style='color: red' id='error'>Год периода поиска " +
+                   "документа и год даты создания документа не совпадают </span>")
+           $("#dataDoc").focus();
+       }
+       if (isValid_periodCreate_dataDoc_month(periodCreate,dataDoc))
+       {
+           $("#dataDoc").after("<span class='error_dataDoc' style='color: red' id='error' >Месяц периода поиска " +
+                   "документа и месяц даты создания документа не совпадают </span>")
+           $("#dataDoc").focus();
+       }
    })
 
-    $("#InnDoc").blur(function () {
+   $("#InnDoc").blur(function () {
         // Если в поле введен любой арифметический знак среди цифр то поле все равно пустое
          $(".error_InnDoc").remove();
             var InnDoc=$("#InnDoc").val();
                if (((InnDoc).length>12)||((InnDoc).length==0))
                {
-                   $("#InnDoc").after("<span class='error_InnDoc' style='color: red' >ИНН не может быть длинее 12 " +
+                   $("#InnDoc").after("<span class='error_InnDoc' style='color: red' id='error'>ИНН не может быть длинее 12 " +
                            "цифр и не может быть пустым </span>")
                    $("#InnDoc").focus();
                }
-
-
    })
    });
 
