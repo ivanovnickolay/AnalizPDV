@@ -44,7 +44,7 @@ class writeAnalizOutDelayDate extends writeAnalizToFileAbstract
 
 		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_DiffDate.xlsx";
 		//$data=new getDataFromAnalizPDVOutDelay($this->em);
-		$file=$this->pathToTemplate.self::fileNameOneBranch;
+		$file=$this->pathToTemplate.self::fileNameAllUZ;
 		//echo $file;
 		if (file_exists($file)) {
 				$data=new getDataOutDelay($this->em);
@@ -92,7 +92,7 @@ class writeAnalizOutDelayDate extends writeAnalizToFileAbstract
 		{
 			foreach ($arrAll as $key => $numBranch)
 			{
-				$this->writeAnalizPDVOutDiffByOneBranch($month,$year,$numBranch);
+				$this->writeAnalizPDVOutDelayByOneBranch($month,$year,$numBranch);
 			}
 		}
 	}
@@ -114,7 +114,7 @@ class writeAnalizOutDelayDate extends writeAnalizToFileAbstract
 	{
 
 		//$file="d:\\OpenServer525\\domains\\AnalizPDV\\web\\template\\AnalizPDV_DiffDate.xlsx";
-		$file=$this->pathToTemplate.self::fileNameOneBranch;
+		$file=$this->pathToTemplate.self::fileNameAllUZ;
 		//echo $file;
 		if (file_exists($file))
 		{
