@@ -52,10 +52,11 @@
      }
         return true
  }
+
  $(document).ready(function(){
      //установка первоначальных значений
      firstValues()
-
+    // отправка формы
    $("#submitForm").click(function(){
    // обработка валидации и формирование аякс запроса
       // проверяем форму на наличие спанов с ошибками
@@ -72,22 +73,19 @@
            data: $(".form").serialize()})
 
     });
-
+    // проверка ввода номера документа
    $("#numDoc").blur(function () {
 
      $(".error_numDoc").remove();
       var numDoc=$("#numDoc").val();
         if(isValid_numDoc(numDoc))
             {
-                $("#numDoc").after("<span class='error_numDoc' style='color: red' id='error'>Номер документа должен " +
-            "содержать " +
-                        "только" +
-                        " цифры и символ / </span>")
+                $("#numDoc").after("<span class='error_numDoc' style='color: red' id='error'>Номер документа должен содержать только цифры и символ / </span>")
                 $("#numDoc").focus()
             }
    })
 
-   $("#periodCreate").change(function () {
+   $("#periodCreate").blur(function () {
 
        $(".error_periodCreate").remove();
 
@@ -96,13 +94,6 @@
 
        var dataDoc=$("#dataDoc").val();
        var arrDataDoc=dataDoc.split("-");
-       /*
-       if ((periodCreate) == "")
-       {
-           $("#periodCreate").after("<span class='error_periodCreate' style='color: red' >Период создания документа " +
-                   "не может быть пустым </span>")
-           $("#periodCreate").focus();
-       }*/
        // проверяем что бы совпадали период поиска и дата создания документа
        if (isValid_periodCreate_dataDoc_year(periodCreate,dataDoc))
        {

@@ -76,7 +76,7 @@ class validReestrIn extends interfaceValidEntity
 	public function validInn($inn)
 	{
 		//$inn=$this->entity->getInnClient();
-		if(!is_numeric($inn))
+		if(!ctype_digit($inn))
 		{
 			$this->error=$this->error."ИНН клиента содержит буквы";
 		}

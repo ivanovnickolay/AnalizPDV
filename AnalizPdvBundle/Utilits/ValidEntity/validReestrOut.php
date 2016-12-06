@@ -63,12 +63,14 @@ class validReestrOut extends interfaceValidEntity
 
 	/**
 	 * Проверка ИНН клиента - правило только цифры
+	 * @link http://php.net/manual/ru/function.ctype-digit.php
 	 * @param $inn string
 	 */
 	public function validInn($inn)
 	{
 		//$inn=$this->entity->getInnClient();
-		if(!is_numeric($inn))
+		// @link http://php.net/manual/ru/function.ctype-digit.php
+		if(!ctype_digit($inn))
 		{
 			$this->error=$this->error."ИНН клиента содержит буквы";
 		}
