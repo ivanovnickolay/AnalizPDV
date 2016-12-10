@@ -14,6 +14,10 @@ use Doctrine\ORM\EntityManager;
 use AnalizPdvBundle\Entity\LoadFile;
 
 
+/**
+ * Class HandlerFormLoadFile
+ * @package AnalizPdvBundle\Form
+ */
 class HandlerFormLoadFile
 {
 

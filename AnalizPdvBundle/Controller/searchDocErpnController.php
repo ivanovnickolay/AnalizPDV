@@ -2,7 +2,11 @@
 
 namespace AnalizPdvBundle\Controller;
 
+use AnalizPdvBundle\Form\handlerFormSearchErpn;
+use AnalizPdvBundle\Utilits\ValidForm\validFormSearchErpn;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -12,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 class searchDocErpnController extends Controller
 {
 	/**
-	 * @param $name
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
 	public function viewFormAction()
@@ -32,8 +35,29 @@ class searchDocErpnController extends Controller
 	 */
 	public function getDocAction(Request $request)
 	{
+		/**
 		$r=$request;
+		$data = $r->request->all();
+		$valid=new validFormSearchErpn();
+		if ($valid->isValdForm($data))
+		{
 
-		return $this->render('@AnalizPdv/search.html.twig');
+			return new JsonResponse("Form is Valid");
+		} else
+		{
+			return new JsonResponse("Form is NO Valid");
+		}*/
+
+		$handlerForm=$this->get('handler_search_erpn');
+			if ($handlerForm->handlerForm($request))
+			{
+				$returnData=$handlerForm->getData();
+			} else
+			{
+
+			}
+
+
+		//return $this->render('@AnalizPdv/search.html.twig');
 	}
 }

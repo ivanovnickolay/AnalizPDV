@@ -3,7 +3,7 @@
 {% block form %}
 
 <h2>Поиск документов с ЕРПН по реквизитам </h2>
-<form class="form" role="form" method="post" name="searchDocByErpn">
+<form class="form" role="form" method="post" name="searchDocByErpn" action="{{ path('docErpn_getDoc') }}">
  <div class="form-group">
       <label for="typeRoute"> Направление поиска </label>
       <select id="typeRoute" name="typeRoute" class="form-control">
@@ -16,19 +16,20 @@
       <input type="month" class="form-control" id="periodCreate" name="periodCreate">
  </div>
  <div class="form-group">
-      <label for="numDoc">Номер документа </label>
-      <input class="form-control" id="numDoc" name="numDoc">
+      <label for="num_invoice">Номер документа </label>
+      <input class="form-control" id="num_invoice" name="num_invoice">
  </div>
  <div class="form-group">
       <label for="dataDoc">Дата создания документа </label>
       <input type="date" class="form-control" id="dataDoc" name="dataDoc">
  </div>
  <div class="form-group">
-      <label for="InnDoc">ИНН контрагента </label>
-      <input type="number" class="form-control" id="InnDoc" name="InnDoc" MAXLENGTH="12">
+      <label for="inn_client">ИНН контрагента </label>
+      <input type="number" class="form-control" id="inn_client" name="inn_client" MAXLENGTH="12">
  </div>
  <button type="submit" id="submitForm" class="btn btn-primary">Искать</button>
 </form>
+    <div class="result"></div>
 {% endblock %}
 {% block JS %}
 <script src="{{ asset ('bundles/validForm.js') }}"></script>
@@ -65,23 +66,30 @@
               alert("Форма содержит ошибки ");
               return false;
           }
+          /** временно отключилим аякс
           var  d = $(".form").serialize();
        alert(d);
        $.ajax({
            url: '{{ path('docErpn_getDoc') }}',
            type: 'post',
-           data: $(".form").serialize()})
+           data: $(".form").serialize(),
+           success: function(res) {
+                $result=$(".result");
+               $result.html(res[0]);
+           }
+        })
+           */
 
     });
     // проверка ввода номера документа
-   $("#numDoc").blur(function () {
+   $("#num_invoice").blur(function () {
 
      $(".error_numDoc").remove();
-      var numDoc=$("#numDoc").val();
+      var numDoc=$("#num_invoice").val();
         if(isValid_numDoc(numDoc))
             {
-                $("#numDoc").after("<span class='error_numDoc' style='color: red' id='error'>Номер документа должен содержать только цифры и символ / </span>")
-                $("#numDoc").focus()
+                $("#num_invoice").after("<span class='error_numDoc' style='color: red' id='error'>Номер документа должен содержать только цифры и символ / </span>")
+                $("#num_invoice").focus()
             }
    })
 
@@ -139,15 +147,15 @@
        }
    })
 
-   $("#InnDoc").blur(function () {
+   $("#inn_client").blur(function () {
         // Если в поле введен любой арифметический знак среди цифр то поле все равно пустое
          $(".error_InnDoc").remove();
-            var InnDoc=$("#InnDoc").val();
+            var InnDoc=$("#inn_client").val();
                if (((InnDoc).length>12)||((InnDoc).length==0))
                {
-                   $("#InnDoc").after("<span class='error_InnDoc' style='color: red' id='error'>ИНН не может быть длинее 12 " +
+                   $("#inn_client").after("<span class='error_InnDoc' style='color: red' id='error'>ИНН не может быть длинее 12 " +
                            "цифр и не может быть пустым </span>")
-                   $("#InnDoc").focus();
+                   $("#inn_client").focus();
                }
    })
    });

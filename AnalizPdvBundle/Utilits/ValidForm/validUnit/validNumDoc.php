@@ -21,12 +21,18 @@ class validNumDoc extends validUnitAbsract
 	 */
 	public function isValid ($data)
 	{
+		// Если даннные пустые то они верные - в форме строка могла быть не заполнена
+		if (empty($data))
+		{
+			return true;
+		}
+
 		if (!preg_match("/[^0-9\/]/", $data))
 		{
 			return true;
-			$this->errorMsg="Номер документа должен содержать только цифры и символ / ";
 		}
-			return false;
+		$this->errorMsg="Номер документа должен содержать только цифры и символ / ";
+		return false;
 	}
 
 }

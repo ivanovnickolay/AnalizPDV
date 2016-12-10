@@ -10,4 +10,5 @@ namespace AnalizPdvBundle\Entity\Repository;
  */
 class ErpnIn extends \Doctrine\ORM\EntityRepository
 {
+
 }

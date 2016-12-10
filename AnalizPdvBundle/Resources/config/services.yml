@@ -18,3 +18,7 @@ services:
   handler_load_file:
     class: AnalizPdvBundle\Form\HandlerFormLoadFile
     arguments: ["@doctrine.orm.entity_manager","%file_dir%"]
+
+  handler_search_erpn:
+   class: AnalizPdvBundle\Form\handlerFormSearchErpn
+   arguments: ["@doctrine"]

@@ -26,16 +26,16 @@ class validNumDocTest extends \PHPUnit_Framework_TestCase
 			["fdfssadf",false],
 			["45\\",false],
 			["4444g",false],
-			["999//f",false],
+			["12//hh",false],
 		];
 	}
 
 
 	/**
-	 * Проверка на уникальность номера филиала в базе
+	 * Проверка на уникальность номера документа
 	 * @dataProvider DataFor_isValid_Uniq
 	 */
-	public function testValidNomDoc($num,$Result)
+	public function testValidNumDoc($num,$Result)
 	{
 		$vd = new validNumDoc();
 		$txt='testValidUniqBranch. -> Num '.$num.' result plan '.$Result;

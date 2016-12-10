@@ -7,6 +7,9 @@
  */
 
 namespace AnalizPdvBundle\Utilits\ValidForm;
+use AnalizPdvBundle\Utilits\ValidForm\validUnit\validInnDoc;
+use AnalizPdvBundle\Utilits\ValidForm\validUnit\validNumDoc;
+use AnalizPdvBundle\Utilits\ValidForm\validUnit\validTypeRoute;
 
 
 /**
@@ -16,10 +19,15 @@ namespace AnalizPdvBundle\Utilits\ValidForm;
  */
 class validFormSearchErpn extends validForm
 {
-	private $repository;
-
-	public function isValdForm ()
-	{
-		// TODO: Implement isValdForm() method.
-	}
+	/**
+	 * validFormSearchErpn constructor.
+	 */
+	public function __construct()
+{
+	$valid=new validUnitRepository();
+	$valid->addValidUnit("num_invoice",new validNumDoc());
+	$valid->addValidUnit("inn_client",new validInnDoc());
+	$valid->addValidUnit("typeRoute",new validTypeRoute());
+	$this->setValidUnitRepository($valid);
+}
 }

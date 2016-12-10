@@ -23,6 +23,11 @@ class validInnDoc extends validUnitAbsract
 	public function isValid ($data)
 	{
 		$this->errorMsg="";
+		// Если даннные пустые то они верные - в форме строка могла быть не заполнена
+		if (empty($data))
+		{
+			return true;
+		}
 		if (!ctype_digit($data))
 		{
 			$this->errorMsg=$this->errorMsg." ИНН не может содержать буквы";
