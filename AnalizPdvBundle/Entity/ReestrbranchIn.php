@@ -235,10 +235,10 @@ class ReestrbranchIn
     public function setDateGetInvoice($dateGetInvoice)
     {
         if (new \DateTime("0000-00-00")==$dateGetInvoice)
-        {
-            $this->dateGetInvoice = null;
-        } else {
-            $this->dateGetInvoice = $dateGetInvoice;
+	        {
+		        $this->dateGetInvoice = null;
+	        } else {
+		        $this->dateGetInvoice = $dateGetInvoice;
         }
         return $this;
     }

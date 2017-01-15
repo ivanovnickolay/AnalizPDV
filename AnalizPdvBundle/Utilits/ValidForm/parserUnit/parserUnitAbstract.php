@@ -6,25 +6,26 @@
  * Time: 18:50
  */
 
-namespace AnalizPdvBundle\Utilits\ValidForm\parseUnit;
+namespace AnalizPdvBundle\Utilits\ValidForm\parserUnit;
 
 
 /**
  * Абстрактный класс парсера данных полученных из формы поиска
  * в массив годный для использования в поиске по базе данных
  * Class parseUnitAbstract
- * @package AnalizPdvBundle\Utilits\ValidForm\parseUnit
+ * @package AnalizPdvBundle\Utilits\ValidForm\parserUnit
  */
-abstract class parseUnitAbstract
+abstract class parserUnitAbstract
 {
 	/**
 	 * метод в котором проводится парсинг данных и вывод данных годных для поиска
 	 * @param $data array
 	 * @return array в формате [поле_базы_данных]=>[значение_поля]
 	 */
-	public function parse(array $data)
+	public function parser(array $data)
 	{
 
 	}
+
 
 }

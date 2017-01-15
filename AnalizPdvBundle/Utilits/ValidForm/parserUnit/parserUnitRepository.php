@@ -9,6 +9,7 @@
 namespace AnalizPdvBundle\Utilits\ValidForm;
 
 
+use AnalizPdvBundle\Utilits\ValidForm\parseUnit\parserUnitAbstract;
 use AnalizPdvBundle\Utilits\ValidForm\validUnit\validUnitAbsract;
 
 /**
@@ -16,7 +17,7 @@ use AnalizPdvBundle\Utilits\ValidForm\validUnit\validUnitAbsract;
  * Class validUnitRepository
  * @package AnalizPdvBundle\Utilits\ValidForm
  */
-class validUnitRepository
+class parserUnitRepository
 {
 	private  $repository;
 
@@ -24,9 +25,9 @@ class validUnitRepository
 	 * @param $field
 	 * @param validUnitAbsract $validUnit
 	 */
-	public function addValidUnit($field, validUnitAbsract $validUnit)
+	public function addParserUnit($field, parserUnitAbstract $parserUnit)
 	{
-		$this->repository[$field]=$validUnit;
+		$this->repository[$field]=$parserUnit;
 	}
 
 	/**
@@ -48,7 +49,7 @@ class validUnitRepository
 	 * @param $field
 	 * @return mixed
 	 */
-	public function getValidUnit($field)
+	public function getParserUnit($field)
 	{
 		if(array_key_exists($field,$this->repository))
 		{

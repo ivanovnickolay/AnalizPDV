@@ -1,0 +1,146 @@
+{% extends '::base.html.twig' %}
+{% block table %}
+    <a href={{ path('searchDocByBranch')}}>Новый поиск </a>
+    <h1>Результат поиска документов по ВСП или филиалу </h1>
+        <p> Направление поиска документов <b>  {{ criteriaSearch.routeSearch }} </b> </p>
+            <p> Месяц поиска <b>  {{ criteriaSearch.monthCreate }} </b> </p>
+                 <p> Год поиска поиска <b> {{ criteriaSearch.yearCreate }} </b> </p>
+
+            {% if criteriaSearch.numBranch == "000" %}
+                    <p> Структурное подразделение <b> Все </b>  </p>
+                {% else %}
+                    <p> Структурное подразделение <b> {{ criteriaSearch.numBranch }} </b> </p>
+            {% endif %}
+
+    {% if criteriaSearch.numMainBranch == "000" %}
+        <p> Филиал <b> Все </b>  </p>
+    {% else %}
+        <p> Филиал <b>{{ criteriaSearch.numMainBranch  }} </b>  </p>
+    {% endif %}
+
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="active"><a href="#ERPN" data-toggle="tab">Данные ЕРПН</a></li>
+        <li><a href="#Reestr" data-toggle="tab">Данные Реестров</a></li>
+    </ul>
+
+
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="ERPN">
+        {% if resultSearchErpn is null %}
+            <b style="color: red"> Данные отсутствуют в базе. </b>
+        {% endif %}
+    <table border="1" class="table">
+        <tr class="caption">
+            <th> Номер по порядку  </th>
+            <th> Номер документа  </th>
+            <th> Дата создания документа </th>
+            <th> Дата регистрации документа </th>
+            <th> Тип документа </th>
+            <th> Основание не выдачи покупателю </th>
+            <th> ИПН покупателя </th>
+            <th> Название покупателя </th>
+            <th> Сумма всего, грн </th>
+            <th> Сумма ПДВ, грн </th>
+            <th> База налогообложения, грн </th>
+            <th> Название продавца </th>
+        </tr>
+        {% set sumaInvoice = 0 %}
+        {% set pdvinvoice = 0 %}
+        {% set bazaInvoice = 0 %}
+     {% for res in resultSearchErpn %}
+        <tr>
+            <td> {{ loop.index }}</td>
+            <td> {{ res.numInvoice }}</td>
+            <td> {{ res.dateCreateInvoice|date('d/m/Y') }}</td>
+            <td> {{ res.dateRegInvoice|date('d/m/Y')  }}</td>
+            <td> {{ res.typeInvoiceFull }}</td>
+            <td> {{ res.typeInvoice }}</td>
+            <td> {{ res.innClient }}</td>
+            <td> {{ res.nameClient }}</td>
+            <td> {{ res.sumaInvoice|number_format(2, '.', ',') }}</td>
+            <td> {{ res.pdvinvoice|number_format(2, '.', ',') }}</td>
+            <td> {{ res.bazaInvoice|number_format(2, '.', ',') }}</td>
+            <td> {{ res.nameVendor }}</td>
+        </tr>
+         {% set sumaInvoice = sumaInvoice + res.sumaInvoice %}
+         {% set pdvinvoice = pdvinvoice + res.pdvinvoice %}
+         {% set bazaInvoice = bazaInvoice +  res.bazaInvoice%}
+     {% endfor %}
+        <tr>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> Всего </td>
+            <td> {{ sumaInvoice|number_format(2, '.', ',')}}</td>
+            <td> {{ pdvinvoice|number_format(2, '.', ',') }}</td>
+            <td> {{ bazaInvoice|number_format(2, '.', ',') }}</td>
+            <td> </td>
+        </tr>
+</table>
+    </div>
+
+    <div class="tab-pane fade" id="Reestr">
+        {% if resultSearchReestr is null %}
+            <b style="color: red"> Данные отсутствуют в базе. </b>
+        {% endif %}
+        <table border="1" class="table">
+            <tr class="caption">
+                <th> Номер по порядку  </th>
+                <th> Месяц в котором включено в реестр </th>
+                <th> Год в котором включено в реестр </th>
+                <th> Дата создания документа </th>
+                <th> Номер документа </th>
+                <th> Тип документа </th>
+                <th> ИПН покупателя </th>
+                <th> Название покупателя </th>
+                <th> Сумма всего, грн </th>
+                <th> Сумма ПДВ, грн </th>
+                <th> База налогообложения, грн </th>
+            </tr>
+            {% set sumaInvoice = 0 %}
+            {% set pdvinvoice = 0 %}
+            {% set bazaInvoice = 0 %}
+            {% for res in resultSearchReestr %}
+                <tr>
+                    <td> {{ loop.index }}</td>
+                    <td> {{ res.month }}</td>
+                    <td> {{ res.year }}</td>
+                    <td> {{ res.dateCreateInvoice|date('d/m/Y') }}</td>
+                    <td> {{ res.numInvoice  }}</td>
+                    <td> {{ res.typeInvoiceFull }}</td>
+                    <td> {{ res.innClient }}</td>
+                    <td> {{ res.nameClient }}</td>
+                    <td> {{ res.zagSumm|number_format(2, '.', ',') }}</td>
+                    <td> {{ res.pdv20|number_format(2, '.', ',') }}</td>
+                    <td> {{ res.baza20|number_format(2, '.', ',') }}</td>
+
+                </tr>
+                {% set sumaInvoice = sumaInvoice + res.zagSumm %}
+                {% set pdvinvoice = pdvinvoice + res.pdv20 %}
+                {% set bazaInvoice = bazaInvoice +  res.baza20%}
+            {% endfor %}
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> Всего </td>
+                <td> {{ sumaInvoice|number_format(2, '.', ',')}}</td>
+                <td> {{ pdvinvoice|number_format(2, '.', ',') }}</td>
+                <td> {{ bazaInvoice|number_format(2, '.', ',') }}</td>
+            </tr>
+        </table>
+
+
+    </div>
+
+</div>
+    {% endblock %}
+

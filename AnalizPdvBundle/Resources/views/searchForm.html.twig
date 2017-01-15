@@ -1,0 +1,11 @@
+{% extends '::base.html.twig' %}
+
+{% block form %}
+
+<h3>Поиск документов в ЕРПН и Реестрам за период </h3>
+    {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+

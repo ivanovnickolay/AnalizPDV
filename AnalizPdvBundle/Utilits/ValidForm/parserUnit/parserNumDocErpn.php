@@ -6,10 +6,9 @@
  * Time: 18:58
  */
 
-namespace AnalizPdvBundle\Utilits\ValidForm\parseUnit;
+namespace AnalizPdvBundle\Utilits\ValidForm\parserUnit;
 
 
-use AnalizPdvBundle\Utilits\ValidForm\validUnit\validInnDoc;
 use AnalizPdvBundle\Utilits\ValidForm\validUnit\validNumDoc;
 
 /**
@@ -17,12 +16,12 @@ use AnalizPdvBundle\Utilits\ValidForm\validUnit\validNumDoc;
  * Class parseInnDoc
  * @package AnalizPdvBundle\Utilits\ValidForm\parseUnit
  */
-class parseNumDocErpn extends parseUnitAbstract
+class parserNumDocErpn extends parserUnitAbstract
 {
 	/**
 	 * @param array $data
 	 */
-	public function parse (array $data)
+	public function parser (array $data)
 	{
 		$valid=new validNumDoc();
 		foreach ($data as $key=>$value) {

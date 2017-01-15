@@ -1,0 +1,11 @@
+{% extends '::base.html.twig' %}
+
+{% block form %}
+
+<h2>Поиск документов с ЕРПН по параметрам </h2>
+    {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+

@@ -9,8 +9,8 @@
 namespace AnalizPdvBundle\Tests\Utilits\validForm\parseUnit;
 
 
-use AnalizPdvBundle\Utilits\ValidForm\parseUnit\parseInnDocErpn;
-use AnalizPdvBundle\Utilits\ValidForm\parseUnit\parseNumDocErpn;
+use AnalizPdvBundle\Utilits\ValidForm\parserUnit\parserInnDocErpn;
+use AnalizPdvBundle\Utilits\ValidForm\parserUnit\parserNumDocErpn;
 
 /**
  * Class parseInnDocErpnTest
@@ -39,8 +39,8 @@ class parseNumDocErpnTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test_parseNumDoc ($data, $res)
 	{
-		$parse=new parseNumDocErpn();
-		$arr=$parse->parse($data);
+		$parse=new parserNumDocErpn();
+		$arr=$parse->parser($data);
 		if (!empty($arr))
 		{
 			$this->assertEquals($res,key_exists("num_invoice",$arr));

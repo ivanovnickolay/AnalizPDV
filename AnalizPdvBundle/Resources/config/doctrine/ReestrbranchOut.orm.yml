@@ -1,6 +1,7 @@
 AnalizPdvBundle\Entity\ReestrbranchOut:
     type: entity
     table: ReestrBranch_out
+    repositoryClass: AnalizPdvBundle\Entity\Repository\ReestrBranch_out
     indexes:
         key:
             columns:

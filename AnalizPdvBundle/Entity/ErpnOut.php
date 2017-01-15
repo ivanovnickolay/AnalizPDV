@@ -117,6 +117,65 @@ class ErpnOut
      */
     private $rkeInfo;
 
+	/**
+	 * @var integer
+	 */
+	private $monthCreateInvoice;
+
+	/**
+	 * @var integer
+	 */
+	private $yearCreateInvoice;
+
+	private $numMainBranch;
+
+	/**
+	 * @return mixed
+	 */
+	public function getNumMainBranch()
+	{
+		return $this->numMainBranch;
+	}
+
+	/**
+	 * @param mixed $numMainBranch
+	 */
+	public function setNumMainBranch($numMainBranch)
+	{
+		$this->numMainBranch = $numMainBranch;
+	}
+	/**
+	 * @return int
+	 */
+	public function getYearCreateInvoice(): int
+	{
+		return $this->yearCreateInvoice;
+	}
+
+	/**
+	 * @param int $yearCreateInvoice
+	 */
+	public function setYearCreateInvoice(int $yearCreateInvoice)
+	{
+		$this->yearCreateInvoice = $yearCreateInvoice;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMonthCreateInvoice()
+	{
+		return $this->monthCreateInvoice;
+	}
+
+	/**
+	 * @param mixed $monthCreateInvoice
+	 */
+	public function setMonthCreateInvoice($monthCreateInvoice)
+	{
+		$this->monthCreateInvoice = $monthCreateInvoice;
+	}
+
 
     /**
      * Get id

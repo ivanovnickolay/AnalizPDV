@@ -1,6 +1,7 @@
 AnalizPdvBundle\Entity\ErpnOut:
     type: entity
     table: Erpn_out
+    repositoryClass: AnalizPdvBundle\Entity\Repository\ErpnOutRepository
     indexes:
         inn:
             columns:
@@ -159,4 +160,16 @@ AnalizPdvBundle\Entity\ErpnOut:
             options:
                 fixed: false
             column: rke_info
+        monthCreateInvoice:
+            type: integer
+            nullable: true
+            column: month_create_invoice
+        yearCreateInvoice:
+            type: integer
+            nullable: true
+            column: year_create_invoice
+        numMainBranch:
+            type: string
+            length: 255
+            column:  num_main_branch
     lifecycleCallbacks: {  }

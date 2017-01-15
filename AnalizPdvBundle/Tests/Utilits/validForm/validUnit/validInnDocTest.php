@@ -45,7 +45,7 @@ class validInnDocTest extends \PHPUnit_Framework_TestCase
 	{
 		$vd = new validInnDoc();
 
-		$this->assertEquals(false,$vd->isValid("+66"),$txt);
+		$this->assertEquals(false,$vd->isValid("+66"));
 
 	}
 }

@@ -6,22 +6,22 @@
  * Time: 18:58
  */
 
-namespace AnalizPdvBundle\Utilits\ValidForm\parseUnit;
-
-
+namespace AnalizPdvBundle\Utilits\ValidForm\parserUnit;
+use AnalizPdvBundle\Utilits\ValidForm\parserUnit\parserUnitAbstract;
 use AnalizPdvBundle\Utilits\ValidForm\validUnit\validInnDoc;
+
 
 /**
  * парсинг ИНН клиента в ЕРПН
  * Class parseInnDoc
- * @package AnalizPdvBundle\Utilits\ValidForm\parseUnit
+ * @package AnalizPdvBundle\Utilits\ValidForm\parserUnit
  */
-class parseInnDocErpn extends parseUnitAbstract
+class parserInnDocErpn extends parserUnitAbstract
 {
 	/**
 	 * @param array $data
 	 */
-	public function parse (array $data)
+	public function parser (array $data)
 	{
 		$valid=new validInnDoc();
 		foreach ($data as $key=>$value) {

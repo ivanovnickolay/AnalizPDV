@@ -117,6 +117,23 @@ class ErpnIn
      */
     private $rkeInfo;
 
+	private $numMainBranch;
+
+	/**
+	 * @return mixed
+	 */
+	public function getNumMainBranch()
+	{
+		return $this->numMainBranch;
+	}
+
+	/**
+	 * @param mixed $numMainBranch
+	 */
+	public function setNumMainBranch($numMainBranch)
+	{
+		$this->numMainBranch = $numMainBranch;
+	}
 
     /**
      * Get id

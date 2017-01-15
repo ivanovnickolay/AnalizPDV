@@ -24,6 +24,16 @@ docErpn_search:
   path: /searchDocErpn
   defaults: {_controller: AnalizPdvBundle:searchDocErpn:viewForm}
 
+# поиск всех документов ЕРПН и Реестрах в разрезе филиалов и (или) структурных подразделений
+searchDocByBranch:
+  path: /searchDocByBranch
+  defaults: {_controller: AnalizPdvBundle:searchDoc:searchDocByBranch}
+
+# поиск документов ЕРПН и Реестрах по параметрам
+searchDocByParam:
+  path: /searchDocByParam
+  defaults: {_controller: AnalizPdvBundle:searchDoc:searchDocByParam}
+
 docErpn_getDoc:
   path: /getDocErpn
   defaults: {_controller: AnalizPdvBundle:searchDocErpn:getDoc}

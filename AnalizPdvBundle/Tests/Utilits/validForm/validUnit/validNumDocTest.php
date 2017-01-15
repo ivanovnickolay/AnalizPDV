@@ -27,6 +27,7 @@ class validNumDocTest extends \PHPUnit_Framework_TestCase
 			["45\\",false],
 			["4444g",false],
 			["12//hh",false],
+			["212//015",true],
 		];
 	}
 

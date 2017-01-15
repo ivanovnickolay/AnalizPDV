@@ -9,11 +9,12 @@
 namespace AnalizPdvBundle\Tests\Utilits\validForm\parseUnit;
 
 
-use AnalizPdvBundle\Utilits\ValidForm\parseUnit\parseInnDocErpn;
+use AnalizPdvBundle\Utilits\ValidForm\parserUnit\parserInnDocErpn;
+
 
 /**
  * Class parseInnDocErpnTest
- * @package AnalizPdvBundle\Tests\Utilits\validForm\parseUnit
+ * @package AnalizPdvBundle\Tests\Utilits\validForm\parserUnit
  */
 class parseInnDocErpnTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,8 +37,8 @@ class parseInnDocErpnTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test_parseInnDoc ($data, $res)
 	{
-		$parse=new parseInnDocErpn();
-		$arr=$parse->parse($data);
+		$parse=new parserInnDocErpn();
+		$arr=$parse->parser($data);
 		if (!empty($arr))
 		{
 			$this->assertEquals($res,key_exists("inn_client",$arr));
