@@ -52,4 +52,41 @@ class ErpnInRepository extends \Doctrine\ORM\EntityRepository
 		return $result->getResult();
 	}
 
+	/**
+	 * @param $arrayFromSearch
+	 * @return array
+	 */
+	public function getSearchAllFromParam($arrayFromSearch)
+	{
+
+		$qr=$this->createQueryBuilder('ErpnIn');
+		$qr->where('ErpnIn.monthCreateInvoice=:m');
+		$qr->setParameter('m', $arrayFromSearch['monthCreateInvoice']);
+		$qr->andWhere('ErpnIn.yearCreateInvoice=:y');
+		$qr->setParameter('y', $arrayFromSearch['yearCreateInvoice']);
+		$qr->andWhere('ErpnIn.typeInvoiceFull=:t');
+		$qr->setParameter('t', $arrayFromSearch['typeInvoiceFull']);
+
+
+		if(array_key_exists('innClient', $arrayFromSearch))
+		{
+			$qr->andWhere('ErpnIn.innClient=:inn');
+			$qr->setParameter('inn', $arrayFromSearch['innClient']);
+		}
+
+		if(array_key_exists('numInvoice', $arrayFromSearch))
+		{
+			$qr->andWhere('ErpnIn.numInvoice=:ni');
+			$qr->setParameter('ni', $arrayFromSearch['numInvoice']);
+		}
+
+		if(array_key_exists('dateCreateInvoice', $arrayFromSearch))
+		{
+			$qr->andWhere('ErpnIn.dateCreateInvoice=:dсi');
+			$qr->setParameter('dсi', $arrayFromSearch['dateCreateInvoice']);
+		}
+
+		$result=$qr->getQuery();
+		return $result->getResult();
+	}
 }

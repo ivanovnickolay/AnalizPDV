@@ -114,4 +114,46 @@ date_contract=IF(@date_contract='',NULL,@date_contract)\";";
 		return $result->getResult();
 	}
 
+	/**
+	 * поиск данных в ЕРПН по условиям из класса getSearchAllFromPeriod_Branch
+	 *
+	 * @uses allFromPeriod_Branch класс поиска
+	 * @uses allFromPeriod_Branch::getArrayFromSearchErpn возвращает данные для $arrayFromSearch
+	 *
+	 *
+	 * @param getArrayFromSearch_Interface $arrayFromSearch
+	 */
+	public function getSearchAllFromParam($arrayFromSearch)
+	{
+
+		$qr=$this->createQueryBuilder('ErpnOut');
+		$qr->where('ErpnOut.monthCreateInvoice=:m');
+		$qr->setParameter('m', $arrayFromSearch['monthCreateInvoice']);
+		$qr->andWhere('ErpnOut.yearCreateInvoice=:y');
+		$qr->setParameter('y', $arrayFromSearch['yearCreateInvoice']);
+		$qr->andWhere('ErpnOut.typeInvoiceFull=:t');
+		$qr->setParameter('t', $arrayFromSearch['typeInvoiceFull']);
+
+
+		if(array_key_exists('innClient', $arrayFromSearch))
+		{
+			$qr->andWhere('ErpnOut.innClient=:inn');
+			$qr->setParameter('inn', $arrayFromSearch['innClient']);
+		}
+
+		if(array_key_exists('numInvoice', $arrayFromSearch))
+		{
+			$qr->andWhere('ErpnOut.numInvoice=:ni');
+			$qr->setParameter('ni', $arrayFromSearch['numInvoice']);
+		}
+
+		if(array_key_exists('dateCreateInvoice', $arrayFromSearch))
+		{
+			$qr->andWhere('ErpnOut.dateCreateInvoice=:dсi');
+			$qr->setParameter('dсi', $arrayFromSearch['dateCreateInvoice']);
+		}
+
+		$result=$qr->getQuery();
+		return $result->getResult();
+	}
 }

@@ -122,6 +122,15 @@ class searchDocController extends Controller
 		if($handlerForm->handler($form, $request))
 		{
 			$validSearchData=$form->getData();
+			//$arr=$searchData->getArrayFromSearchErpn();
+			$resultSearchErpn = $this->searchDocByParam_FromErpn($searchData);
+			//$resultSearchReestr = $this->searchDocByParam_FromReestr($searchData);
+
+			return $this->render('@AnalizPdv/resultSearch.html.twig',array(
+				'criteriaSearch'=>$validSearchData,
+				'resultSearchErpn'=>$resultSearchErpn,
+				'resultSearchReestr'=>$resultSearchReestr,
+			));
 
 		}
 		return $this->render('@AnalizPdv/searchDocFromParamForm.html.twig', array(
@@ -137,12 +146,21 @@ class searchDocController extends Controller
 	 */
 	public function searchDocByBranch_FromErpn(allFromPeriod_Branch $searchData)
 	{
-		if ($searchData->getRouteSearch() == "Обязательства") {
-			$repositorySearchErpn = $this->getDoctrine()->getManager()->getRepository('AnalizPdvBundle:ErpnOut');
-		} else {
-			$repositorySearchErpn = $this->getDoctrine()->getManager()->getRepository('AnalizPdvBundle:ErpnIn');
-		}
+		$repositorySearchErpn = $this->getRepositorySearchErpn($searchData);
 		$resultSearchErpn = $repositorySearchErpn->getSearchAllFromPeriod_Branch($searchData->getArrayFromSearchErpn());
+		return $resultSearchErpn;
+	}
+
+	/**
+	 * Получение данных из ЕРПН для поиска по параметрам
+	 * @param $searchData
+	 * @param $arr
+	 * @return mixed
+	 */
+	public function searchDocByParam_FromErpn(docFromParam $searchData)
+	{
+		$repositorySearchErpn = $this->getRepositorySearchErpn($searchData);
+		$resultSearchErpn = $repositorySearchErpn->getSearchAllFromParam($searchData->getArrayFromSearchErpn());
 		return $resultSearchErpn;
 	}
 
@@ -157,17 +175,43 @@ class searchDocController extends Controller
 		// Если значение номера филиала заполнено
 		if ($searchData->getNumMainBranch() != "000") {
 			// получаем данные
-			if ($searchData->getRouteSearch() == "Обязательства") {
-				$repositorySearchReestr = $this->getDoctrine()->getManager()->getRepository('AnalizPdvBundle:ReestrbranchOut');
-			} else {
-				$repositorySearchReestr = $this->getDoctrine()->getManager()->getRepository('AnalizPdvBundle:ReestrbranchIn');
-			}
+			$repositorySearchReestr = $this->getRepositorySearchReestr($searchData);
 			$resultSearchReestr = $repositorySearchReestr->getSearchAllFromPeriod_Branch($searchData->getArrayFromSearchErpn());
 			return $resultSearchReestr;
 		} else {
 			// иначе передаем пустое значение
 			$resultSearchReestr = null;
 			return $resultSearchReestr;
+		}
+	}
+
+	/**
+	 * @param allFromPeriod_Branch $searchData
+	 * @return mixed
+	 */
+	public function getRepositorySearchErpn(searchAbstract $searchData)
+	{
+		if ($searchData->getRouteSearch() == "Обязательства") {
+			$repositorySearchErpn = $this->getDoctrine()->getManager()->getRepository('AnalizPdvBundle:ErpnOut');
+			return $repositorySearchErpn;
+		} else {
+			$repositorySearchErpn = $this->getDoctrine()->getManager()->getRepository('AnalizPdvBundle:ErpnIn');
+			return $repositorySearchErpn;
+		}
+	}
+
+	/**
+	 * @param allFromPeriod_Branch $searchData
+	 * @return \AnalizPdvBundle\Entity\Repository\ReestrBranch_in|\AnalizPdvBundle\Entity\Repository\ReestrBranch_out|\Doctrine\Common\Persistence\ObjectRepository
+	 */
+	public function getRepositorySearchReestr(searchAbstract $searchData)
+	{
+		if ($searchData->getRouteSearch() == "Обязательства") {
+			$repositorySearchReestr = $this->getDoctrine()->getManager()->getRepository('AnalizPdvBundle:ReestrbranchOut');
+			return $repositorySearchReestr;
+		} else {
+			$repositorySearchReestr = $this->getDoctrine()->getManager()->getRepository('AnalizPdvBundle:ReestrbranchIn');
+			return $repositorySearchReestr;
 		}
 	}
 }

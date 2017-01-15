@@ -267,4 +267,31 @@ class docFromParam extends searchAbstract
 		}
 		return $result;
 	}
+	/**
+	 * Формирование массива для поиска в ЕРПН
+	 * @return array
+	 */
+	public function getArrayFromSearchErpn()
+	{
+		$result = array();
+		$result["monthCreateInvoice"]=$this->monthCreate;
+		$result["yearCreateInvoice"]=$this->yearCreate;
+		$result["typeInvoiceFull"]=$this->typeDoc;
+
+		if ($this->INN!="")
+		{
+			$result["innClient"]=$this->INN;
+		}
+		if ($this->numDoc!="0")
+		{
+			$result["numInvoice"]=$this->numDoc;
+		}
+		if (!is_null($this->dateCreateDoc))
+		{
+			$result["dateCreateInvoice"]=$this->dateCreateDoc;
+		}
+
+
+		return $result;
+	}
 }

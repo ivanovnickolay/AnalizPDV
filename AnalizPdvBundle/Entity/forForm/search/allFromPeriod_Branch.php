@@ -200,6 +200,7 @@ class allFromPeriod_Branch extends searchAbstract
 		}
 
 
+
 		return $result;
 	}
 
