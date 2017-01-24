@@ -1,6 +1,7 @@
 <?php
 
 namespace AnalizPdvBundle\Entity\Repository;
+use AnalizPdvBundle\Entity\forForm\search\docFromParam;
 
 /**
  * ReestrBranch_in
@@ -40,6 +41,56 @@ class ReestrBranch_in extends \Doctrine\ORM\EntityRepository
 			$qr->andWhere('ReestrIn.numBranch=:nb');
 			$qr->setParameter('nb', $arrayFromSearch['numMainBranch']);
 		}
+
+		$result=$qr->getQuery();
+		return $result->getResult();
+	}
+
+	/**
+	 * поиск данных в Реестре выданых НН по параметрам
+	 *
+	 * @uses docFromParam класс поиска
+	 * @uses docFromParam::getArrayFromSearchErpn возвращает данные для $arrayFromSearch
+	 *
+	 * использованные расширения
+	 * @link  https://simukti.net/blog/2012/04/05/how-to-select-year-month-day-in-doctrine2/
+	 * @link  https://github.com/beberlei/DoctrineExtensions
+	 *
+	 *
+	 * @param $arrayFromSearch
+	 */
+	public function getSearchAllFromParam($arrayFromSearch)
+	{
+		$emConfig = $this->getEntityManager()->getConfiguration();
+		$emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+		$emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
+
+		$qr=$this->createQueryBuilder('ReestrIn');
+		$qr->where('MONTH(ReestrIn.dateCreateInvoice)=:m');
+		$qr->setParameter('m', $arrayFromSearch['monthCreateInvoice']);
+		$qr->andWhere('YEAR(ReestrIn.dateCreateInvoice)=:y');
+		$qr->setParameter('y', $arrayFromSearch['yearCreateInvoice']);
+		$qr->andWhere('ReestrIn.typeInvoiceFull=:tif');
+		$qr->setParameter('tif', $arrayFromSearch['typeInvoiceFull']);
+
+		if(array_key_exists('innClient', $arrayFromSearch))
+		{
+			$qr->andWhere('ReestrIn.innClient=:inn');
+			$qr->setParameter('inn', $arrayFromSearch['innClient']);
+		}
+
+		if(array_key_exists('numInvoice', $arrayFromSearch))
+		{
+			$qr->andWhere('ReestrIn.numInvoice=:ni');
+			$qr->setParameter('ni', $arrayFromSearch['numInvoice']);
+		}
+
+		if(array_key_exists('dateCreateInvoice', $arrayFromSearch))
+		{
+			$qr->andWhere('ReestrIn.dateCreateInvoice=:dсi');
+			$qr->setParameter('dсi', $arrayFromSearch['dateCreateInvoice']);
+		}
+
 
 		$result=$qr->getQuery();
 		return $result->getResult();
