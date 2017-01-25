@@ -4,16 +4,15 @@ namespace AnalizPdvBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AnalizPdvBundle\Entity\LoadFile;
-use AnalizPdvBundle\Form\LoadFileForm;
-use AnalizPdvBundle\Form\NewLoadFileForm;
+use LoadFileBundle\Entity\LoadFile;
+use LoadFileBundle\Form\LoadFileForm;
+use LoadFileBundle\Form\NewLoadFileForm;
 
 class DefaultController extends Controller
 {
     public function indexAction()
     {
-        //return $this->render('AnalizPdvBundle:Default:index.html.twig');
-        return $this->render('AnalizPdvBundle:Default:index.html.twig');
+        return $this->render('@LoadFile/Default/index.html.twig');
     }
 
     /**
@@ -29,7 +28,7 @@ class DefaultController extends Controller
                     return $this->redirect($this->generateUrl('view_all_load'));
                 }
 
-            return $this->render('@AnalizPdv/new.html.twig', array(
+            return $this->render('LoadFileBundle::new.html.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -68,12 +67,12 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('view_all_load'));
         }
 
-        return $this->render('@AnalizPdv/new.html.twig', array('form' => $form->createView(),));
+        return $this->render('LoadFileBundle::new.html.twig', array('form' => $form->createView(),));
     }
 
     public function okAction(Request $request)
     {
-        return $this->render('@AnalizPdv/ok.html.twig');
+        return $this->render('@LoadFile/ok.html.twig');
 
     }
 
@@ -84,7 +83,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Ошибка загрузки данных о файлах');
         }
 
-        return $this->render('@AnalizPdv/ok.html.twig',array("files"=>$Files));
+        return $this->render('@LoadFile/ok.html.twig',array("files"=>$Files));
         //TODO добавить корректное отображение даты в шаблоне
     }
 }
