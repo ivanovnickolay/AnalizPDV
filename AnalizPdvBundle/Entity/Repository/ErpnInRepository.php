@@ -58,14 +58,15 @@ class ErpnInRepository extends \Doctrine\ORM\EntityRepository
 	 */
 	public function getSearchAllFromParam($arrayFromSearch)
 	{
+		$emConfig = $this->getEntityManager()->getConfiguration();
+		$emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+		$emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
 
 		$qr=$this->createQueryBuilder('ErpnIn');
-		$qr->where('ErpnIn.monthCreateInvoice=:m');
+		$qr->where('MONTH(ErpnIn.dateCreateInvoice)=:m');
 		$qr->setParameter('m', $arrayFromSearch['monthCreateInvoice']);
-		$qr->andWhere('ErpnIn.yearCreateInvoice=:y');
+		$qr->andWhere('YEAR(ErpnIn.dateCreateInvoice)=:y');
 		$qr->setParameter('y', $arrayFromSearch['yearCreateInvoice']);
-		$qr->andWhere('ErpnIn.typeInvoiceFull=:t');
-		$qr->setParameter('t', $arrayFromSearch['typeInvoiceFull']);
 
 
 		if(array_key_exists('innClient', $arrayFromSearch))

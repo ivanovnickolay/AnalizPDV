@@ -32,6 +32,11 @@ class docFromParamForm extends AbstractType
     	$builder
 		    ->add("monthCreate",IntegerType::class,array('label'=>"Период поиска документов. Месяц",'attr' => array('min' => 1, 'max' => 12)))
 		        ->add("yearCreate",IntegerType::class,array('label'=>"Период поиска документов. Год", 'attr' => array('min' => 2015, 'max' => 2017)))
+				    ->add("routeSearch",ChoiceType::class,array(
+					    'choices'  => array(
+						    'Обязательства' => 'Обязательства',
+						    'Кредит' => 'Кредит',),
+					    'label'=>'Направление поиска документов'))
 		            ->add("numDoc",TextType::class,array('label'=>"Номер документа"))
 		                ->add('dateCreateDoc',DateType::class,array(
 							'widget'=>'choice',

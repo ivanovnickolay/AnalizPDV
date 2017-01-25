@@ -1,10 +1,24 @@
 {% extends '::base.html.twig' %}
 {% block table %}
-    <a href={{ path('searchDocByBranch')}}>Новый поиск </a>
-    <h1>Результат поиска документов по ВСП или филиалу </h1>
+    <a href={{ path('searchDocByParam')}}>Новый поиск по параметрам документа за период </a>
+    <h1>Результат поиска по параметрам документа за период </h1>
         <p> Направление поиска документов <b>  {{ criteriaSearch.routeSearch }} </b> </p>
             <p> Месяц поиска <b>  {{ criteriaSearch.monthCreate }} </b> </p>
                  <p> Год поиска поиска <b> {{ criteriaSearch.yearCreate }} </b> </p>
+
+    {% if criteriaSearch.INN != "" %}
+        <p> ИНН <b> {{ criteriaSearch.INN }} </b>  </p>
+    {% endif %}
+
+    {% if criteriaSearch.numDoc != "" %}
+        <p> Номер документа <b> {{ criteriaSearch.numDoc }} </b>  </p>
+    {% endif %}
+
+        <p> Тип документа <b> {{ criteriaSearch.typeDoc }} </b>  </p>
+
+
+
+
 
 
 

@@ -122,7 +122,6 @@ class searchDocController extends Controller
 		if($handlerForm->handler($form, $request))
 		{
 			$validSearchData=$form->getData();
-			//$arr=$searchData->getArrayFromSearchErpn();
 			$resultSearchErpn = $this->searchDocByParam_FromErpn($searchData);
 			$resultSearchReestr = $this->searchDocByParam_FromReestr($searchData);
 
