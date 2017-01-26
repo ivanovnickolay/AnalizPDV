@@ -22,6 +22,7 @@ class ReestrBranch_out extends \Doctrine\ORM\EntityRepository
 	 *
 	 *
 	 * @param $arrayFromSearch
+	 * @return array
 	 */
 	public function getSearchAllFromPeriod_Branch($arrayFromSearch)
 	{
@@ -57,6 +58,7 @@ class ReestrBranch_out extends \Doctrine\ORM\EntityRepository
 	 *
 	 *
 	 * @param $arrayFromSearch
+	 * @return array
 	 */
 	public function getSearchAllFromParam($arrayFromSearch)
 	{
@@ -93,5 +95,38 @@ class ReestrBranch_out extends \Doctrine\ORM\EntityRepository
 
 		$result=$qr->getQuery();
 		return $result->getResult();
+	}
+
+	/**
+	 * Проверка наличия рестра в периоде
+	 * @param $month string
+	 * @param $year string
+	 * @param $numMainBranch string
+	 * @return bool
+	 */
+	public function is_NumMainBranchToPeriod($month, $year, $numMainBranch)
+	{
+		$qr=$this->_em->getConnection()->prepare(
+			'SELECT COUNT(r.id) FROM reestrbranch_out r
+		 WHERE r.month=:m 
+		 and r.year=:y 
+		 AND r.num_branch=:nb
+		');
+			$qr->bindValue('m', $month);
+			$qr->bindValue('y', $year);
+			$qr->bindValue('nb', $numMainBranch);
+		$qr->execute();
+		$countRec=$qr->fetchAll();
+
+		if ($countRec!=0) {
+			return true;
+		} else{
+			return false;
+		}
+
+
+
+
+
 	}
 }

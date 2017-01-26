@@ -79,6 +79,7 @@ class searchDocController extends Controller
 	 * @uses ErpnOut таблица базы данных для поиска данных
 	 *
 	 * @param Request $request
+	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
 	public function searchDocByBranchAction(Request $request)
 	{
@@ -113,6 +114,7 @@ class searchDocController extends Controller
 	 * @uses docFromParam  сущность формы
 	 * @uses docFromParamhForm описание формы
 	 * @param Request $request
+	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
 	public function searchDocByParamAction(Request $request)
 	{
@@ -142,7 +144,7 @@ class searchDocController extends Controller
 	 * Получение репозитория для поиска в ЕРПН
 	 *
 	 * @param searchAbstract $searchData
-	 * @return
+	 * @return \AnalizPdvBundle\Entity\Repository\ErpnInRepository|\AnalizPdvBundle\Entity\Repository\ErpnOutRepository|\Doctrine\Common\Persistence\ObjectRepository
 	 */
 	public function getRepositorySearchErpn(searchAbstract $searchData)
 	{
@@ -159,7 +161,7 @@ class searchDocController extends Controller
 	 *
 	 * Получение репозитория  для поиска в Реестре филиала
 	 *
-	 * @param allFromPeriod_Branch $searchData
+	 * @param allFromPeriod_Branch|searchAbstract $searchData
 	 * @return \AnalizPdvBundle\Entity\Repository\ReestrBranch_in|\AnalizPdvBundle\Entity\Repository\ReestrBranch_out|\Doctrine\Common\Persistence\ObjectRepository
 	 */
 	public function getRepositorySearchReestr(searchAbstract $searchData)
@@ -174,8 +176,7 @@ class searchDocController extends Controller
 	}
 	/**
 	 * Получение данных из ЕРПН для поиска по филиалам
-	 * @param $searchData
-	 * @param $arr
+	 * @param $searchData allFromPeriod_Branch
 	 * @return mixed
 	 */
 	public function searchDocByBranch_FromErpn(allFromPeriod_Branch $searchData)
@@ -187,9 +188,9 @@ class searchDocController extends Controller
 
 	/**
 	 * Получение данных из ЕРПН для поиска по параметрам
-	 * @param $searchData
-	 * @param $arr
+	 * @param docFromParam $searchData
 	 * @return mixed
+	 * @internal param $arr
 	 */
 	public function searchDocByParam_FromErpn(docFromParam $searchData)
 	{
@@ -200,9 +201,9 @@ class searchDocController extends Controller
 
 	/**
 	 * Получение данных из реестра для поиска по филиалам
-	 * @param $searchData
-	 * @param $arr
+	 * @param allFromPeriod_Branch $searchData
 	 * @return null
+	 * @internal param $arr
 	 */
 	public function searchDocByBranch_FromReestr(allFromPeriod_Branch $searchData)
 	{
@@ -221,9 +222,9 @@ class searchDocController extends Controller
 
 	/**
 	 * Получение данных из реестра для поиска по параметрам
-	 * @param $searchData
-	 * @param $arr
+	 * @param docFromParam $searchData
 	 * @return null
+	 * @internal param $arr
 	 */
 	public function searchDocByParam_FromReestr(docFromParam $searchData)
 	{
