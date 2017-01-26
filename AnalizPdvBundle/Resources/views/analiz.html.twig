@@ -1,0 +1,165 @@
+{% extends '::base.html.twig' %}
+
+{% block form %}
+
+<h2>Поиск документов с ЕРПН по реквизитам </h2>
+<form class="form" role="form" method="post" name="searchDocByErpn" action="{{ path('docErpn_getDoc') }}">
+ <div class="form-group">
+      <label for="typeRoute"> Направление поиска </label>
+      <select id="typeRoute" name="typeRoute" class="form-control">
+         <option class="active">Выданные</option>
+         <option>Полученные</option>
+      </select>
+ </div>
+ <div class="form-group">
+      <label for="periodCreate">Период поиска документа </label>
+      <input type="month" class="form-control" id="periodCreate" name="periodCreate">
+ </div>
+ <div class="form-group">
+      <label for="num_invoice">Номер документа </label>
+      <input class="form-control" id="num_invoice" name="num_invoice">
+ </div>
+ <div class="form-group">
+      <label for="dataDoc">Дата создания документа </label>
+      <input type="date" class="form-control" id="dataDoc" name="dataDoc">
+ </div>
+ <div class="form-group">
+      <label for="inn_client">ИНН контрагента </label>
+      <input type="number" class="form-control" id="inn_client" name="inn_client" MAXLENGTH="12">
+ </div>
+ <button type="submit" id="submitForm" class="btn btn-primary">Искать</button>
+</form>
+    <div class="result"></div>
+{% endblock %}
+{% block JS %}
+<script src="{{ asset ('bundles/validForm.js') }}"></script>
+
+ <script>
+ function firstValues () {
+     //установка первоначальных значений
+     var date=new Date();
+     var curr_month = date.getMonth() + 1;
+     var curr_year = date.getFullYear();
+     $("#periodCreate").val(curr_year+"-"+curr_month);
+ }
+
+    // проверка форммы на наличие не исправленных ошибок
+  function isValidForm() {
+     var error = $("span#error").length;
+      // если количество спанов с ошибками более нуля то ошибки есть
+     if (error!=0)
+     {
+        return false;
+     }
+        return true
+ }
+
+ $(document).ready(function(){
+     //установка первоначальных значений
+     firstValues()
+    // отправка формы
+   $("#submitForm").click(function(){
+   // обработка валидации и формирование аякс запроса
+      // проверяем форму на наличие спанов с ошибками
+       if(!isValidForm())
+          {
+              alert("Форма содержит ошибки ");
+              return false;
+          }
+          /** временно отключилим аякс
+          var  d = $(".form").serialize();
+       alert(d);
+       $.ajax({
+           url: '{{ path('docErpn_getDoc') }}',
+           type: 'post',
+           data: $(".form").serialize(),
+           success: function(res) {
+                $result=$(".result");
+               $result.html(res[0]);
+           }
+        })
+           */
+
+    });
+    // проверка ввода номера документа
+   $("#num_invoice").blur(function () {
+
+     $(".error_numDoc").remove();
+      var numDoc=$("#num_invoice").val();
+        if(isValid_numDoc(numDoc))
+            {
+                $("#num_invoice").after("<span class='error_numDoc' style='color: red' id='error'>Номер документа должен содержать только цифры и символ / </span>")
+                $("#num_invoice").focus()
+            }
+   })
+
+   $("#periodCreate").blur(function () {
+
+       $(".error_periodCreate").remove();
+
+       var periodCreate=$("#periodCreate").val();
+       var arrPeriod=periodCreate.split("-");
+
+       var dataDoc=$("#dataDoc").val();
+       var arrDataDoc=dataDoc.split("-");
+       // проверяем что бы совпадали период поиска и дата создания документа
+       if (isValid_periodCreate_dataDoc_year(periodCreate,dataDoc))
+       {
+           $("#periodCreate").after("<span class='error_periodCreate' style='color: red' id='error' >Год периода поиска " +
+                   "документа и год даты создания документа не совпадают </span>")
+           $("#periodCreate").focus();
+       }
+       if (isValid_periodCreate_dataDoc_month(periodCreate,dataDoc))
+       {
+           $("#periodCreate").after("<span class='error_periodCreate' style='color: red' id='error'>Месяц периода поиска " +
+                   "документа и месяц даты создания документа не совпадают </span>")
+           $("#periodCreate").focus();
+       }
+   })
+
+   $("#dataDoc").blur(function () {
+
+       $(".error_dataDoc").remove();
+       var dataDoc=$("#dataDoc").val();
+       var arrDataDoc=dataDoc.split("-");
+       var periodCreate=$("#periodCreate").val();
+       var arrPeriod=periodCreate.split("-");
+      /*
+       if ((dataDoc) == "")
+               {
+                   $("#dataDoc").after("<span class='error_dataDoc' style='color: red' >Дата поиска документа не может быть " +
+                           "пустым </span>")
+                   $("#dataDoc").focus();
+               }
+       */
+        // проверяем что бы совпадали период поиска и дата создания документа
+       if (isValid_periodCreate_dataDoc_year(periodCreate,dataDoc))
+       {
+           $("#dataDoc").after("<span class='error_dataDoc' style='color: red' id='error'>Год периода поиска " +
+                   "документа и год даты создания документа не совпадают </span>")
+           $("#dataDoc").focus();
+       }
+       if (isValid_periodCreate_dataDoc_month(periodCreate,dataDoc))
+       {
+           $("#dataDoc").after("<span class='error_dataDoc' style='color: red' id='error' >Месяц периода поиска " +
+                   "документа и месяц даты создания документа не совпадают </span>")
+           $("#dataDoc").focus();
+       }
+   })
+
+   $("#inn_client").blur(function () {
+        // Если в поле введен любой арифметический знак среди цифр то поле все равно пустое
+         $(".error_InnDoc").remove();
+            var InnDoc=$("#inn_client").val();
+               if (((InnDoc).length>12)||((InnDoc).length==0))
+               {
+                   $("#inn_client").after("<span class='error_InnDoc' style='color: red' id='error'>ИНН не может быть длинее 12 " +
+                           "цифр и не может быть пустым </span>")
+                   $("#inn_client").focus();
+               }
+   })
+   });
+
+  </script>
+{% endblock %}
+

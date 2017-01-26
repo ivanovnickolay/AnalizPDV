@@ -1,6 +1,6 @@
 <?php
 
-namespace LoadFileBundle\Entity;
+namespace AnalizPdvBundle\Entity;
 
 /**
  * SprBranch
@@ -15,27 +15,27 @@ class SprBranch
     /**
      * @var string
      */
-    private $NumBranch;
+    private $numBranch;
 
     /**
      * @var string
      */
-    private $NameBranch;
+    private $nameBranch;
 
     /**
      * @var string
      */
-    private $BranchAdr;
+    private $branchAdr;
 
     /**
      * @var string
      */
-    private $NameMainBranch;
+    private $nameMainBranch;
 
     /**
      * @var string
      */
-    private $NumMainBranch;
+    private $numMainBranch;
 
 
     /**
@@ -57,7 +57,7 @@ class SprBranch
      */
     public function setNumBranch($numBranch)
     {
-        $this->NumBranch = $numBranch;
+        $this->numBranch = $numBranch;
 
         return $this;
     }
@@ -69,7 +69,7 @@ class SprBranch
      */
     public function getNumBranch()
     {
-        return $this->NumBranch;
+        return $this->numBranch;
     }
 
     /**
@@ -81,7 +81,7 @@ class SprBranch
      */
     public function setNameBranch($nameBranch)
     {
-        $this->NameBranch = $nameBranch;
+        $this->nameBranch = $nameBranch;
 
         return $this;
     }
@@ -93,7 +93,7 @@ class SprBranch
      */
     public function getNameBranch()
     {
-        return $this->NameBranch;
+        return $this->nameBranch;
     }
 
     /**
@@ -105,7 +105,7 @@ class SprBranch
      */
     public function setBranchAdr($branchAdr)
     {
-        $this->BranchAdr = $branchAdr;
+        $this->branchAdr = $branchAdr;
 
         return $this;
     }
@@ -117,7 +117,7 @@ class SprBranch
      */
     public function getBranchAdr()
     {
-        return $this->BranchAdr;
+        return $this->branchAdr;
     }
 
     /**
@@ -129,7 +129,7 @@ class SprBranch
      */
     public function setNameMainBranch($nameMainBranch)
     {
-        $this->NameMainBranch = $nameMainBranch;
+        $this->nameMainBranch = $nameMainBranch;
 
         return $this;
     }
@@ -141,7 +141,7 @@ class SprBranch
      */
     public function getNameMainBranch()
     {
-        return $this->NameMainBranch;
+        return $this->nameMainBranch;
     }
 
     /**
@@ -153,7 +153,7 @@ class SprBranch
      */
     public function setNumMainBranch($numMainBranch)
     {
-        $this->NumMainBranch = $numMainBranch;
+        $this->numMainBranch = $numMainBranch;
 
         return $this;
     }
@@ -165,6 +165,6 @@ class SprBranch
      */
     public function getNumMainBranch()
     {
-        return $this->NumMainBranch;
+        return $this->numMainBranch;
     }
 }

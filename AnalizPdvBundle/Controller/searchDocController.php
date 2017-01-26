@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
+ * Контроллер обслуживания поиска данных
+ *
  * Class searchDocController
  * @package AnalizPdvBundle\Controller
  */

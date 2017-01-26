@@ -38,6 +38,7 @@ class analizInnOut
 	 * @var string
 	 */
 	protected  $yearCreate;
+
 	/**
 	 * допустимые значение $yearCreate
 	 * @var array
@@ -50,11 +51,29 @@ class analizInnOut
 	 */
 	protected $numMainBranch;
 
+	/**
+	 * тип анализа данных
+	 * - те которые совпали и в ЕРПН и в Реестре ( $typeAnaliz ='E=R")
+	 * - те которые есть только в ЕРПН ( $typeAnaliz ='E<>R")
+	 * - те которые есть только в Реестре ( $typeAnaliz ='R<>E")
+	 * @var
+	 */
+	protected $typeAnaliz;
 
+	/**
+	 * допустимые значение $typeAnaliz
+	 * @var array
+	 */
+	protected $correcttypeAnaliz=["E=R","E<>R","R<>E"];
+
+	/**
+	 * @var EntityManager
+	 */
 	private $entiryManager;
 
 	/**
 	 * analizInnOut constructor.
+	 * @param EntityManager $em
 	 */
 	public function __construct(EntityManager $em)
 	{
@@ -88,8 +107,7 @@ class analizInnOut
 		$this->correctMonthCreate=range('1', '12');
 		// если полученное значение в диапазоне допустимых значений то
 		// присвоим полученное значение переменной
-		if (in_array($monthCreate, $this->correctMonthCreate))
-		{
+		if (in_array($monthCreate, $this->correctMonthCreate)){
 			$this->monthCreate = $monthCreate;
 		}
 		// если переданно не корректное значение - переменная равна значению по умолчанию
@@ -117,8 +135,7 @@ class analizInnOut
 		$this->yearCreate=$today["year"];
 		// если полученное значение в диапазоне допустимых значений то
 		// присвоим полученное значение переменной
-		if (in_array($yearCreate, $this->correctYearCreate))
-		{
+		if (in_array($yearCreate, $this->correctYearCreate)){
 			$this->yearCreate = $yearCreate;
 		}
 		// если переданно не корректное значение - переменная равна значению по умолчанию
@@ -127,7 +144,7 @@ class analizInnOut
 	/**
 	 * @return string
 	 */
-	public function getNumMainBranch (): string
+	public function getNumMainBranch ()
 	{
 		return $this->numMainBranch;
 	}
@@ -137,16 +154,35 @@ class analizInnOut
 	 */
 	public function setNumMainBranch ($numMainBranch)
 	{
-		if (empty($numMainBranch) or is_null($numMainBranch))
-		{
+		if (empty($numMainBranch) or is_null($numMainBranch)){
 			$this->numMainBranch = "000";
-		} else
-		{
+		} else{
 			$this->numMainBranch = $numMainBranch;
 		}
-
 	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getTypeAnaliz()
+	{
+		return $this->typeAnaliz;
+	}
+
+	/**
+	 * @param mixed $typeAnaliz
+	 */
+	public function setTypeAnaliz($typeAnaliz)
+	{
+		// если полученное значение в диапазоне допустимых значений то
+		// присвоим полученное значение переменной
+		if (in_array($typeAnaliz, $this->correcttypeAnaliz)){
+			$this->typeAnaliz = $typeAnaliz;
+		} else{
+			// если передано не корректное значение то
+			$this->typeAnaliz ="E=R";
+		}
+	}
 	/**
 	 * валидация формы
 	 * покрыта тестами

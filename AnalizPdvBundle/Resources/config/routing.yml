@@ -34,7 +34,7 @@ searchDocByParam:
   path: /searchDocByParam
   defaults: {_controller: AnalizPdvBundle:searchDoc:searchDocByParam}
 
-docErpn_getDoc:
-  path: /getDocErpn
-  defaults: {_controller: AnalizPdvBundle:searchDocErpn:getDoc}
-  methods: [POST]
+analizInnOut:
+  path: /analizInnOut
+  defaults: {_controller: AnalizPdvBundle:analizDoc:analizInnOut}
+

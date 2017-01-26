@@ -1,4 +1,4 @@
-AnalizPdvBundle\Entity\Sprbranch:
+AnalizPdvBundle\Entity\SprBranch:
     type: entity
     table: SprBranch
     id:
