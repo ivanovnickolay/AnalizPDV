@@ -35,7 +35,7 @@ class loadReestBranchCommand extends ContainerAwareCommand
     {
        // Количество файлов, загружаемых за раз
         gc_enable();
-        $cntFilesLoad=20;
+        $cntFilesLoad=6;
         $dt=$this->getContainer()->get('doctrine');
             $em=$dt->getManager();
                $pathToReestr=$this->getContainer()->getParameter('file_dir_reestr');

@@ -156,7 +156,7 @@ AnalizPdvBundle\Entity\ErpnOut:
         rkeInfo:
             type: string
             nullable: true
-            length: 200
+            length: 255
             options:
                 fixed: false
             column: rke_info
