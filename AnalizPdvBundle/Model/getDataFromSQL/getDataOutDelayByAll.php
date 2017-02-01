@@ -16,6 +16,80 @@ namespace AnalizPdvBundle\Model\getDataFromSQL;
 class getDataOutDelayByAll extends getDataFromAnalizAbstract
 {
 	/**
+	 * Получаем весь список опаздавших с регистрацией НН по ПАТ
+	 * @param int $month
+	 * @param int $year
+	 * @return array
+	 * @throws \Doctrine\DBAL\DBALException
+	 * @see writeAnalizOutDelayDate::writeAnalizPDVOutDelayByAllUZ - отсюда вызывается функция
+	 * @uses store_procedure::AnalizPDVOutDiffDateAllUZInnerJoinERPN - хранимая процедура для генерации данных
+	 */
+	public function getAllDelay(int $month, int $year)
+	{
+		// так как в хранимой процедуре используются временные таблицы, для их обнуления
+		// "передергнем соединение с базой для очистки временных таблиц
+		//$this->disconnect();
+		//$this->connect();
+		$this->reconnect();
+		$this->getTempTable($month,$year);
+		$sql=$this->getAllDelay_SQL();
+		$smtp=$this->em->getConnection()->prepare($sql);
+		$smtp->execute();
+		$arrayResult=$smtp->fetchAll();
+		return $arrayResult;
+	}
+
+	/**
+	 * Получаем список опаздавших НН которые включены в Реестр филиала по ПАТ
+	 * @param int $month
+	 * @param int $year
+	 * @return array
+	 * @throws \Doctrine\DBAL\DBALException
+	 * @see writeAnalizOutDelayDate::writeAnalizPDVOutDelayByAllUZ - отсюда вызывается функция
+	 * @uses store_procedure::AnalizPDVOutDiffDateAllUZInnerJoinReestr - хранимая процедура для генерации данных
+	 */
+	public function getDelayToReestr(int $month, int $year)
+	{
+		// так как в хранимой процедуре используются временные таблицы, для их обнуления
+		// "передергнем соединение с базой для очистки временных таблиц
+		//$this->disconnect();
+		//$this->connect();
+		$this->reconnect();
+		//$sql="CALL AnalizPDVOutDiffDateAllUZInnerJoinReestr(:m,:y)";
+		$this->getTempTable($month,$year);
+		$sql=$this->getDelayToReestr_SQL();
+		$smtp=$this->em->getConnection()->prepare($sql);
+		$smtp->execute();
+		$arrayResult=$smtp->fetchAll();
+		return $arrayResult;
+	}
+
+	/**
+	 * Получаем список опаздавших НН которые НЕ включены в Реестр филиала
+	 * @param int $month
+	 * @param int $year
+	 * @return array
+	 * @throws \Doctrine\DBAL\DBALException
+	 * @see writeAnalizOutDelayDate::writeAnalizPDVOutDelayByAllUZ - отсюда вызывается функция
+	 * @uses store_procedure::AnalizPDVOutDiffDateAllUZLeftJoinERPN - хранимая процедура для генерации данных
+	 */
+	public function getDelayToNotReestr(int $month, int $year)
+	{
+		// так как в хранимой процедуре используются временные таблицы, для их обнуления
+		// "передергнем соединение с базой для очистки временных таблиц
+		//$this->disconnect();
+		//$this->connect();
+		$this->reconnect();
+		//$sql="CALL AnalizPDVOutDiffDateAllUZLeftJoinERPN(:m,:y)";
+		$this->getTempTable($month,$year);
+		$sql=$this->getDelayToNotReestr_SQL();
+		$smtp=$this->em->getConnection()->prepare($sql);
+		$smtp->execute();
+		$arrayResult=$smtp->fetchAll();
+		return $arrayResult;
+	}
+
+	/**
 	 *
 	 * Запрос на формирование временной таблицы
 	 *
@@ -36,83 +110,6 @@ class getDataOutDelayByAll extends getDataFromAnalizAbstract
 
 	}
 
-
-	/**
-	 * Получаем весь список опаздавших с регистрацией НН по ПАТ
-	 * @param int $month
-	 * @param int $year
-	 * @return array
-	 * @throws \Doctrine\DBAL\DBALException
-	 * @see writeAnalizOutDelayDate::writeAnalizPDVOutDelayByAllUZ - отсюда вызывается функция
-	 * @uses store_procedure::AnalizPDVOutDiffDateAllUZInnerJoinERPN - хранимая процедура для генерации данных
-	 */
-	public function getAllDelay(int $month, int $year)
-	{
-		// так как в хранимой процедуре используются временные таблицы, для их обнуления
-		// "передергнем соединение с базой для очистки временных таблиц
-		$this->disconnect();
-		$this->connect();
-		$this->getTempTable($month,$year);
-		$sql=$this->getAllDelay_SQL();
-		$smtp=$this->em->getConnection()->prepare($sql);
-		$smtp->execute();
-		$arrayResult=$smtp->fetchAll();
-
-		//var_dump($arrayResult);
-
-		return $arrayResult;
-	}
-
-	/**
-	 * Получаем список опаздавших НН которые включены в Реестр филиала по ПАТ
-	 * @param int $month
-	 * @param int $year
-	 * @return array
-	 * @throws \Doctrine\DBAL\DBALException
-	 * @see writeAnalizOutDelayDate::writeAnalizPDVOutDelayByAllUZ - отсюда вызывается функция
-	 * @uses store_procedure::AnalizPDVOutDiffDateAllUZInnerJoinReestr - хранимая процедура для генерации данных
-	 */
-	public function getDelayToReestr(int $month, int $year)
-	{
-		// так как в хранимой процедуре используются временные таблицы, для их обнуления
-		// "передергнем соединение с базой для очистки временных таблиц
-		$this->disconnect();
-		$this->connect();
-		//$sql="CALL AnalizPDVOutDiffDateAllUZInnerJoinReestr(:m,:y)";
-		$sql=$this->getDelayToReestr_SQL();
-		$smtp=$this->em->getConnection()->prepare($sql);
-		$smtp->bindValue("m",$month);
-		$smtp->bindValue("y",$year);
-		$smtp->execute();
-		$arrayResult=$smtp->fetchAll();
-		return $arrayResult;
-	}
-
-	/**
-	 * Получаем список опаздавших НН которые НЕ включены в Реестр филиала
-	 * @param int $month
-	 * @param int $year
-	 * @return array
-	 * @throws \Doctrine\DBAL\DBALException
-	 * @see writeAnalizOutDelayDate::writeAnalizPDVOutDelayByAllUZ - отсюда вызывается функция
-	 * @uses store_procedure::AnalizPDVOutDiffDateAllUZLeftJoinERPN - хранимая процедура для генерации данных
-	 */
-	public function getDelayToNotReestr(int $month, int $year)
-	{
-		// так как в хранимой процедуре используются временные таблицы, для их обнуления
-		// "передергнем соединение с базой для очистки временных таблиц
-		$this->disconnect();
-		$this->connect();
-		//$sql="CALL AnalizPDVOutDiffDateAllUZLeftJoinERPN(:m,:y)";
-		$sql=$this->getDelayToNotReestr_SQL();
-		$smtp=$this->em->getConnection()->prepare($sql);
-		$smtp->bindValue("m",$month);
-		$smtp->bindValue("y",$year);
-		$smtp->execute();
-		$arrayResult=$smtp->fetchAll();
-		return $arrayResult;
-	}
-
 	/**
 	 * SQL запрос для формирования временной таблицы
 	 *  Алгоритм
@@ -126,6 +123,7 @@ class getDataOutDelayByAll extends getDataFromAnalizAbstract
 			"CREATE TEMPORARY TABLE IF NOT EXISTS temp_diffDateFromAll  (
 			   key_field varchar(50)DEFAULT NULL ,
 			    diffDate bigint DEFAULT NULL ,
+			    date_reg date,
 			    id int NOT NULL AUTO_INCREMENT,
 			    PRIMARY KEY (id),
 			    INDEX main USING BTREE (key_field),
@@ -134,7 +132,8 @@ class getDataOutDelayByAll extends getDataFromAnalizAbstract
 			  (
 			  SELECT
 			    eo.key_field AS key_field,
-			    DATEDIFF(eo.date_reg_invoice,eo.date_create_invoice) AS diffDate
+			    DATEDIFF(eo.date_reg_invoice,eo.date_create_invoice) AS diffDate,
+			    eo.date_reg_invoice AS date_reg
 			  FROM erpn_out eo
 			  WHERE eo.month_create_invoice=:m
 			  AND eo.year_create_invoice=:y
@@ -200,8 +199,8 @@ class getDataOutDelayByAll extends getDataFromAnalizAbstract
 	 */
 	private function getDelayToReestr_SQL()
 	{
-			return /** @lang MySQL */
-				"CREATE TEMPORARY TABLE IF NOT EXISTS temp_diffDateFromAll (
+			//return /** @lang MySQL */
+				/* "CREATE TEMPORARY TABLE IF NOT EXISTS temp_diffDateFromAll (
 				    key_field varchar(50) DEFAULT NULL,
 				    diffDate bigint DEFAULT NULL,
 				    date_reg date,
@@ -236,6 +235,15 @@ class getDataOutDelayByAll extends getDataFromAnalizAbstract
 				    INNER JOIN temp_diffDateFromAll
 				      ON rbo.key_field = temp_diffDateFromAll.key_field
 				  WHERE temp_diffDateFromAll.diffDate >= 16;";
+				*/
+				return  /** @lang MySQL */
+					"SELECT rbo.month,rbo.year, rbo.num_branch,rbo.type_invoice_full,DATE_FORMAT(rbo.date_create_invoice, '%d.%m.%Y') AS date_create,
+				    DATE_FORMAT(temp_diffDateFromAll.date_reg, '%d.%m.%Y') AS date_reg,(temp_diffDateFromAll.diffDate-15) AS diff,
+				    rbo.num_invoice,rbo.inn_client,rbo.name_client,(rbo.pdv_20+rbo.pdv_7) AS pdv
+				    FROM ReestrBranch_out rbo
+				    INNER JOIN temp_diffDateFromAll
+				      ON rbo.key_field = temp_diffDateFromAll.key_field
+				  WHERE temp_diffDateFromAll.diffDate >= 16;";
 	}
 
 	/**
@@ -252,8 +260,9 @@ class getDataOutDelayByAll extends getDataFromAnalizAbstract
 	 */
 	private function getDelayToNotReestr_SQL()
 	{
+		/*
 		return /** @lang MySQL*/
-			"CREATE TEMPORARY TABLE IF NOT EXISTS temp_diffDateFromAll  (
+			/*"CREATE TEMPORARY TABLE IF NOT EXISTS temp_diffDateFromAll  (
 			   key_field varchar(50)DEFAULT NULL ,
 			    diffDate bigint DEFAULT NULL ,
 			    id int NOT NULL AUTO_INCREMENT,
@@ -293,5 +302,30 @@ class getDataOutDelayByAll extends getDataFromAnalizAbstract
 					  WHERE temp_diffDateFromAll.diffDate>=16
 					  AND ReestrBranch_out.key_field IS NULL
 				  ) ;";
+			*/
+		return /** @lang MySQL*/
+			" SELECT 
+				  num_invoice, 
+				  DATE_FORMAT(date_create_invoice, '%d.%m.%Y'), 
+				  DATE_FORMAT(date_reg_invoice, '%d.%m.%Y'),
+				  (DATEDIFF(date_reg_invoice, date_create_invoice)-15) AS diff,
+				  type_invoice_full, 
+				  inn_client, 
+				  name_client, 
+				  suma_invoice, 
+				  pdvinvoice, 
+				  baza_invoice,
+				  name_vendor,num_branch_vendor, 
+				  num_main_branch 
+			  FROM erpn_out
+			      WHERE key_field 
+			      IN(
+					  SELECT temp_diffDateFromAll.key_field FROM temp_diffDateFromAll
+					  LEFT JOIN ReestrBranch_out ON
+					  temp_diffDateFromAll.key_field=ReestrBranch_out.key_field
+					  WHERE temp_diffDateFromAll.diffDate>=16
+					  AND ReestrBranch_out.key_field IS NULL
+				  ) ;";
+
 	}
 }
