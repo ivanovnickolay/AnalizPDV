@@ -52,6 +52,42 @@ class getDataFromReestrsAll
 	$arrayResult=$smtp->fetchAll();
 	return $arrayResult;
 }
+
+	/**
+	 * @return string
+	 */
+	private function getReestrInEqualErpn_SQL()
+{
+	return /** @lang MySQL */
+		"select
+			`rbi`.`month` AS `month`,
+			`rbi`.`year` AS `year`,
+			`rbi`.`num_branch` AS `num_branch`,
+			`ei`.`type_invoice_full` AS `type_invoice_full`,
+			`ei`.`num_invoice` AS `num_invoice`,
+			`ei`.`date_create_invoice` AS `date_create_invoice`,
+			`ei`.`inn_client` AS `inn_client`,
+			`ei`.`name_client` AS `name_client`,
+			`ei`.`suma_invoice` AS `suma_invoice`,
+			`ei`.`baza_invoice` AS `baza_invoice`,
+			`ei`.`pdvinvoice` AS `pdvinvoice`,
+			`rbi`.`zag_summ` AS `zag_summ`,
+			(`rbi`.`baza_20` + `rbi`.`baza_7` + `rbi`.`baza_0` + `rbi`.`baza_zvil` + `rbi`.`pdv_ne_gos` + `rbi`.`pdv_za_mezhi`) AS `baza`,
+			(`rbi`.`pdv_20` + `rbi`.`pdv_7` + `rbi`.`pdv_0` + `rbi`.`pdv_ne_gos` + `rbi`.`pdv_zvil` + `rbi`.`pdv_za_mezhi`) AS `pdv`,
+			(suma_invoice - zag_summ) as saldo_sum,
+			(baza_invoice - 'baza') as saldo_baza,
+			(pdvinvoice - 'pdv') as saldo_pdv,
+			`ei`.`name_vendor` AS `name_vendor`
+					
+			from `analizpdv`.`erpn_in` `ei`
+			join `analizpdv`.`reestrbranch_in` `rbi`
+			on`ei`.`key_field` = `rbi`.`key_field`
+			WHERE `rbi`.`month` =:m AND `rbi`.`year`=:y
+			        AND((`ei`.`suma_invoice` - `rbi`.`zag_summ`)<>0
+			        OR (`ei`.`baza_invoice` - (`rbi`.`baza_20` + `rbi`.`baza_7` + `rbi`.`baza_0` + `rbi`.`baza_zvil` + `rbi`.`pdv_ne_gos` + `rbi`.`pdv_za_mezhi`) )<>0
+			        OR (`ei`.`pdvinvoice` - (`rbi`.`pdv_20` + `rbi`.`pdv_7` + `rbi`.`pdv_0` + `rbi`.`pdv_ne_gos` + `rbi`.`pdv_zvil` + `rbi`.`pdv_za_mezhi`))<>0);";
+
+}
 	/**
 	 * Возвращает массив информации с реестра полученных НН которые не
 	 * совпали с ЕРПН по параметрам по всему УЗ
@@ -76,6 +112,32 @@ class getDataFromReestrsAll
 	}
 
 	/**
+	 * @return string
+	 */
+	private function getReestrInNotEqualErpn_SQL()
+	{
+		return /** @lang MySQL */
+		"SELECT
+			  `rbo`.`month` AS `month`,
+			  `rbo`.`year` AS `year`,
+			  `rbo`.`num_branch` AS `num_branch`,
+			  `rbo`.`type_invoice_full` AS `type_invoice_full`,
+			  `rbo`.`num_invoice` AS `num_invoice`,
+			  date_format(`rbo`.`date_create_invoice`,'%d.%m.%Y') AS `date_create_invoice`,
+			  `rbo`.`inn_client` AS `inn_client`,
+			  `rbo`.`name_client` AS `name_client`,
+			  `rbo`.`zag_summ` AS `zag_summ`,
+			  (`rbo`.`baza_20` + `rbo`.`baza_7`+ `rbo`.`baza_zvil`+`rbo`.`baza_ne_obj`+ `rbo`.`baza_za_mezhi_tovar`+`rbo`.`baza_za_mezhi_poslug`) AS `baza`,
+			  (`rbo`.`pdv_20` + `rbo`.`pdv_7`) AS `pdv`
+			FROM (`reestrbranch_out` `rbo`
+			  LEFT JOIN `erpn_out` `eo`
+			    ON ((`rbo`.`key_field` = `eo`.`key_field`)))
+			WHERE ISNULL(`eo`.`key_field`) AND `rbo`.`month`=:m and `rbo`.`year` =:y
+		";
+
+	}
+
+	/**
 	 * Возвращает массив информации с реестра выданных НН которые совпали с ЕРПН по параметрам по всему УЗ
 	 * @param $month
 	 * @param $year
@@ -95,6 +157,45 @@ class getDataFromReestrsAll
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;
 	}
+			/**
+		 * @return string
+		 */
+	private function getReestrOutEqualErpn_SQL()
+	{
+		return
+			/** @lang MySQL */
+			"SELECT
+				`rbo`.`month` AS `month`,
+			  	`rbo`.`year` AS `year`,
+				`rbo`.`num_branch` AS `num_branch`,
+				`eo`.`type_invoice_full` AS `type_invoice_full`,
+			  	`eo`.`num_invoice` AS `num_invoice`,
+			  	date_format(`eo`.`date_create_invoice`,'%d.%m.%Y') AS `date_create_invoice`,
+			    `eo`.`inn_client` AS `inn_client`,
+			  	`eo`.`name_client` AS `name_client`,
+			  	`eo`.`suma_invoice` AS `suma_invoice`,
+			  	`eo`.`baza_invoice` AS `baza_invoice`,
+			  	`eo`.`pdvinvoice` AS `pdvinvoice`,
+			 	`rbo`.`zag_summ` AS `zag_summ`,
+			  	(`rbo`.`baza_20` + `rbo`.`baza_7` + `rbo`.`baza_0` + `rbo`.`baza_zvil` + `rbo`.`baza_ne_obj` + `rbo`.`baza_za_mezhi_tovar` + `rbo`.`baza_za_mezhi_poslug`) AS `baza`,
+				(`rbo`.`pdv_20` + `rbo`.`pdv_7`) AS `pdv`,
+				(`eo`.`suma_invoice` - `rbo`.`zag_summ`) as saldo_sum,
+				(`eo`.`baza_invoice` - (`rbo`.`baza_20` + `rbo`.`baza_7` + `rbo`.`baza_0` + `rbo`.`baza_zvil` + `rbo`.`baza_ne_obj` + `rbo`.`baza_za_mezhi_tovar` + `rbo`.`baza_za_mezhi_poslug`)) as saldo_baza,
+				(`eo`.`pdvinvoice` - (`rbo`.`pdv_20` + `rbo`.`pdv_7`)) as saldo_pdv			  
+			FROM (`erpn_out` `eo`
+			  JOIN `reestrbranch_out` `rbo`
+			    ON ((`eo`.`key_field` = `rbo`.`key_field`)))
+			  WHERE rbo.month=:m 
+			  		AND rbo.year=:y 
+			  		AND 
+					(( `eo`.`suma_invoice` - `rbo`.`zag_summ`)<>0
+			        OR (`eo`.`baza_invoice`- (`rbo`.`baza_20` + `rbo`.`baza_7` + `rbo`.`baza_0` + `rbo`.`baza_zvil` + `rbo`.`baza_ne_obj` + `rbo`.`baza_za_mezhi_tovar` + `rbo`.`baza_za_mezhi_poslug`))<>0
+			        OR ( `eo`.`pdvinvoice`-  (`rbo`.`pdv_20` + `rbo`.`pdv_7`))<>0);
+		";
+
+
+	}
+
 	/**
 	 * Возвращает массив информации с реестра полученных НН которые
 	 * не совпали с ЕРПН по параметрам по всему УЗ
@@ -117,6 +218,33 @@ class getDataFromReestrsAll
 		$arrayResult=$smtp->fetchAll();
 		return $arrayResult;
 	}
+
+	/**
+	 * @return string
+	 */
+	private function getReestrOutNotEqualErpn_SQL()
+	{
+		return
+		"SELECT
+		  `rbo`.`month` AS `month`,
+		  `rbo`.`year` AS `year`,
+		  `rbo`.`num_branch` AS `num_branch`,
+		  `rbo`.`type_invoice_full` AS `type_invoice_full`,
+		  `rbo`.`num_invoice` AS `num_invoice`,
+		  date_format(`rbo`.`date_create_invoice`,'%d.%m.%Y') AS `date_create_invoice`,
+		  `rbo`.`inn_client` AS `inn_client`,
+		  `rbo`.`name_client` AS `name_client`,
+		  `rbo`.`zag_summ` AS `zag_summ`,
+		  (`rbo`.`baza_20` + `rbo`.`baza_7`+`rbo`.`baza_zvil`+`rbo`.`baza_ne_obj`+`rbo`.`baza_za_mezhi_tovar`+`rbo`.`baza_za_mezhi_poslug`) AS `baza`,
+		  (`rbo`.`pdv_20` + `rbo`.`pdv_7`) AS `pdv`
+		 FROM (`reestrbranch_out` `rbo`
+		  LEFT JOIN `erpn_out` `eo`
+		    ON ((`rbo`.`key_field` = `eo`.`key_field`)))
+		WHERE ISNULL(`eo`.`key_field`) AND `rbo`.`month`=:m AND `rbo`.`year`=:y;";
+
+	}
+
+
 	public function disconnect()
 	{
 		$this->em->getConnection()->close();
