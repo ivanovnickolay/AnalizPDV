@@ -112,27 +112,28 @@ class getDataFromReestrsAll
 	}
 
 	/**
+	 * TODO проверить процелура на IN запрос на OUT !!!!
 	 * @return string
 	 */
 	private function getReestrInNotEqualErpn_SQL()
 	{
 		return /** @lang MySQL */
 		"SELECT
-			  `rbo`.`month` AS `month`,
-			  `rbo`.`year` AS `year`,
-			  `rbo`.`num_branch` AS `num_branch`,
-			  `rbo`.`type_invoice_full` AS `type_invoice_full`,
-			  `rbo`.`num_invoice` AS `num_invoice`,
-			  date_format(`rbo`.`date_create_invoice`,'%d.%m.%Y') AS `date_create_invoice`,
-			  `rbo`.`inn_client` AS `inn_client`,
-			  `rbo`.`name_client` AS `name_client`,
-			  `rbo`.`zag_summ` AS `zag_summ`,
-			  (`rbo`.`baza_20` + `rbo`.`baza_7`+ `rbo`.`baza_zvil`+`rbo`.`baza_ne_obj`+ `rbo`.`baza_za_mezhi_tovar`+`rbo`.`baza_za_mezhi_poslug`) AS `baza`,
-			  (`rbo`.`pdv_20` + `rbo`.`pdv_7`) AS `pdv`
-			FROM (`reestrbranch_out` `rbo`
-			  LEFT JOIN `erpn_out` `eo`
-			    ON ((`rbo`.`key_field` = `eo`.`key_field`)))
-			WHERE ISNULL(`eo`.`key_field`) AND `rbo`.`month`=:m and `rbo`.`year` =:y
+			  `rbi`.`month` AS `month`,
+			  `rbi`.`year` AS `year`,
+			  `rbi`.`num_branch` AS `num_branch`,
+			  `rbi`.`type_invoice_full` AS `type_invoice_full`,
+			  `rbi`.`num_invoice` AS `num_invoice`,
+			  date_format(`rbi`.`date_create_invoice`,'%d.%m.%Y') AS `date_create_invoice`,
+			  `rbi`.`inn_client` AS `inn_client`,
+			  `rbi`.`name_client` AS `name_client`,
+			  `rbi`.`zag_summ` AS `zag_summ`,
+			  (`rbi`.`baza_20` + `rbi`.`baza_7`+ `rbi`.`baza_0`+`rbi`.`baza_ne_gos`+ `rbi`.`baza_za_mezhi`+`rbi`.`baza_zvil`) AS `baza`,
+			  (`rbi`.`pdv_20` + `rbi`.`pdv_7`+rbi.pdv_0) AS `pdv`
+			FROM (`ReestrBranch_in` `rbi`
+			  LEFT JOIN `erpn_in` `ei`
+			    ON ((`rbi`.`key_field` = `ei`.`key_field`)))
+			WHERE ISNULL(`ei`.`key_field`) AND `rbi`.`month`=:m and `rbi`.`year` =:y
 		";
 
 	}
