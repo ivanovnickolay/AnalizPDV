@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class analizInnOutForm extends AbstractType
 {
 	/**
+	 * numMainBranch = объекты класса SprBranch !!!
 	 * @param FormBuilderInterface $builder
 	 * @param array $options
 	 */

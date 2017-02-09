@@ -95,13 +95,13 @@ class searchDocController extends Controller
 			$resultSearchErpn = $this->searchDocByBranch_FromErpn($searchData);
 			$resultSearchReestr = $this->searchDocByBranch_FromReestr($searchData);
 
-			return $this->render('@AnalizPdv/resultSearchBranch.html.twig',array(
+			return $this->render('@AnalizPdv/resultSearch/resultSearchBranch.html.twig',array(
 				'criteriaSearch'=>$validSearchData,
 				'resultSearchErpn'=>$resultSearchErpn,
 				'resultSearchReestr'=>$resultSearchReestr,
 			));
 		}
-		return $this->render('@AnalizPdv/searchForm.html.twig', array(
+		return $this->render('@AnalizPdv/form/searchForm.html.twig', array(
 			'form' => $form->createView(),
 		));
 
@@ -129,14 +129,14 @@ class searchDocController extends Controller
 			$resultSearchErpn = $this->searchDocByParam_FromErpn($searchData);
 			$resultSearchReestr = $this->searchDocByParam_FromReestr($searchData);
 
-			return $this->render('@AnalizPdv/resultSearchParam.html.twig',array(
+			return $this->render('@AnalizPdv/form/searchDocFromParamForm.html.twig',array(
 				'criteriaSearch'=>$validSearchData,
 				'resultSearchErpn'=>$resultSearchErpn,
 				'resultSearchReestr'=>$resultSearchReestr,
 			));
 
 		}
-		return $this->render('@AnalizPdv/searchDocFromParamForm.html.twig', array(
+		return $this->render('@AnalizPdv/form/searchDocFromParamForm.html.twig', array(
 			'form' => $form->createView(),
 		));
 	}

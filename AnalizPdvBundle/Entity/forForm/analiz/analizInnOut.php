@@ -192,6 +192,7 @@ class analizInnOut
 	{
 		// проверка номера филиала numMainBranch
 		// по длине
+		/*
 		$metadata->addPropertyConstraint('numMainBranch', new Assert\NotEqualTo(array(
 			'value'    => '000',
 			'message' => 'Номер филиала {{ value }} не может быть пустым.',
@@ -208,6 +209,7 @@ class analizInnOut
 			'type'    => 'digit',
 			'message' => 'Номер филиала {{ value }} должен содержать только цифры .',
 		)));
+		*/
 		$metadata->addConstraint(new Assert\Callback('validate'));
 
 	}

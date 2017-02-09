@@ -107,18 +107,19 @@ class ReestrBranch_out extends \Doctrine\ORM\EntityRepository
 	public function is_NumMainBranchToPeriod($month, $year, $numMainBranch)
 	{
 		$qr=$this->_em->getConnection()->prepare(
-			'SELECT COUNT(r.id) FROM reestrbranch_out r
+			'SELECT COUNT(r.id) as cnt FROM reestrbranch_out r
 		 WHERE r.month=:m 
 		 and r.year=:y 
 		 AND r.num_branch=:nb
 		');
+		// получаем из класса SprBranch значение главного филиала
+		    $nb=$numMainBranch->getNumMainBranch();
 			$qr->bindValue('m', $month);
 			$qr->bindValue('y', $year);
-			$qr->bindValue('nb', $numMainBranch);
+			$qr->bindValue('nb', $nb);
 		$qr->execute();
 		$countRec=$qr->fetchAll();
-
-		if ($countRec!=0) {
+		if ($countRec[0]["cnt"]!=0) {
 			return true;
 		} else{
 			return false;

@@ -21,6 +21,8 @@ class analizDocController extends Controller
 	 * route /analizInnOut
 	 * @param $name
 	 * @return \Symfony\Component\HttpFoundation\Response
+	 *
+	 *
 	 */
 	public function analizInnOutAction(Request $request)
     {
@@ -29,20 +31,13 @@ class analizDocController extends Controller
 	    $handlerForm= new analizInnOutFormHandler();
 	    if ($handlerForm->handler($form,$request))
 	    {
-	    	/*
-		    $validSearchData=$form->getData();
-		    //$arr=$searchData->getArrayFromSearchErpn();
-		    $resultSearchErpn = $this->searchDocByBranch_FromErpn($searchData);
-		    $resultSearchReestr = $this->searchDocByBranch_FromReestr($searchData);
+	    	// если проверка прошла успешно то надо отобразить таблицу отклонений
+		    // writeAnalizOutByInn::writeAnalizPDVOutInnByOneBranchWithDoc
 
-		    return $this->render('@AnalizPdv/resultSearchBranch.html.twig',array(
-			    'criteriaSearch'=>$validSearchData,
-			    'resultSearchErpn'=>$resultSearchErpn,
-			    'resultSearchReestr'=>$resultSearchReestr,
-		    ));
-	    	*/
+
+
 	    }
-	    return $this->render('@AnalizPdv/analizForm.html.twig', array(
+	    return $this->render('@AnalizPdv/form/analizForm.html.twig', array(
 		    'form' => $form->createView(),
 	    ));
 
