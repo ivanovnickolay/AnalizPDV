@@ -5,11 +5,13 @@
       <p> Месяц анализа документов <b>  {{ criteriaAnaliz.monthCreate }} </b> </p>
       <p> Год анализа документов <b> {{ criteriaAnaliz.yearCreate }} </b> </p>
       <p> Тип анализа документов <b> {{ criteriaAnaliz.typeAnaliz }} </b>  </p>
-      <p> Филиал для анализа <b> {{ criteriaAnaliz.numMainBranch  }} </b>  </p>
+      <p> Наименование типа анализа документов <b> {{ nameTypeAnaliz }} </b>  </p>
+      <p> Номер филиала <b> {{ numMaimBranch }} </b>  </p>
+
 
 <div id="myTabContent" class="tab-content">
     <div class="tab-pane fade active in" id="ERPN">
-        {% if resultSearchErpn is null %}
+        {% if resultAnaliz is null %}
             <b style="color: red"> Данные отсутствуют в базе. </b>
         {% endif %}
     <table border="1" class="table">
@@ -23,25 +25,32 @@
             <th> ПДВ за даннымим ЕРПН </th>
             <th> ПДВ за даннымим Реестра </th>
             <th> Сальдо ПДВ (ЕРПН - Реестр) </th>
+            <th> Посмотреть детально  </th>
         </tr>
         {% set Erpn_pdv = 0 %}
         {% set Reestr_pdv = 0 %}
         {% set saldo_pdv = 0 %}
-     {% for res in resultSearchErpn %}
+     {% for res in resultAnaliz %}
         <tr>
             <td> {{ loop.index }}</td>
-            <td> {{ res.month_create|date('d/m/Y') }}</td>
-            <td> {{ res.year_create|date('d/m/Y') }}</td>
+            <td> {{ res.month_create }}</td>
+            <td> {{ res.year_create }}</td>
             <td> {{ res.num_main_branch  }}</td>
-            <td> {{ res. Erpn_Inn }}</td>
-            <td> {{ res.Reestr_inn }}</td>
-            <td> {{ res.Erpn_pdv|number_format(2, '.', ',') }}</td>
-            <td> {{ res.Reestr_pdv|number_format(2, '.', ',') }}</td>
-            <td> {{ res.saldo_pdv|number_format(2, '.', ',') }}</td>
+            <td align="right"> {% if res.Erpn_Inn is not defined%} - {% else %}{{ res. Erpn_Inn }} {% endif %}</td>
+            <td align="right"> {% if res.Reestr_inn is not defined%} - {% else %} {{ res.Reestr_inn }} {% endif %}</td>
+            <td align="right"> {% if res.Erpn_pdv is not defined%} - {% else %} {{ res.Erpn_pdv|number_format(2, '.', ',') }} {% endif %}</td>
+            <td align="right"> {% if res.Reestr_pdv is not defined %} - {% else %}  {{ res.Reestr_pdv|number_format(2, '.', ',')}} {% endif %}</td>
+            <td align="right"> {% if res.saldo_pdv is not defined %} - {% else %}  {{ res.saldo_pdv|number_format(2, '.', ',') }} {% endif %}</td>
+            <td> {% if res.Erpn_Inn is defined%} {% set INN=res.Erpn_Inn %}{%  else %} {% set INN=res.Reestr_inn %} {% endif %}
+                <a href={{ path("getDoc_analizInnOut",
+                {'month':criteriaAnaliz.monthCreate,
+                'year':criteriaAnaliz.yearCreate,
+                'type':criteriaAnaliz.typeAnaliz,
+                'INN':INN})}}> Посмотреть  </a>  </td>
          </tr>
-         {% set Erpn_pdv = Erpn_pdv + res.Erpn_pdv %}
-         {% set Reestr_pdv = Reestr_pdv + res.Reestr_pdv %}
-         {% set saldo_pdv = saldo_pdv +  res.saldo_pdv%}
+        {% if res.Erpn_pdv is defined %} {% set Erpn_pdv = Erpn_pdv + res.Erpn_pdv %} {% endif %}
+        {% if res.Reestr_pdv is defined %} {% set Reestr_pdv = Reestr_pdv + res.Reestr_pdv %}{% endif %}
+        {% if res.saldo_pdv is  defined %}{% set saldo_pdv = saldo_pdv +  res.saldo_pdv%}{% endif %}
      {% endfor %}
         <tr>
             <td> </td>
@@ -50,10 +59,11 @@
             <td> </td>
             <td> </td>
             <td> Всего </td>
-            <td> {{ Erpn_pdv|number_format(2, '.', ',')}}</td>
-            <td> {{ Reestr_pdv|number_format(2, '.', ',') }}</td>
-            <td> {{ saldo_pdv|number_format(2, '.', ',') }}</td>
+            <td align="right"> {{ Erpn_pdv|number_format(2, '.', ',')}}</td>
+            <td align="right"> {{ Reestr_pdv|number_format(2, '.', ',') }}</td>
+            <td align="right"> {{ saldo_pdv|number_format(2, '.', ',') }}</td>
             <td> </td>
+
         </tr>
 </table>
 

@@ -38,3 +38,9 @@ analizInnOut:
   path: /analizInnOut
   defaults: {_controller: AnalizPdvBundle:analizDoc:analizInnOut}
 
+getDoc_analizInnOut:
+  path: /getDoc_analizInnOut/{month}/{year}/{type}/{INN}/
+  defaults: {_controller: AnalizPdvBundle:analizDoc:getDoc_analizInnOut}
+
+
+
