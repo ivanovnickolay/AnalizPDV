@@ -1,0 +1,68 @@
+{% extends '::base.html.twig' %}
+{% block table %}
+    <a href={{ path('analizInnOut')}}>Новый поиск </a>
+    <h1>Результат анализа выданных НН в разрезе ИПН по филиалу</h1>
+      <p> Месяц анализа документов <b>  {{ criteriaAnaliz.monthCreate }} </b> </p>
+      <p> Год анализа документов <b> {{ criteriaAnaliz.yearCreate }} </b> </p>
+      <p> Тип анализа документов <b> {{ criteriaAnaliz.typeAnaliz }} </b>  </p>
+      <p> Филиал для анализа <b> {{ criteriaAnaliz.numMainBranch  }} </b>  </p>
+
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="ERPN">
+        {% if resultSearchErpn is null %}
+            <b style="color: red"> Данные отсутствуют в базе. </b>
+        {% endif %}
+    <table border="1" class="table">
+        <tr class="caption">
+            <th> Номер по порядку </th>
+            <th> Месяц </th>
+            <th> Год </th>
+            <th> Номер филиала </th>
+            <th> ИНН за даннымим ЕРПН </th>
+            <th> ИНН за даннымим Реестра </th>
+            <th> ПДВ за даннымим ЕРПН </th>
+            <th> ПДВ за даннымим Реестра </th>
+            <th> Сальдо ПДВ (ЕРПН - Реестр) </th>
+        </tr>
+        {% set Erpn_pdv = 0 %}
+        {% set Reestr_pdv = 0 %}
+        {% set saldo_pdv = 0 %}
+     {% for res in resultSearchErpn %}
+        <tr>
+            <td> {{ loop.index }}</td>
+            <td> {{ res.month_create|date('d/m/Y') }}</td>
+            <td> {{ res.year_create|date('d/m/Y') }}</td>
+            <td> {{ res.num_main_branch  }}</td>
+            <td> {{ res. Erpn_Inn }}</td>
+            <td> {{ res.Reestr_inn }}</td>
+            <td> {{ res.Erpn_pdv|number_format(2, '.', ',') }}</td>
+            <td> {{ res.Reestr_pdv|number_format(2, '.', ',') }}</td>
+            <td> {{ res.saldo_pdv|number_format(2, '.', ',') }}</td>
+         </tr>
+         {% set Erpn_pdv = Erpn_pdv + res.Erpn_pdv %}
+         {% set Reestr_pdv = Reestr_pdv + res.Reestr_pdv %}
+         {% set saldo_pdv = saldo_pdv +  res.saldo_pdv%}
+     {% endfor %}
+        <tr>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> Всего </td>
+            <td> {{ Erpn_pdv|number_format(2, '.', ',')}}</td>
+            <td> {{ Reestr_pdv|number_format(2, '.', ',') }}</td>
+            <td> {{ saldo_pdv|number_format(2, '.', ',') }}</td>
+            <td> </td>
+        </tr>
+</table>
+
+
+
+
+
+</div>
+
+</div>
+    {% endblock %}
+
