@@ -7,6 +7,7 @@ use AnalizPdvBundle\Entity\forForm\analiz\handlerData_analizInnOut;
 use AnalizPdvBundle\Form\analizForm\analizInnOutForm;
 use AnalizPdvBundle\Form\analizForm\analizInnOutFormHandler;
 use AnalizPdvBundle\Model\getDataFromSQL\getDataOutINNByOne;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -51,11 +52,34 @@ class analizDocController extends Controller
 	/**
 	 * Получение документов которые расшифровывают отклонения
 	 *
-	 * route /getDoc_analizInnOut/{month}/{year}/{type}/{INN}/
-	 * @param Request $request
+	 * route /getDoc_analizInnOut/{month}/{year}/{numBranch}/{INN}/
+	 * @param $month
+	 * @param $year
+	 * @param $numBranch
+	 * @param $INN
+
 	 */
-	public function getDoc_analizInnOutAction(Request $request)
+	public function getDoc_analizInnOutAction($month, $year,$numBranch, $INN )
 	{
+		$entity=new analizInnOut($this->getDoctrine()->getManager());
+
+			// Проверяем валидатором полученные значения
+			$validatorData=$this->get('validDataController');
+			$validMonth=$validatorData->validMonth($month);
+			$validYear=$validatorData->validYear($year);
+			$validINN=$validatorData->validINN($INN);
+			$validNumBranch=$validatorData->validNumBranch($numBranch);
+
+		if (count($validMonth)==0 and count($validYear)==0 and count($validINN)==0 and count($validNumBranch)==0) {
+			$docByERPN=$this->get('doctrine')->getRepository('AnalizPdvBundle:ErpnOut')->getDocFromERPN($month, $year,$numBranch, $INN);
+			$docByReestr=$this->get('doctrine')->getRepository('AnalizPdvBundle:ReestrbranchOut')->getDocFromReestr($month, $year,$numBranch, $INN);
+			return $this->render("@AnalizPdv/resultSearch/resultSearchDocByOut.html.twig",array(
+				'resultSearchReestr'=>$docByReestr,
+				'resultSearchErpn'=>$docByERPN,
+
+			));
+		}
+		return $this->render("@AnalizPdv/resultSearch/resultSearchDocByOut.html.twig",array());
 
 	}
 }

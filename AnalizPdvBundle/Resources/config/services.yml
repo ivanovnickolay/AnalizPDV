@@ -22,3 +22,7 @@ services:
   handler_search_erpn:
    class: AnalizPdvBundle\Form\handlerFormSearchErpn
    arguments: ["@doctrine"]
+
+  validDataController:
+      class: AnalizPdvBundle\Utilits\ValidForm\validDataFormController
+      arguments: ['@service_container']

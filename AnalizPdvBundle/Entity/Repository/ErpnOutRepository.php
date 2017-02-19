@@ -14,7 +14,7 @@ class ErpnOutRepository extends \Doctrine\ORM\EntityRepository
 	/**
 	 * Проверка уникальности налоговой накладной в базе
 	 * если проверка пройдена успешно возвращает true
-	 * @param \LoadFileBundle\Entity\Erpn_out $Invoice
+	 * @param \AnalizPdvBundle\Entity\ErpnOut|\LoadFileBundle\Entity\Erpn_out $Invoice
 	 * @return bool
 	 */
 	public function ValidInvoice(\AnalizPdvBundle\Entity\ErpnOut $Invoice )
@@ -35,14 +35,13 @@ class ErpnOutRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 
-	/*
+	/**
 	 * Возвращеет количество записей по условию
 	 * @param $numInvoice
 	 * @param $dateInvoice
 	 * @param $typeInvoice
 	 * @param $INN
-	 * @return bool|mixed
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @return mixed
 	 */
 	public function getCountKeyFields($numInvoice, $dateInvoice, $typeInvoice, $INN)
 	{
@@ -63,6 +62,9 @@ class ErpnOutRepository extends \Doctrine\ORM\EntityRepository
 		return $count;
 	}
 
+	/**
+	 * @param $file
+	 */
 	public function loadDataInfile($file){
 		$db = $this->_em->getConnection();
 		$sql = "LOAD DATA LOCAL INFILE $file REPLACE INTO TABLE `LoadFiles`.`Erpn_out`
@@ -88,6 +90,7 @@ date_contract=IF(@date_contract='',NULL,@date_contract)\";";
 	 *
 	 *
 	 * @param getArrayFromSearch_Interface $arrayFromSearch
+	 * @return array
 	 */
 	public function getSearchAllFromPeriod_Branch($arrayFromSearch)
 	{
@@ -122,6 +125,7 @@ date_contract=IF(@date_contract='',NULL,@date_contract)\";";
 	 *
 	 *
 	 * @param getArrayFromSearch_Interface $arrayFromSearch
+	 * @return array
 	 */
 	public function getSearchAllFromParam($arrayFromSearch)
 	{
@@ -155,5 +159,66 @@ date_contract=IF(@date_contract='',NULL,@date_contract)\";";
 
 		$result=$qr->getQuery();
 		return $result->getResult();
+	}
+
+	/**
+	 * @param $month
+	 * @param $year
+	 * @param $numBranch
+	 * @param $inn
+	 * @return array
+	 */
+	public function getAnalizData(int $month, int $year, string $numBranch, string $inn)
+	{
+		$SQL="Select num_invoice, 
+					date_format(date_create_invoice,'%d.%m.%Y'),
+					type_invoice_full,
+					inn_client,
+					 name_client,
+					 pdvinvoice,
+					 name_vendor
+			  from erpn_out
+			  where month_create_invoice=:m AND 
+			  		year_create_invoice=:y AND 
+			  		num_main_branch=:nb AND 
+			  		inn_client=:inn";
+		$smtp=$this->_em->getConnection();
+		$qr=$smtp->prepare($SQL);
+		$qr->bindParam("m", $month);
+		$qr->bindParam("y", $year);
+		$qr->bindParam("nb", $numBranch);
+		$qr->bindParam("inn", $inn);
+		$qr->execute();
+		$arrayResult=$qr->fetchAll();
+		return $arrayResult;
+
+	}
+
+
+	/**
+	 * Получение документов из ЕРПН
+	 *
+	 * @param $month
+	 * @param $year
+	 * @param $numBranch
+	 * @param $INN
+	 * @return array
+	 * @internal param $array
+	 */
+	public function getDocFromERPN($month, $year,$numBranch, $INN)
+	{
+		$qr=$this->createQueryBuilder('ErpnOut');
+		$qr->where('ErpnOut.monthCreateInvoice=:m');
+		$qr->setParameter('m', $month);
+		$qr->andWhere('ErpnOut.yearCreateInvoice=:y');
+		$qr->setParameter('y', $year);
+		$qr->andWhere('ErpnOut.innClient=:inn');
+		$qr->setParameter('inn', $INN);
+		$qr->andWhere('ErpnOut.numMainBranch=:nmb');
+		$qr->setParameter('nmb', $numBranch);
+
+		$result=$qr->getQuery();
+		return $result->getResult();
+
 	}
 }

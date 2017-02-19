@@ -45,7 +45,7 @@
                 <a href={{ path("getDoc_analizInnOut",
                 {'month':criteriaAnaliz.monthCreate,
                 'year':criteriaAnaliz.yearCreate,
-                'type':criteriaAnaliz.typeAnaliz,
+                 'numBranch': numMaimBranch,
                 'INN':INN})}}> Посмотреть  </a>  </td>
          </tr>
         {% if res.Erpn_pdv is defined %} {% set Erpn_pdv = Erpn_pdv + res.Erpn_pdv %} {% endif %}
