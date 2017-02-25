@@ -71,9 +71,14 @@ class analizDocController extends Controller
 			$validNumBranch=$validatorData->validNumBranch($numBranch);
 
 		if (count($validMonth)==0 and count($validYear)==0 and count($validINN)==0 and count($validNumBranch)==0) {
+			// получаем значения из базы данных
 			$docByERPN=$this->get('doctrine')->getRepository('AnalizPdvBundle:ErpnOut')->getDocFromERPN($month, $year,$numBranch, $INN);
 			$docByReestr=$this->get('doctrine')->getRepository('AnalizPdvBundle:ReestrbranchOut')->getDocFromReestr($month, $year,$numBranch, $INN);
+			// создаем массив, содержащий названия переменных и их значения для передачи в шаблон
+			$param=compact("month", "year","numBranch", "INN");
+
 			return $this->render("@AnalizPdv/resultSearch/resultSearchDocByOut.html.twig",array(
+				'param'=>$param,
 				'resultSearchReestr'=>$docByReestr,
 				'resultSearchErpn'=>$docByERPN,
 

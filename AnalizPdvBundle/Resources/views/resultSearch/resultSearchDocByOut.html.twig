@@ -1,8 +1,11 @@
 {% extends '::base.html.twig' %}
 {% block table %}
     <a href={{ path('searchDocByBranch')}}>Новый поиск </a>
-    <h1>Результат поиска документов по ВСП или филиалу </h1>
-
+    <h4>Результат поиска документов в ЕРПН и реестру по расхождению </h4>
+    <p> Месяц  {{ param.month }}</p>
+    <p> Год  {{ param.year }}</p>
+    <p> Номер филиала  {{ param.numBranch }}</p>
+    <p> ИНН покупателя {{ param.INN }} </p>
 
     <ul id="myTab" class="nav nav-tabs">
         <li class="active"><a href="#ERPN" data-toggle="tab">Данные ЕРПН</a></li>
@@ -99,8 +102,8 @@
                     <td> {{ res.innClient }}</td>
                     <td> {{ res.nameClient }}</td>
                     <td> {{ res.zagSumm|number_format(2, '.', ',') }}</td>
-                    <td> {{ res.pdv20|number_format(2, '.', ',') }}</td>
-                    <td> {{ res.baza20|number_format(2, '.', ',') }}</td>
+                    <td> {{ {{res.pdv20+res.pdv7}}|number_format(2, '.', ',') }}</td>
+                    <td> {{ {{res.baza20+res.baza7+res.baza0+res.bazaZvil+res.bazaNeObj+res.bazaZaMezhiTovar+res.bazaZaMezhiPoslug}}|number_format(2, '.', ',') }}</td>
 
                 </tr>
                 {% set sumaInvoice = sumaInvoice + res.zagSumm %}

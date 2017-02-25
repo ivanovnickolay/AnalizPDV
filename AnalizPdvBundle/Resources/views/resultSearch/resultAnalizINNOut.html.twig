@@ -42,11 +42,12 @@
             <td align="right"> {% if res.Reestr_pdv is not defined %} - {% else %}  {{ res.Reestr_pdv|number_format(2, '.', ',')}} {% endif %}</td>
             <td align="right"> {% if res.saldo_pdv is not defined %} - {% else %}  {{ res.saldo_pdv|number_format(2, '.', ',') }} {% endif %}</td>
             <td> {% if res.Erpn_Inn is defined%} {% set INN=res.Erpn_Inn %}{%  else %} {% set INN=res.Reestr_inn %} {% endif %}
+                {% if INN is null %} {% set INN = " " %} {% endif %}
                 <a href={{ path("getDoc_analizInnOut",
                 {'month':criteriaAnaliz.monthCreate,
                 'year':criteriaAnaliz.yearCreate,
                  'numBranch': numMaimBranch,
-                'INN':INN})}}> Посмотреть  </a>  </td>
+                'INN':INN})}} target="_blank"> Посмотреть  </a>  </td>
          </tr>
         {% if res.Erpn_pdv is defined %} {% set Erpn_pdv = Erpn_pdv + res.Erpn_pdv %} {% endif %}
         {% if res.Reestr_pdv is defined %} {% set Reestr_pdv = Reestr_pdv + res.Reestr_pdv %}{% endif %}
